@@ -1,0 +1,36 @@
+app:
+  name: "ZUU"
+  institution: "Universidad de Investigación y Desarrollo UDI"
+  language: "es"
+
+paths:
+  database: "data/zuu.db"
+  xml_dir: "data/xml"
+  audio_input: "data/audio/input.wav"
+  audio_output: "data/audio/zuu_output.wav"
+
+llm:
+  provider: "ollama"
+  url: "http://localhost:11434/api/generate"
+  model: "qwen2.5:3b-instruct"
+  keep_alive: "30m"
+  num_ctx: 512
+  default_max_tokens: 70
+  default_temperature: 0.45
+
+tts:
+  engine: "piper"
+  voice_model: "voices/es_MX-ald-medium.onnx"
+  include_currency_word: false
+
+whisper:
+  engine: "openai-whisper"
+  model: "large"
+  language: "es"
+  sample_rate: 16000
+  record_seconds: 4
+
+assistant:
+  max_history_messages: 8
+  use_voice: true
+  greeting_response: "¡Hola! Estoy muy bien, gracias. ¿Cómo estás? También puedo ayudarte con información de la UDI."

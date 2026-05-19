@@ -1,0 +1,11 @@
+<programa>
+    <nombre>Ingeniería de Sistemas</nombre>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <costo>
+        <diurno>1699200</diurno>
+        <nocturno>1759700</nocturno>
+    </costo>
+    <malla>Información de la malla...</malla>
+    <trabajo>Campo laboral...</trabajo>
+</programa>
