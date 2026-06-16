@@ -3,7 +3,7 @@
 .env
 ./voices/
 /voices/*
-!voices/test_epoch10100
+!voices/test_esp_500_epoch_10010
 /data/zuu_backup*
 * copy.py
 * copy_*.py
