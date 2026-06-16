@@ -1,0 +1,105 @@
+<programa>
+    <nombre>Criminalística</nombre>
+    <titulo>Profesional en Criminalística</titulo>
+    <duracion>8 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>52964</codigo_snies>
+    <resolucion>N° 14444</resolucion>
+    <fecha_registro_calificado>10 de agosto de 2021</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>09 de agosto de 2028</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>137</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>3196700</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Deporte y Cultura I</asignatura>
+            <asignatura>Introducción a la Criminalística</asignatura>
+            <asignatura>Introducción al Derecho</asignatura>
+            <asignatura>Matemáticas Aplicadas</asignatura>
+            <asignatura>Sistemas de Identificación Humano</asignatura>
+            <asignatura>Técnicas de la Investigación Criminal</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Deporte y Cultura II</asignatura>
+            <asignatura>Derecho Constitucional</asignatura>
+            <asignatura>Física Forense</asignatura>
+            <asignatura>Fotografía y Vídeo Forense</asignatura>
+            <asignatura>Investigación Criminal I</asignatura>
+            <asignatura>Psicología Criminal I</asignatura>
+            <asignatura>Criminalística I</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Derecho Penal General</asignatura>
+            <asignatura>Hoplología</asignatura>
+            <asignatura>Investigación Criminal II</asignatura>
+            <asignatura>Psicología Criminal II</asignatura>
+            <asignatura>Topografía Forense</asignatura>
+            <asignatura>Informática Criminalística</asignatura>
+            <asignatura>Laboratorio de Criminalística I</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Balística Forense</asignatura>
+            <asignatura>Criminalística II</asignatura>
+            <asignatura>Delitos Informáticos I</asignatura>
+            <asignatura>Explosivos e Incendios</asignatura>
+            <asignatura>Informes Forenses</asignatura>
+            <asignatura>Técnicas de Entrevista</asignatura>
+            <asignatura>Derecho Penal Especial</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Delitos Informáticos II</asignatura>
+            <asignatura>Medicina Forense I</asignatura>
+            <asignatura>Química Forense</asignatura>
+            <asignatura>Estadística y Probabilidades</asignatura>
+            <asignatura>Derecho Procesal Penal</asignatura>
+            <asignatura>Laboratorio de Criminalística II</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Derecho Probatorio</asignatura>
+            <asignatura>Documentoscopia y Grafoscopia</asignatura>
+            <asignatura>Lofoscopia</asignatura>
+            <asignatura>Toxicología Forense</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Medicina Forense II</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Criminalística Accidentológica</asignatura>
+            <asignatura>Criminalística III</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+            <asignatura>Técnicas de Juicio Oral</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Criminología y Victimología</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+            <asignatura>Optativa Libre II</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 136</telefono>
+        <correo>je.criminalistica@udi.edu.co</correo>
+    </contacto>
+</programa>

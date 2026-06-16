@@ -7,10 +7,11 @@ import whisper
 
 
 # Para velocidad:
+# tiny = mucho más lento
 # base = más rápido
 # small = mejor equilibrio
 # medium = más lento
-WHISPER_MODEL_NAME = "medium"
+WHISPER_MODEL_NAME = "base"
 
 _model = None
 

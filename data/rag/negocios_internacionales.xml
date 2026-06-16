@@ -1,0 +1,108 @@
+<programa>
+    <nombre>Negocios Internacionales</nombre>
+    <titulo>Profesional en Negocios Internacionales</titulo>
+    <duracion>9 semestres</duracion>
+    <modalidad>Presencial y Virtual</modalidad>
+    <codigo_snies>91102</codigo_snies>
+    <resolucion>N° 010433</resolucion>
+    <fecha_registro_calificado>07 de junio de 2022</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>06 de junio de 2029</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>157</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>2491900</diurno>
+        <virtual>2108000</virtual>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Matemáticas I</asignatura>
+            <asignatura>Economía General</asignatura>
+            <asignatura>Introducción a los Negocios Internacionales</asignatura>
+            <asignatura>Principios de Gestión Administrativa</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Matemáticas II</asignatura>
+            <asignatura>Álgebra Lineal</asignatura>
+            <asignatura>Microeconomía</asignatura>
+            <asignatura>Teorías del Comercio Internacional</asignatura>
+            <asignatura>Contabilidad Financiera</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Estadística y Probabilidades</asignatura>
+            <asignatura>Macroeconomía</asignatura>
+            <asignatura>Sistemas de Información Para Negocios Internacionales</asignatura>
+            <asignatura>Administración del Talento Humano</asignatura>
+            <asignatura>Costos y Presupuestos</asignatura>
+            <asignatura>Legislación Comercial y Tributaria</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Fundamentos de Mercadotecnia</asignatura>
+            <asignatura>Geografía y Cultura del Mundo</asignatura>
+            <asignatura>Legislación Aduanera</asignatura>
+            <asignatura>Internacionalización de la Empresa</asignatura>
+            <asignatura>Matemática Financiera</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Mercadeo Internacional</asignatura>
+            <asignatura>Relaciones Internacionales</asignatura>
+            <asignatura>Régimen de Importación y Exportación</asignatura>
+            <asignatura>Innovación y Competitividad Global</asignatura>
+            <asignatura>Análisis Financiero</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Inteligencia de Mercados Internacionales</asignatura>
+            <asignatura>Tercer Idioma de Negocios I</asignatura>
+            <asignatura>Legislación Cambiaria y de Inversión</asignatura>
+            <asignatura>Banca y Finanzas Internacionales</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Electiva I</asignatura>
+            <asignatura>Tercer Idioma de Negocios II</asignatura>
+            <asignatura>Integración Económica Internacional</asignatura>
+            <asignatura>Logística y Distribución Física Internacional</asignatura>
+            <asignatura>Gerencia de Proyectos de Inversión</asignatura>
+            <asignatura>Optativa Libre II</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Electiva II</asignatura>
+            <asignatura>Tercer Idioma de Negocios III</asignatura>
+            <asignatura>Mercado de Capitales</asignatura>
+            <asignatura>Simulación de Negocios Internacionales</asignatura>
+            <asignatura>Negociación Intercultural</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Electiva III</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Derecho Comercial Internacional</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 129</telefono>
+        <correo>je.negocios@udi.edu.co</correo>
+    </contacto>
+</programa>

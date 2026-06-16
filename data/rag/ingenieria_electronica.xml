@@ -1,0 +1,95 @@
+<programa>
+    <nombre>Ingeniería Electrónica</nombre>
+    <titulo>Ingeniero Electrónico</titulo>
+    <duracion>8 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>20407</codigo_snies>
+    <resolucion>N° 9123 de Abril 01 de 2026</resolucion>
+    <fecha_registro_calificado>01 de abril de 2026</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>01 de abril de 2033</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>137</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>1699200</diurno>
+    </costo>
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Matemáticas I</asignatura>
+            <asignatura>Álgebra Lineal</asignatura>
+            <asignatura>Introducción a la Electrónica</asignatura>
+            <asignatura>Fundamentos de Programación</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Matemáticas II</asignatura>
+            <asignatura>Física I</asignatura>
+            <asignatura>Programación I</asignatura>
+            <asignatura>Electrónica Digital</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Matemáticas III</asignatura>
+            <asignatura>Física II</asignatura>
+            <asignatura>Circuitos Eléctricos</asignatura>
+            <asignatura>Redes de Computadores</asignatura>
+            <asignatura>Optativa Libre II</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Matemáticas IV</asignatura>
+            <asignatura>Física III</asignatura>
+            <asignatura>Diseño Electrónico</asignatura>
+            <asignatura>Electrónica de Potencia</asignatura>
+            <asignatura>Comunicaciones</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Teoría de la Propagación Electromagnética</asignatura>
+            <asignatura>Señales y Sistemas</asignatura>
+            <asignatura>Máquinas Eléctricas</asignatura>
+            <asignatura>Programación de Microcontroladores</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Procesamiento de Señales</asignatura>
+            <asignatura>Estadística y Probabilidades</asignatura>
+            <asignatura>Automatización y Control</asignatura>
+            <asignatura>Sistemas de Control</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Internet de las Cosas (IoT)</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Simulación e Instrumentación en Ingeniería</asignatura>
+            <asignatura>Robótica I</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Antenas</asignatura>
+            <asignatura>Instrumentación Industrial</asignatura>
+            <asignatura>Robótica II</asignatura>
+            <asignatura>Gerencia de Proyectos</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

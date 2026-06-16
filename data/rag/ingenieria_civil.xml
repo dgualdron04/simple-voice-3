@@ -1,0 +1,112 @@
+<programa>
+    <nombre>Ingeniería Civil</nombre>
+    <titulo>Ingeniero Civil</titulo>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>105324</codigo_snies>
+    <resolucion>N° 013072</resolucion>
+    <fecha_registro_calificado>10 de julio de 2023</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>30 de julio de 2030</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>168</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>3689000</diurno>
+        <nocturno>5350000</nocturno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Matemáticas I</asignatura>
+            <asignatura>Química Básica</asignatura>
+            <asignatura>Introducción a la Ingeniería Civil</asignatura>
+            <asignatura>Expresión Gráfica y Geometría</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Matemáticas II</asignatura>
+            <asignatura>Álgebra Lineal</asignatura>
+            <asignatura>Física I</asignatura>
+            <asignatura>Topografía</asignatura>
+            <asignatura>Fundamentos de Programación</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Matemáticas III</asignatura>
+            <asignatura>Física II</asignatura>
+            <asignatura>Biología</asignatura>
+            <asignatura>Geología</asignatura>
+            <asignatura>Estadísticas y Probabilidades</asignatura>
+            <asignatura>Sistemas de Información Geográfica</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Matemáticas IV</asignatura>
+            <asignatura>Estática</asignatura>
+            <asignatura>Física III</asignatura>
+            <asignatura>Mecánica de Fluidos</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Soluciones Computacionales a Problemas de Ingeniería</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Mecánica de Materiales</asignatura>
+            <asignatura>Hidrología</asignatura>
+            <asignatura>Mecánica de Suelos</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Materiales de Construcción</asignatura>
+            <asignatura>Investigación de Operaciones</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Geotecnia</asignatura>
+            <asignatura>Hidráulica</asignatura>
+            <asignatura>Fundaciones</asignatura>
+            <asignatura>Análisis Estructural</asignatura>
+            <asignatura>Ingeniería de Tránsito</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Diseño Geométrico de Vías</asignatura>
+            <asignatura>Estructuras Hidráulicas</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+            <asignatura>Diseño Hormigón Armado I</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+            <asignatura>Metodología de Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Pavimentos</asignatura>
+            <asignatura>Planeación y Regulación Ambiental</asignatura>
+            <asignatura>Acueductos y Alcantarillados</asignatura>
+            <asignatura>Programación de Obras y Presupuestos</asignatura>
+            <asignatura>Diseño Hormigón Armado II</asignatura>
+            <asignatura>Optativa Libre II</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Sistemas de Transporte</asignatura>
+            <asignatura>Tendencias e Innovación en Ingeniería Civil</asignatura>
+            <asignatura>Modelos de Simulación I</asignatura>
+            <asignatura>Gerencia de Proyectos</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="10">
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 138</telefono>
+        <correo>je.civil@udi.edu.co</correo>
+    </contacto>
+</programa>

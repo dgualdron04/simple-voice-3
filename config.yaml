@@ -3,11 +3,17 @@ app:
   institution: "Universidad de Investigación y Desarrollo UDI"
   language: "es"
 
+stt:
+  provider: "vosk"
+  vosk_model: "${VOSK_MODEL_PATH}"
+  sample_rate: 16000
+
 paths:
-  database: "data/zuu.db"
-  xml_dir: "data/xml"
-  audio_input: "data/audio/input.wav"
-  audio_output: "data/audio/zuu_output.wav"
+  database: "${DATABASE_PATH}"
+  xml_dir: "${XML_DIR}"
+  audio_input: "${AUDIO_INPUT_PATH}"
+  audio_output: "${AUDIO_OUTPUT_PATH}"
+  audio_output_xtts: "${AUDIO_OUTPUT_XTTS_PATH}"
 
 llm:
   provider: "ollama"
@@ -19,9 +25,17 @@ llm:
   default_temperature: 0.45
 
 tts:
-  engine: "piper"
-  voice_model: "voices/es_MX-ald-medium.onnx"
-  include_currency_word: false
+  provider: "piper"
+
+  # PIPER
+  voice_model: "${PIPER_VOICE_MODEL_PATH}"
+  include_currency_word: true
+
+  # XTTS
+  xtts_model: "tts_models/multilingual/multi-dataset/xtts_v2"
+  xtts_speaker_wav: "${XTTS_SPEAKER_WAV_PATH}"
+  xtts_speaker_dir: "${XTTS_SPEAKER_DIR}"
+  xtts_gpu: false
 
 whisper:
   engine: "openai-whisper"

@@ -1,0 +1,128 @@
+<programa>
+    <nombre>Derecho</nombre>
+    <titulo>Abogado</titulo>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>102300</codigo_snies>
+    <resolucion>N° 015998</resolucion>
+    <fecha_registro_calificado>18 de diciembre de 2019</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>17 de diciembre de 2026</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>170</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>4508200</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Introducción al Derecho</asignatura>
+            <asignatura>Derecho Romano</asignatura>
+            <asignatura>Sociología Jurídica</asignatura>
+            <asignatura>Historia de las Ideas Políticas</asignatura>
+            <asignatura>Filosofía del Derecho</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Economía General</asignatura>
+            <asignatura>Argumentación Jurídica</asignatura>
+            <asignatura>Ciencia Política y Veeduría Electoral</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+            <asignatura>Derecho Civil General y Personas</asignatura>
+            <asignatura>Penal General</asignatura>
+            <asignatura>Teoría Constitucional e Instituciones Políticas</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Civil Bienes</asignatura>
+            <asignatura>Constitucional Colombiano</asignatura>
+            <asignatura>Derecho Administrativo</asignatura>
+            <asignatura>Laboral General e Individual</asignatura>
+            <asignatura>Penal Especial I</asignatura>
+            <asignatura>Teoría General del Proceso</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Civil Obligaciones</asignatura>
+            <asignatura>Derecho Administrativo Colombiano</asignatura>
+            <asignatura>Derecho Procesal Constitucional</asignatura>
+            <asignatura>Laboral Colectivo y Régimen Laboral del Sector Público</asignatura>
+            <asignatura>Oralidad Jurídica</asignatura>
+            <asignatura>Penal Especial II</asignatura>
+            <asignatura>Teoría General de la Prueba y Medios de Prueba</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Contratos</asignatura>
+            <asignatura>Derecho de Familia</asignatura>
+            <asignatura>Hermenéutica Jurídica y Análisis Jurisprudencial</asignatura>
+            <asignatura>Procedimiento Contencioso Administrativo y Contratos Estatales</asignatura>
+            <asignatura>Procesal Penal</asignatura>
+            <asignatura>Regímenes Probatorios Especiales I</asignatura>
+            <asignatura>Seguridad Social</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Derecho Sucesoral</asignatura>
+            <asignatura>Hacienda Pública y Régimen de las Entidades Territoriales</asignatura>
+            <asignatura>Medicina Forense y Criminalística</asignatura>
+            <asignatura>Procesal Civil</asignatura>
+            <asignatura>Procesal Laboral</asignatura>
+            <asignatura>Regímenes Probatorios Especiales II</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Consultorio Jurídico I</asignatura>
+            <asignatura>Jurisprudencias y Valoración Probatoria</asignatura>
+            <asignatura>Derecho Comercial</asignatura>
+            <asignatura>Metodología de la Investigación Sociojurídica</asignatura>
+            <asignatura>Optativa I</asignatura>
+            <asignatura>Probatorio: Derecho Comercial</asignatura>
+            <asignatura>Procesal Civil Especial</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Consultorio Jurídico II</asignatura>
+            <asignatura>Laboratorio de Investigación en Derecho Probatorio</asignatura>
+            <asignatura>Derecho Agrario y Ambiental</asignatura>
+            <asignatura>Mecanismos Alternativos de Solución de Conflictos</asignatura>
+            <asignatura>Optativa II</asignatura>
+            <asignatura>Probatorio: Derecho de Familia</asignatura>
+            <asignatura>Sociedades Comerciales</asignatura>
+            <asignatura>Títulos Valores</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Consultorio Jurídico III</asignatura>
+            <asignatura>Derechos Humanos y Derecho Internacional Humanitario</asignatura>
+            <asignatura>Optativa III</asignatura>
+            <asignatura>Probatorio: Responsabilidad Médica y del Estado</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Electiva Profesional III</asignatura>
+        </semestre>
+
+        <semestre numero="10">
+            <asignatura>Consultorio Jurídico IV</asignatura>
+            <asignatura>Derecho Internacional Público y Privado</asignatura>
+            <asignatura>Optativa IV</asignatura>
+            <asignatura>Pruebas en los Recursos Extraordinarios</asignatura>
+            <asignatura>Electiva Profesional IV</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

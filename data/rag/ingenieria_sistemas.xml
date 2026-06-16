@@ -1,0 +1,113 @@
+<programa>
+    <nombre>Ingeniería de Sistemas</nombre>
+    <titulo>Ingeniero de Sistemas</titulo>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>20410</codigo_snies>
+    <resolucion>N° 9411 de Mayo 27 de 2022</resolucion>
+    <fecha_registro_calificado>31 de julio de 2023</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>26 de mayo de 2028</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>6 años</vigencia_registro_calificado>
+    <creditos>168</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>1699200</diurno>
+        <nocturno>1759700</nocturno>
+    </costo>
+    <estado>Activo</estado>
+    <observacion>Está acreditado en Alta Calidad</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Deporte y Cultura I</asignatura>
+            <asignatura>Matemáticas I</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Introducción a la Ingeniería de Sistemas</asignatura>
+            <asignatura>Fundamentos de Programación</asignatura>
+            <asignatura>Arquitectura de Computadores</asignatura>
+            <asignatura>Álgebra Lineal</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Deporte y Cultura II</asignatura>
+            <asignatura>Lógica Computacional</asignatura>
+            <asignatura>Física I</asignatura>
+            <asignatura>Matemáticas II</asignatura>
+            <asignatura>Estructura de Datos</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Matemáticas III</asignatura>
+            <asignatura>Física II</asignatura>
+            <asignatura>Matemáticas Discretas</asignatura>
+            <asignatura>Programación I</asignatura>
+            <asignatura>Base de Datos I</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Matemáticas IV</asignatura>
+            <asignatura>Física III</asignatura>
+            <asignatura>Ingeniería del Software I</asignatura>
+            <asignatura>Programación II</asignatura>
+            <asignatura>Base de Datos II</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Teoría General de Sistemas</asignatura>
+            <asignatura>Autómatas y Lenguajes Formales</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+            <asignatura>Programación III</asignatura>
+            <asignatura>Redes I</asignatura>
+            <asignatura>Ingeniería del Software II</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Estadística y Probabilidades</asignatura>
+            <asignatura>Sistemas de Información I</asignatura>
+            <asignatura>Sistemas Operativos</asignatura>
+            <asignatura>Redes II</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Análisis Numérico</asignatura>
+            <asignatura>Telemática I</asignatura>
+            <asignatura>Sistemas de Información II</asignatura>
+            <asignatura>Electiva Profesional III</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Metodología de la Investigación</asignatura>
+            <asignatura>Optimización</asignatura>
+            <asignatura>Sistemas Operativos de Red</asignatura>
+            <asignatura>Telemática II</asignatura>
+            <asignatura>Formulación de Proyectos de Ingeniería</asignatura>
+            <asignatura>Electiva Profesional IV</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+            <asignatura>Electiva Profesional V</asignatura>
+            <asignatura>Seguridad Informática</asignatura>
+            <asignatura>Inteligencia de Negocios</asignatura>
+        </semestre>
+
+        <semestre numero="10">
+            <asignatura>Optativa Libre II</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+            <asignatura>Modelamiento y Simulación</asignatura>
+            <asignatura>Electiva Profesional VI</asignatura>
+            <asignatura>Arquitectura Empresarial y de TI</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 107</telefono>
+        <correo>je.sistemas@udi.edu.co</correo>
+    </contacto>
+</programa>

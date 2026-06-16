@@ -1,0 +1,113 @@
+<programa>
+    <nombre>Ingeniería Industrial</nombre>
+    <titulo>Ingeniero Industrial</titulo>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>53566</codigo_snies>
+    <resolucion>N° 002108</resolucion>
+    <fecha_registro_calificado>25 de febrero de 2022</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>24 de febrero de 2029</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>163</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <nocturno>2638500</nocturno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada diurna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Matemáticas I</asignatura>
+            <asignatura>Fundamentos de Programación</asignatura>
+            <asignatura>Introducción a la Ingeniería Industrial</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Matemáticas II</asignatura>
+            <asignatura>Álgebra Lineal</asignatura>
+            <asignatura>Economía General</asignatura>
+            <asignatura>Física I</asignatura>
+            <asignatura>Programación I</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Biología</asignatura>
+            <asignatura>Contabilidad General</asignatura>
+            <asignatura>Física II</asignatura>
+            <asignatura>Matemáticas III</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+            <asignatura>Taller de Procesos Industriales</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Contabilidad de Costos</asignatura>
+            <asignatura>Gestión de Calidad</asignatura>
+            <asignatura>Matemáticas Financieras</asignatura>
+            <asignatura>Matemáticas IV</asignatura>
+            <asignatura>Química Básica</asignatura>
+            <asignatura>Taller de Mecánica Analítica</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Análisis Financiero</asignatura>
+            <asignatura>Aseguramiento de la Calidad</asignatura>
+            <asignatura>Estadística y Probabilidades</asignatura>
+            <asignatura>Fundamentos de Mercadotecnia</asignatura>
+            <asignatura>Taller de Mecánica de Materiales</asignatura>
+            <asignatura>Termodinámica</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Estadística Inferencial</asignatura>
+            <asignatura>Gerencia de Proyectos</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Investigación de Mercados</asignatura>
+            <asignatura>Investigación de Operaciones I</asignatura>
+            <asignatura>Taller de Métodos y Tiempos</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Diseño de Experimentos</asignatura>
+            <asignatura>Fundamentos de Logística</asignatura>
+            <asignatura>Investigación de Operaciones II</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Simulación</asignatura>
+            <asignatura>Taller de Producción I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Electiva Profesional I</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Logística Internacional</asignatura>
+            <asignatura>Seguridad Industrial</asignatura>
+            <asignatura>Taller de Producción II</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Administración del Talento Humano</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+            <asignatura>Legislación Laboral</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+            <asignatura>Sistemas de Información</asignatura>
+            <asignatura>Taller de Distribución de Planta</asignatura>
+        </semestre>
+
+        <semestre numero="10">
+            <asignatura>Electiva Profesional III</asignatura>
+            <asignatura>Optativa Libre</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 117</telefono>
+        <correo>je.industrial@udi.edu.co</correo>
+    </contacto>
+</programa>

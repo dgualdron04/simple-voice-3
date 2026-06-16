@@ -1,0 +1,109 @@
+<programa>
+    <nombre>Diseño Industrial</nombre>
+    <titulo>Diseñador Industrial</titulo>
+    <duracion>9 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>90379</codigo_snies>
+    <resolucion>N° 003229</resolucion>
+    <fecha_registro_calificado>20 de marzo de 2024</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>19 de marzo de 2031</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>147</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>3261500</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion></observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Taller de Diseño Básico</asignatura>
+            <asignatura>Principios de Prototipado</asignatura>
+            <asignatura>Representación Básica</asignatura>
+            <asignatura>Introducción al Diseño Industrial</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Matemática Aplicada</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Taller de Diseño Objetual</asignatura>
+            <asignatura>Materiales y Procesos - Maderas</asignatura>
+            <asignatura>Representación Artística</asignatura>
+            <asignatura>Historia y Teoría del Diseño</asignatura>
+            <asignatura>Física del Diseño</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Taller de Diseño de Producto</asignatura>
+            <asignatura>Materiales y Procesos - Metales y Polímeros</asignatura>
+            <asignatura>Representación Técnica</asignatura>
+            <asignatura>Seminario de Desarrollo Local</asignatura>
+            <asignatura>Semiótica del Diseño</asignatura>
+            <asignatura>Ergonomía Física</asignatura>
+            <asignatura>Estadística y Probabilidades</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Taller de Diseño Artesanal</asignatura>
+            <asignatura>Materiales y Procesos - Fibras</asignatura>
+            <asignatura>Representación Digital</asignatura>
+            <asignatura>Métodos de Diseño</asignatura>
+            <asignatura>Sociología del Diseño</asignatura>
+            <asignatura>Ergonomía Objetual</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Taller de Diseño Inclusivo</asignatura>
+            <asignatura>Materiales de Manufactura</asignatura>
+            <asignatura>Modelado Digital</asignatura>
+            <asignatura>Seminario de Sostenibilidad</asignatura>
+            <asignatura>Ergonomía Ambiental</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Taller de Diseño Sostenible</asignatura>
+            <asignatura>Diseño Asistido</asignatura>
+            <asignatura>Presentación de Producto</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Electiva Profesional I</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Taller de Diseño Tecnológico</asignatura>
+            <asignatura>Producción Asistida</asignatura>
+            <asignatura>Materiales y Procesos - Mecatrónica</asignatura>
+            <asignatura>Seminario de Innovación</asignatura>
+            <asignatura>Investigación en Diseño</asignatura>
+            <asignatura>Electiva Profesional II</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Taller de Diseño para las Transiciones</asignatura>
+            <asignatura>Presentación de Proyectos de Diseño</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+            <asignatura>Gestión en Diseño</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+            <asignatura>Electiva Profesional III</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Taller de Diseño Aplicado</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Optativa Libre II</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 134</telefono>
+        <correo>je.disindustrial@udi.edu.co</correo>
+    </contacto>
+</programa>

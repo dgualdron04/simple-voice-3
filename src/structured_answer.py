@@ -1,32 +1,171 @@
+import re
 import sqlite3
 import unicodedata
 from pathlib import Path
-from difflib import SequenceMatcher
-from src.config import get_settings
+from difflib import get_close_matches
+
+from src.config import get_settings, resolve_path
 
 
 settings = get_settings()
-DB_PATH = Path(settings["paths"]["database"])
+DB_PATH = resolve_path(settings["paths"]["database"])
 
 
-def normalize(text: str) -> str:
-    text = text.lower().strip()
-    text = unicodedata.normalize("NFD", text)
-    text = "".join(char for char in text if unicodedata.category(char) != "Mn")
+STOPWORDS = {
+    "de", "del", "la", "el", "los", "las", "un", "una", "unos", "unas",
+    "y", "o", "en", "por", "para", "con", "a", "que", "cual", "cuál",
+    "cuanto", "cuánto", "cuesta", "vale", "valor", "precio", "programa",
+    "carrera", "estudiar", "estudio", "quiero", "saber", "informacion",
+    "información", "udi", "universidad", "hablame", "háblame", "sobre",
+    "dime", "cuentame", "cuéntame", "ingenieria", "ingeniería"
+}
+
+
+MANUAL_ALIASES = {
+    "administración de empresas": [
+        "administracion de empresas",
+        "administración empresas",
+        "administracion empresas",
+        "administracion",
+        "administración",
+        "admin empresas",
+        "empresas",
+    ],
+    "comunicación social": [
+        "comunicacion social",
+        "comunicación",
+        "comunicacion",
+        "social",
+    ],
+    "criminalística": [
+        "criminalistica",
+        "criminalística",
+        "criminalistica profesional",
+    ],
+    "derecho": [
+        "derecho",
+        "abogado",
+        "abogacia",
+        "abogacía",
+    ],
+    "diseño gráfico": [
+        "diseno grafico",
+        "diseño grafico",
+        "diseño gráfico",
+        "grafico",
+        "gráfico",
+    ],
+    "diseño industrial": [
+        "diseno industrial",
+        "diseño industrial",
+        "industrial diseño",
+    ],
+    "ingeniería civil": [
+        "ingenieria civil",
+        "ingeniería civil",
+        "civil",
+    ],
+    "ingeniería electrónica": [
+        "ingenieria electronica",
+        "ingeniería electrónica",
+        "electronica",
+        "electrónica",
+        "ingenieria electronica",
+    ],
+    "ingeniería industrial": [
+        "ingenieria industrial",
+        "ingeniería industrial",
+        "industrial",
+    ],
+    "ingeniería de sistemas": [
+        "sistemas",
+        "ing sistemas",
+        "ingenieria sistemas",
+        "ingeniería sistemas",
+        "ingeniería de sistemas",
+        "ingenieria de sistemas",
+        "guinea sistemas",
+        "ingeniería de zeus",
+        "ingenieria de zeus",
+        "ingeniería de sus",
+        "ingenieria de sus",
+    ],
+    "negocios internacionales": [
+        "negocio internacionales",
+        "negocio internacional",
+        "negocios internacional",
+        "negocios internacionales",
+        "negocios",
+        "internacionales",
+    ],
+}
+
+
+def fix_mojibake(text: str) -> str:
+    if not text:
+        return ""
+
+    text = str(text)
+
+    for _ in range(2):
+        if "Ã" in text or "Â" in text:
+            try:
+                fixed = text.encode("latin1").decode("utf-8")
+                if fixed != text:
+                    text = fixed
+                    continue
+            except UnicodeError:
+                pass
+
+            text = text.replace("Â", "")
+            break
+
     return text
 
 
-def similarity(a: str, b: str) -> float:
-    return SequenceMatcher(None, normalize(a), normalize(b)).ratio()
+def normalize(text: str) -> str:
+    if not text:
+        return ""
+
+    text = fix_mojibake(str(text))
+    text = text.lower().strip()
+    text = unicodedata.normalize("NFD", text)
+    text = "".join(char for char in text if unicodedata.category(char) != "Mn")
+    text = re.sub(r"[^a-z0-9ñ\s]", " ", text)
+    text = re.sub(r"\s+", " ", text)
+
+    return text.strip()
+
+
+def tokenize(text: str) -> set[str]:
+    text = normalize(text)
+
+    return {
+        token
+        for token in text.split()
+        if len(token) >= 3 and token not in STOPWORDS
+    }
 
 
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def row_get(row, key: str, default: str = "") -> str:
+    if row is None:
+        return default
+
+    if key in row.keys():
+        value = row[key]
+        return fix_mojibake(str(value)) if value is not None else default
+
+    return default
 
 
 def get_all_programs():
     conn = get_connection()
-    conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM programs")
@@ -36,36 +175,100 @@ def get_all_programs():
     return rows
 
 
+def get_program_by_name(program_name: str):
+    target = normalize(program_name)
+
+    for program in get_all_programs():
+        if normalize(row_get(program, "nombre")) == target:
+            return program
+
+    return None
+
+
+def get_aliases_for_program(program_name: str) -> list[str]:
+    normalized_name = normalize(program_name)
+    aliases = []
+
+    for key, values in MANUAL_ALIASES.items():
+        if normalize(key) == normalized_name:
+            aliases.extend(values)
+
+    # Alias automáticos.
+    words = normalized_name.split()
+
+    if len(words) > 1:
+        aliases.append(" ".join(words))
+        aliases.append(words[-1])
+
+    return aliases
+
+
+def score_candidate(question_tokens: set[str], candidate: str) -> float:
+    candidate_tokens = tokenize(candidate)
+
+    if not candidate_tokens:
+        return 0.0
+
+    common_tokens = question_tokens.intersection(candidate_tokens)
+
+    if not common_tokens:
+        return 0.0
+
+    return len(common_tokens) / len(candidate_tokens)
+
+
 def detect_program(question: str):
     programs = get_all_programs()
 
-    best_program = None
-    best_score = 0
+    q_norm = normalize(question)
+    q_tokens = tokenize(question)
 
-    q = normalize(question)
+    best_program = None
+    best_score = 0.0
+
+    all_program_names = []
 
     for program in programs:
-        nombre = program["nombre"] or ""
-        titulo = program["titulo"] or ""
+        nombre = row_get(program, "nombre")
+        titulo = row_get(program, "titulo")
 
-        candidates = [nombre, titulo]
+        candidates = []
+
+        if nombre:
+            candidates.append(nombre)
+            all_program_names.append(nombre)
+
+        if titulo:
+            candidates.append(titulo)
+
+        candidates.extend(get_aliases_for_program(nombre))
 
         for candidate in candidates:
-            if not candidate:
-                continue
-
             candidate_norm = normalize(candidate)
 
-            if candidate_norm in q:
+            if not candidate_norm:
+                continue
+
+            if candidate_norm in q_norm:
                 return program
 
-            score = similarity(q, candidate_norm)
+            score = score_candidate(q_tokens, candidate)
 
             if score > best_score:
                 best_score = score
                 best_program = program
 
-    if best_score >= 0.35:
+    # Fuzzy para frases mal transcritas.
+    normalized_names = [normalize(name) for name in all_program_names]
+    matches = get_close_matches(q_norm, normalized_names, n=1, cutoff=0.72)
+
+    if matches:
+        matched = matches[0]
+        for program in programs:
+            if normalize(row_get(program, "nombre")) == matched:
+                return program
+
+    if best_score >= 0.50:
         return best_program
 
     return None
@@ -74,29 +277,47 @@ def detect_program(question: str):
 def detect_intent(question: str):
     q = normalize(question)
 
-    if any(word in q for word in ["cuanto cuesta", "valor", "precio", "costo", "matricula"]):
+    if any(word in q for word in ["cuanto cuesta", "valor", "precio", "costo", "matricula", "matrícula"]):
+        if any(word in q for word in ["virtual"]):
+            return "valor_virtual"
+
         if any(word in q for word in ["nocturna", "noche", "nocturno"]):
             return "valor_nocturna"
 
-        if any(word in q for word in ["diurna", "dia", "diurno"]):
+        if any(word in q for word in ["diurna", "dia", "día", "diurno"]):
             return "valor_diurna"
 
         return "valor"
 
-    if any(word in q for word in ["cuanto dura", "duracion", "semestres"]):
+    if any(word in q for word in ["cuanto dura", "duracion", "duración", "semestres"]):
         return "duracion"
 
     if any(word in q for word in ["modalidad", "presencial", "virtual"]):
         return "modalidad"
 
-    if any(word in q for word in ["sede", "campus", "ciudad"]):
-        return "sede"
+    if any(word in q for word in ["jornada", "diurna", "nocturna", "noche", "dia", "día"]):
+        return "jornada"
+
+    if any(word in q for word in ["snies", "codigo", "código"]):
+        return "codigo_snies"
+
+    if any(word in q for word in ["resolucion", "resolución", "registro calificado"]):
+        return "resolucion"
+
+    if any(word in q for word in ["creditos", "créditos"]):
+        return "creditos"
+
+    if any(word in q for word in ["contacto", "telefono", "teléfono", "correo", "email"]):
+        return "contacto"
 
     if any(word in q for word in ["malla", "materias", "plan de estudios", "asignaturas"]):
         return "malla"
 
     if any(word in q for word in ["trabajo", "campo laboral", "en que puedo trabajar", "perfil ocupacional"]):
         return "trabajo"
+
+    if any(word in q for word in ["hablame", "háblame", "cuentame", "cuéntame", "informacion", "información", "saber"]):
+        return "resumen"
 
     return "rag"
 
@@ -105,13 +326,45 @@ def format_money(value: str):
     if not value:
         return ""
 
-    digits = "".join(char for char in value if char.isdigit())
+    digits = "".join(char for char in str(value) if char.isdigit())
 
     if not digits:
         return value
 
     number = int(digits)
-    return f"${number:,.0f}".replace(",", ".")
+    return f"{number:,.0f}".replace(",", ".")
+
+
+def build_cost_text(program):
+    """
+    Aclaración por si se lo preguntan en algun momento de la historia :P
+    No agregamos 'pesos' aquí porque tts_piper.py ya convierte
+    1.699.200 -> un millón seiscientos... pesos colombianos.
+    """
+    nombre = row_get(program, "nombre")
+    values = []
+
+    diurna = row_get(program, "valor_diurna")
+    nocturna = row_get(program, "valor_nocturna")
+    virtual = row_get(program, "valor_virtual")
+    general = row_get(program, "valor_general")
+
+    if diurna:
+        values.append(f"diurna {format_money(diurna)}")
+
+    if nocturna:
+        values.append(f"nocturna {format_money(nocturna)}")
+
+    if virtual:
+        values.append(f"virtual {format_money(virtual)}")
+
+    if general and not values:
+        values.append(format_money(general))
+
+    if not values:
+        return ""
+
+    return f"El valor de {nombre} es: {', '.join(values)}."
 
 
 def answer_exact(question: str):
@@ -121,66 +374,173 @@ def answer_exact(question: str):
         return None
 
     intent = detect_intent(question)
-    nombre = program["nombre"]
+    nombre = row_get(program, "nombre")
 
     if intent == "valor_diurna":
-        value = program["valor_diurna"]
-
+        value = row_get(program, "valor_diurna")
         if value:
             return f"El valor de {nombre} en jornada diurna es de {format_money(value)}."
 
     if intent == "valor_nocturna":
-        value = program["valor_nocturna"]
-
+        value = row_get(program, "valor_nocturna")
         if value:
             return f"El valor de {nombre} en jornada nocturna es de {format_money(value)}."
 
+    if intent == "valor_virtual":
+        value = row_get(program, "valor_virtual")
+        if value:
+            return f"El valor de {nombre} en modalidad virtual es de {format_money(value)}."
+
     if intent == "valor":
-        diurna = program["valor_diurna"]
-        nocturna = program["valor_nocturna"]
+        answer = build_cost_text(program)
+        if answer:
+            return answer
 
-        if diurna and nocturna:
-            return (
-                f"El valor de {nombre} es: "
-                f"diurna {format_money(diurna)} y nocturna {format_money(nocturna)}."
-            )
+    if intent == "duracion":
+        duracion = row_get(program, "duracion")
+        if duracion:
+            return f"{nombre} tiene una duración de {duracion}."
 
-        if diurna:
-            return f"El valor de {nombre} es de {format_money(diurna)}."
+    if intent == "modalidad":
+        modalidad = row_get(program, "modalidad")
+        if modalidad:
+            return f"La modalidad de {nombre} es {modalidad}."
 
-        if nocturna:
-            return f"El valor de {nombre} es de {format_money(nocturna)}."
+    if intent == "jornada":
+        jornada = row_get(program, "jornada")
+        observacion = row_get(program, "observacion")
 
-    if intent == "duracion" and program["duracion"]:
-        return f"{nombre} tiene una duración de {program['duracion']}."
+        if jornada:
+            return f"La jornada de {nombre} es {jornada}."
 
-    if intent == "modalidad" and program["modalidad"]:
-        return f"La modalidad de {nombre} es {program['modalidad']}."
+        if observacion:
+            return f"Sobre la jornada de {nombre}: {observacion}"
 
-    if intent == "sede" and program["sede"]:
-        return f"{nombre} se ofrece en la sede {program['sede']}."
+    if intent == "codigo_snies":
+        snies = row_get(program, "codigo_snies")
+        if snies:
+            return f"El código SNIES de {nombre} es {snies}."
 
-    if intent == "malla" and program["malla"]:
-        return f"La malla curricular de {nombre} es: {program['malla']}"
+    if intent == "resolucion":
+        resolucion = row_get(program, "resolucion")
+        vigencia = row_get(program, "fecha_vigencia_registro_calificado")
 
-    if intent == "trabajo" and program["trabajo"]:
-        return f"El campo laboral de {nombre} es: {program['trabajo']}"
+        if resolucion and vigencia:
+            return f"{nombre} tiene resolución {resolucion} y registro calificado vigente hasta {vigencia}."
+
+        if resolucion:
+            return f"La resolución de {nombre} es {resolucion}."
+
+    if intent == "creditos":
+        creditos = row_get(program, "creditos")
+        if creditos:
+            return f"{nombre} tiene {creditos} créditos."
+
+    if intent == "contacto":
+        telefono = row_get(program, "telefono")
+        correo = row_get(program, "correo")
+
+        parts = []
+        if telefono:
+            parts.append(f"teléfono {telefono}")
+        if correo:
+            parts.append(f"correo {correo}")
+
+        if parts:
+            return f"El contacto de {nombre} es: {', '.join(parts)}."
+
+    if intent == "malla":
+        malla = row_get(program, "malla")
+        if malla:
+            short = malla[:450]
+            return f"La malla de {nombre} inicia así: {short}."
+
+    if intent == "trabajo":
+        trabajo = row_get(program, "trabajo")
+        if trabajo:
+            return f"El campo laboral de {nombre} es: {trabajo}"
+
+    if intent == "resumen":
+        titulo = row_get(program, "titulo")
+        duracion = row_get(program, "duracion")
+        modalidad = row_get(program, "modalidad")
+        creditos = row_get(program, "creditos")
+
+        parts = [f"{nombre} otorga el título de {titulo}" if titulo else nombre]
+
+        if duracion:
+            parts.append(f"dura {duracion}")
+
+        if modalidad:
+            parts.append(f"se ofrece en modalidad {modalidad}")
+
+        if creditos:
+            parts.append(f"tiene {creditos} créditos")
+
+        cost = build_cost_text(program)
+
+        answer = ", ".join(parts) + "."
+        if cost:
+            answer += " " + cost
+
+        return answer
 
     return None
 
 
+def get_program_context(program):
+    if program is None:
+        return ""
+
+    fields = [
+        ("Nombre", "nombre"),
+        ("Título", "titulo"),
+        ("Duración", "duracion"),
+        ("Modalidad", "modalidad"),
+        ("Jornada", "jornada"),
+        ("Código SNIES", "codigo_snies"),
+        ("Resolución", "resolucion"),
+        ("Vigencia registro calificado", "fecha_vigencia_registro_calificado"),
+        ("Créditos", "creditos"),
+        ("Periodicidad de admisión", "periodicidad_admision"),
+        ("Valor diurno", "valor_diurna"),
+        ("Valor nocturno", "valor_nocturna"),
+        ("Valor virtual", "valor_virtual"),
+        ("Estado", "estado"),
+        ("Observación", "observacion"),
+        ("Teléfono", "telefono"),
+        ("Correo", "correo"),
+        ("Malla", "malla"),
+        ("Campo laboral", "trabajo"),
+    ]
+
+    lines = []
+
+    for label, key in fields:
+        value = row_get(program, key)
+        if value:
+            lines.append(f"{label}: {value}")
+
+    return "\n".join(lines)
+
+
 def search_context(question: str, limit: int = 3):
+    program = detect_program(question)
+
+    if program is not None:
+        return get_program_context(program)
+
     conn = get_connection()
-    conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     words = [
         normalize(word)
         for word in question.split()
-        if len(word) >= 4
+        if len(normalize(word)) >= 4 and normalize(word) not in STOPWORDS
     ]
 
     if not words:
+        conn.close()
         return ""
 
     fts_query = " OR ".join(words)
@@ -207,84 +567,7 @@ def search_context(question: str, limit: int = 3):
 
     for row in rows:
         context_parts.append(
-            f"Título: {row['title']}\nContenido:\n{row['content']}"
+            f"Título: {fix_mojibake(row['title'])}\nContenido:\n{fix_mojibake(row['content'])}"
         )
 
     return "\n\n---\n\n".join(context_parts)
-
-def get_fact_payload(question: str):
-    program = detect_program(question)
-
-    if program is None:
-        return None
-
-    intent = detect_intent(question)
-    nombre = program["nombre"]
-
-    if intent == "valor_diurna" and program["valor_diurna"]:
-        return {
-            "tipo": "valor_diurna",
-            "programa": nombre,
-            "jornada": "diurna",
-            "valor": format_money(program["valor_diurna"])
-        }
-
-    if intent == "valor_nocturna" and program["valor_nocturna"]:
-        return {
-            "tipo": "valor_nocturna",
-            "programa": nombre,
-            "jornada": "nocturna",
-            "valor": format_money(program["valor_nocturna"])
-        }
-
-    if intent == "valor":
-        data = {
-            "tipo": "valor",
-            "programa": nombre
-        }
-
-        if program["valor_diurna"]:
-            data["valor_diurna"] = format_money(program["valor_diurna"])
-
-        if program["valor_nocturna"]:
-            data["valor_nocturna"] = format_money(program["valor_nocturna"])
-
-        if len(data) > 2:
-            return data
-
-    if intent == "duracion" and program["duracion"]:
-        return {
-            "tipo": "duracion",
-            "programa": nombre,
-            "duracion": program["duracion"]
-        }
-
-    if intent == "modalidad" and program["modalidad"]:
-        return {
-            "tipo": "modalidad",
-            "programa": nombre,
-            "modalidad": program["modalidad"]
-        }
-
-    if intent == "sede" and program["sede"]:
-        return {
-            "tipo": "sede",
-            "programa": nombre,
-            "sede": program["sede"]
-        }
-
-    if intent == "malla" and program["malla"]:
-        return {
-            "tipo": "malla",
-            "programa": nombre,
-            "malla": program["malla"]
-        }
-
-    if intent == "trabajo" and program["trabajo"]:
-        return {
-            "tipo": "trabajo",
-            "programa": nombre,
-            "trabajo": program["trabajo"]
-        }
-
-    return None

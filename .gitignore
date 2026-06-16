@@ -1,2 +1,14 @@
 ./.venv/
 .venv
+.env
+./voices/
+/voices/*
+!voices/test_epoch10100
+/data/zuu_backup*
+* copy.py
+* copy_*.py
+*-old.py
+model/*
+/model/*
+./model/*
+vosk-*

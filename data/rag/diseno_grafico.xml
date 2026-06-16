@@ -1,0 +1,113 @@
+<programa>
+    <nombre>Diseño Gráfico</nombre>
+    <titulo>Diseñador Gráfico</titulo>
+    <duracion>9 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>18984</codigo_snies>
+    <resolucion>N° 7977</resolucion>
+    <fecha_registro_calificado>06 de mayo de 2022</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>05 de mayo de 2026</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>4 años</vigencia_registro_calificado>
+    <creditos>147</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>4398900</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>Acreditado en Alta Calidad.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Taller de Diseño Básico</asignatura>
+            <asignatura>Dibujo Artístico I</asignatura>
+            <asignatura>Técnicas de Expresión Oral y Escrita</asignatura>
+            <asignatura>Percepción Visual</asignatura>
+            <asignatura>Historia del Arte Universal</asignatura>
+            <asignatura>Teoría del Diseño</asignatura>
+            <asignatura>Deporte y Cultura I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Taller de Diseño Tridimensional</asignatura>
+            <asignatura>Dibujo Artístico II</asignatura>
+            <asignatura>Color I</asignatura>
+            <asignatura>Autoedición I</asignatura>
+            <asignatura>Arte Precolombino</asignatura>
+            <asignatura>Metodología del Diseño</asignatura>
+            <asignatura>Deporte y Cultura II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Taller de Lenguaje Tipográfico</asignatura>
+            <asignatura>Color II</asignatura>
+            <asignatura>Autoedición II</asignatura>
+            <asignatura>Historia del Diseño Gráfico</asignatura>
+            <asignatura>Fotografía Básica</asignatura>
+            <asignatura>Ética Ciudadana y Profesional</asignatura>
+            <asignatura>Electiva I</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Taller de Diagramación</asignatura>
+            <asignatura>Dibujo Anatómico</asignatura>
+            <asignatura>Semiótica de lo Gráfico</asignatura>
+            <asignatura>Autoedición III</asignatura>
+            <asignatura>Teoría Publicitaria</asignatura>
+            <asignatura>Herramientas Básicas de Emprendimiento</asignatura>
+            <asignatura>Electiva II</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>Taller de Identidad Corporativa</asignatura>
+            <asignatura>Semiótica de lo Audiovisual</asignatura>
+            <asignatura>Retoque Digital</asignatura>
+            <asignatura>Fotografía Aplicada</asignatura>
+            <asignatura>Técnicas de Impresión</asignatura>
+            <asignatura>Descriptiva</asignatura>
+            <asignatura>Electiva III</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>Taller de Orientación Gráfica</asignatura>
+            <asignatura>Ilustración I</asignatura>
+            <asignatura>Metodología de la Investigación</asignatura>
+            <asignatura>Introducción al Diseño Web</asignatura>
+            <asignatura>Proyecto Emprendedor</asignatura>
+            <asignatura>Perspectiva</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>Taller de Medios Editoriales</asignatura>
+            <asignatura>Ilustración II</asignatura>
+            <asignatura>Taller de Modelado 3D</asignatura>
+            <asignatura>Principios de la Gestión Administrativa</asignatura>
+            <asignatura>Costos de Producción en Diseño</asignatura>
+            <asignatura>Dibujo de Historieta y Cómic</asignatura>
+            <asignatura>Optativa Libre I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>Taller de Diseño Publicitario</asignatura>
+            <asignatura>Seminario de Investigación</asignatura>
+            <asignatura>Introducción al Diseño Multimedial</asignatura>
+            <asignatura>Producción Gráfica</asignatura>
+            <asignatura>Introducción a la Producción Audiovisual</asignatura>
+            <asignatura>Proyecto de Grado I</asignatura>
+            <asignatura>Electiva IV</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>Taller de Animación 3D</asignatura>
+            <asignatura>Práctica Profesional</asignatura>
+            <asignatura>Seminario Diseño Contemporáneo</asignatura>
+            <asignatura>Proyecto de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 134</telefono>
+        <correo>je.grafico@udi.edu.co</correo>
+    </contacto>
+</programa>
