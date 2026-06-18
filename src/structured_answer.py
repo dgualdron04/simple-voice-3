@@ -316,11 +316,92 @@ def detect_intent(question: str):
     if any(word in q for word in ["trabajo", "campo laboral", "en que puedo trabajar", "perfil ocupacional"]):
         return "trabajo"
 
-    if any(word in q for word in ["hablame", "háblame", "cuentame", "cuéntame", "informacion", "información", "saber"]):
+    if any(word in q for word in ["hablame", "háblame", "hablar", "me puedes hablar", "puedes hablar", "cuentame", "cuéntame", "informacion", "información", "saber", "sobre", "la carrera"]):
         return "resumen"
 
     return "rag"
 
+def money_to_int(value: str) -> int | None:
+    if not value:
+        return None
+
+    digits = "".join(char for char in str(value) if char.isdigit())
+
+    if not digits:
+        return None
+
+    return int(digits)
+
+
+def extract_semesters_number(value: str) -> int | None:
+    if not value:
+        return None
+
+    match = re.search(r"\d+", str(value))
+
+    if not match:
+        return None
+
+    return int(match.group(0))
+
+
+def question_asks_total_cost(question: str) -> bool:
+    q = normalize(question)
+
+    signals = [
+        "total",
+        "toda la carrera",
+        "cuanto me cuesta toda",
+        "cuanto cuesta toda",
+        "valor total",
+        "costo total",
+        "todos los semestres",
+        "los semestres",
+        "completa",
+    ]
+
+    return any(signal in q for signal in signals)
+
+
+def build_total_cost_text(program, question: str):
+    nombre = row_get(program, "nombre")
+    duracion = row_get(program, "duracion")
+    semesters = extract_semesters_number(duracion)
+
+    if not semesters:
+        return ""
+
+    q = normalize(question)
+
+    if "virtual" in q:
+        value = row_get(program, "valor_virtual")
+        label = "modalidad virtual"
+    elif any(word in q for word in ["nocturna", "noche", "nocturno"]):
+        value = row_get(program, "valor_nocturna")
+        label = "jornada nocturna"
+    elif any(word in q for word in ["diurna", "dia", "diurno"]):
+        value = row_get(program, "valor_diurna")
+        label = "jornada diurna"
+    else:
+        value = (
+            row_get(program, "valor_diurna")
+            or row_get(program, "valor_nocturna")
+            or row_get(program, "valor_virtual")
+            or row_get(program, "valor_general")
+        )
+        label = "por semestre"
+
+    semester_cost = money_to_int(value)
+
+    if not semester_cost:
+        return ""
+
+    total = semester_cost * semesters
+
+    return (
+        f"{nombre} cuesta {format_money(str(semester_cost))} por semestre en {label}. "
+        f"Como dura {semesters} semestres, el costo total aproximado sería de {format_money(str(total))}."
+    )
 
 def format_money(value: str):
     if not value:
@@ -375,6 +456,11 @@ def answer_exact(question: str):
 
     intent = detect_intent(question)
     nombre = row_get(program, "nombre")
+
+    if intent in ["valor", "valor_diurna", "valor_nocturna", "valor_virtual"] and question_asks_total_cost(question):
+        total_answer = build_total_cost_text(program, question)
+        if total_answer:
+            return total_answer
 
     if intent == "valor_diurna":
         value = row_get(program, "valor_diurna")

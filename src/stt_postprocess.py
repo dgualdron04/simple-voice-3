@@ -112,6 +112,26 @@ COMMON_FIXES = {
     "ingenieria de zeus": "ingeniería de sistemas",
     "ingeniería de sus": "ingeniería de sistemas",
     "ingenieria de sus": "ingeniería de sistemas",
+
+    "graves sistemas": "ingeniería de sistemas",
+    "grave sistemas": "ingeniería de sistemas",
+    "graves de sistemas": "ingeniería de sistemas",
+    "sede electronica": "ingeniería electrónica",
+    "sede electrónica": "ingeniería electrónica",
+    "me puedes hablar sede electronica": "me puedes hablar sobre ingeniería electrónica",
+    "me puedes hablar sede electrónica": "me puedes hablar sobre ingeniería electrónica",
+    "administrando empresas": "administración de empresas",
+    "administracion empresas": "administración de empresas",
+    "comunicacion social": "comunicación social",
+    "enemigos internacionales": "negocios internacionales",
+
+    "en centro de": "entre",
+    "en centro": "entre",
+    "con el mejor sistemas son": "cual es mejor sistemas o",
+    "con el mejor sistema son": "cual es mejor sistemas o",
+    "me puede dar una lista": "dame una lista",
+    "me puedes dar una lista": "dame una lista",
+    "carreras que ofertas": "carreras que oferta",
 }
 
 

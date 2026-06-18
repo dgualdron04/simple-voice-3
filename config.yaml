@@ -20,7 +20,7 @@ llm:
   url: "http://localhost:11434/api/generate"
   model: "qwen2.5:3b-instruct"
   keep_alive: "30m"
-  num_ctx: 512
+  num_ctx: 2048
   default_max_tokens: 70
   default_temperature: 0.45
 

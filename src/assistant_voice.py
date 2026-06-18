@@ -1,7 +1,6 @@
 import time
 import re
 import unicodedata
-import random
 
 from src.audio_recorder import record_until_silence, calibrate_noise
 from src.stt_vosk import transcribe_audio, warm_up_vosk
@@ -9,12 +8,6 @@ from src.stt_postprocess import fix_stt_text
 from src.assistant import answer_question, set_assistant_mode, get_assistant_mode
 from src.tts import warm_up_tts, speak
 from src.llm import generate_voice_answer
-
-from src.emotion_engine import (
-    decorate_answer,
-    handle_emotion_command,
-    get_emotion_name,
-)
 
 WAKE_WORDS = [
     "zuu",
@@ -27,6 +20,37 @@ WAKE_WORDS = [
     "hola zuu",
 ]
 
+BAD_WORDS = [
+    "puta",
+    "puto",
+    "mierda",
+    "marica",
+    "gonorrea",
+    "malparido",
+    "hijueputa",
+    "hp",
+    "careverga",
+    "verga",
+    "pendejo",
+    "idiota",
+    "imbecil",
+]
+
+
+def censor_bad_words(text: str) -> str:
+    words = text.split()
+    clean_words = []
+
+    for word in words:
+        normalized = normalize_for_wake(word)
+
+        if normalized in BAD_WORDS:
+            clean_words.append("[palabra bloqueada]")
+        else:
+            clean_words.append(word)
+
+    return " ".join(clean_words)
+
 CONVERSATION_TIMEOUT = 25
 
 last_answer = ""
@@ -34,14 +58,33 @@ mimic_mode = False
 voice_threshold = 350
 
 
-JOKES = [
-    "¿Por qué el computador fue al médico? Porque tenía un virus.",
-    "¿Qué le dijo un bit al otro bit? Nos vemos en el bus.",
-    "¿Por qué Python no se estresa? Porque siempre intenta exceptuar sus problemas.",
-    "¿Qué hace una abeja en el gimnasio? Zum ba.",
-    "¿Por qué el programador confundió Halloween con Navidad? Porque OCT treinta y uno es igual a DEC veinticinco.",
-]
+def generate_joke() -> str:
+    prompt = """
+        Eres ZUU, asistente virtual de la UDI.
 
+        Cuenta un chiste corto, limpio y apto para todo público.
+        Reglas:
+        - No uses groserías.
+        - No uses contenido ofensivo.
+        - No uses temas sexuales, violentos ni discriminatorios.
+        - Máximo dos frases.
+        - Devuelve solo el chiste.
+
+        Chiste:
+        """
+
+    answer = generate_voice_answer(
+        prompt,
+        max_tokens=45,
+        temperature=0.8
+    )
+
+    answer = answer.strip()
+
+    if not answer:
+        return "No se me ocurrió un chiste en este momento."
+
+    return answer
 
 def try_warm_up_llm():
     try:
@@ -154,20 +197,12 @@ def speak_fast(text: str, question: str = ""):
     if not text:
         return
 
-    text = decorate_answer(
-        question=question,
-        answer=text,
-        assistant_mode=get_assistant_mode()
-    )
-
     last_answer = text
 
-    print(f"ZUU [{get_emotion_name()}]: {text}")
+    print(f"ZUU: {text}")
     speak(text)
 
-    # Evita que el micrófono capture la voz de ZUU.
     time.sleep(0.3)
-
 
 def answer_and_speak(question: str):
     global last_answer
@@ -175,21 +210,13 @@ def answer_and_speak(question: str):
     start = time.time()
 
     answer = answer_question(question)
-
-    answer = decorate_answer(
-        question=question,
-        answer=answer,
-        assistant_mode=get_assistant_mode()
-    )
-
     last_answer = answer
 
-    print(f"ZUU [{get_emotion_name()}]: {answer}")
+    print(f"ZUU: {answer}")
     print(f"Tiempo respuesta: {time.time() - start:.2f} segundos")
 
     speak(answer)
 
-    # Evita que el micrófono capture la voz de ZUU.
     time.sleep(0.3)
 
     return answer
@@ -235,10 +262,8 @@ def handle_fast_command(question: str):
 
     q = normalize_for_wake(question)
 
-    emotion_answer = handle_emotion_command(question)
-
-    if emotion_answer:
-        return emotion_answer
+    if q in ["haz un chiste", "cuenta un chiste", "di un chiste", "chiste", "es un chiste"]:
+        return generate_joke()
 
     # Modo feria
     if q in ["modo feria", "activa modo feria", "activar modo feria"]:
@@ -279,10 +304,6 @@ def handle_fast_command(question: str):
     ]:
         mimic_mode = False
         return "Modo imitación desactivado."
-
-    # Chistes rápidos sin LLM
-    if q in ["haz un chiste", "cuenta un chiste", "di un chiste", "chiste"]:
-        return f"Jajaja, {random.choice(JOKES)}"
 
     # Mandarín
     mandarin_text = text_after_prefix(question, [
@@ -412,7 +433,13 @@ def main():
                 continue
 
             if mimic_mode:
-                speak_fast(question)
+                safe_text = censor_bad_words(question)
+
+                if safe_text != question:
+                    speak_fast("No puedo repetir esa palabra. Puedo repetir la frase sin groserías.", question)
+                else:
+                    speak_fast(safe_text, question)
+
                 last_interaction = now
                 continue
 

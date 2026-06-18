@@ -3,11 +3,12 @@
 .env
 ./voices/
 /voices/*
-!voices/test_esp_500_epoch_10010
+!voices/test_esp_500_epoch_10014
 /data/zuu_backup*
 * copy.py
 * copy_*.py
 *-old.py
+*-old*.py
 model/*
 /model/*
 ./model/*

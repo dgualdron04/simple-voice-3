@@ -6,6 +6,7 @@ from src.structured_answer import (
     detect_program,
     row_get,
 )
+from src.rag_reasoner import answer_reasoning_question
 from src.llm import generate_voice_answer
 
 
@@ -85,15 +86,25 @@ def clean_response(text: str) -> str:
 
     return text.strip()
 
-
-def limit_voice_response(text: str, max_chars: int = 260) -> str:
+def limit_voice_response(text: str, max_chars: int = 420) -> str:
     text = clean_response(text)
 
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-    text = " ".join(sentences[:2]).strip()
+    if len(text) <= max_chars:
+        return text
 
-    if len(text) > max_chars:
-        text = text[:max_chars].rsplit(" ", 1)[0].strip() + "."
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+    result = ""
+
+    for sentence in sentences:
+        candidate = f"{result} {sentence}".strip()
+
+        if len(candidate) <= max_chars:
+            result = candidate
+        else:
+            break
+
+    if result:
+        return result
 
     return text
 
@@ -192,7 +203,7 @@ def naturalize_exact_answer(question: str, exact_answer: str) -> str:
         "no pude conectarme",
         "ocurrió un error",
         "no encontré esa información",
-        "no encontrã",
+        "no encontré",
     ]
 
     if any(phrase in generated.lower() for phrase in bad_phrases):
@@ -364,10 +375,27 @@ def should_use_previous_program(question: str) -> bool:
         "correo",
         "telefono",
         "teléfono",
+
+        # NUEVOS
+        "nocturna",
+        "nocturno",
+        "noche",
+        "diurna",
+        "diurno",
+        "dia",
+        "día",
+        "virtual",
+        "presencial",
+        "semestre",
+        "semestres",
+        "cuantos meses",
+        "cuántos meses",
+        "costo total",
+        "valor total",
+        "todos los semestres",
     ]
 
     return any(marker in q for marker in follow_up_markers)
-
 
 def resolve_question_with_context(question: str) -> str:
     global last_program_name
@@ -388,27 +416,32 @@ def build_rag_prompt(question: str, context: str) -> str:
     history = get_history_text()
 
     return f"""
-Eres ZUU, el asistente virtual de la Universidad de Investigación y Desarrollo UDI.
+            Eres ZUU, el asistente virtual de la Universidad de Investigación y Desarrollo UDI.
 
-Reglas obligatorias:
-- Responde SOLO con información del contexto.
-- Si el contexto no responde la pregunta, di: "No encontré esa información en mi base local de la UDI."
-- No expliques temas generales externos.
-- No hables de países, mitología, empresas ni conceptos fuera de la UDI.
-- Responde máximo en dos frases.
-- Responde natural y breve.
+            REGLAS OBLIGATORIAS:
+            - Responde SOLO usando el contexto local.
+            - No uses conocimiento general.
+            - No inventes datos.
+            - No completes información faltante.
+            - No respondas como Wikipedia.
+            - No hagas suposiciones.
+            - No uses frases como "generalmente", "normalmente", "puede incluir" o "se refiere a".
+            - Si el contexto no contiene la respuesta exacta, responde únicamente:
+            "No encontré esa información en mi base local de la UDI."
+            - Máximo dos frases.
+            - Devuelve solo la respuesta final.
 
-Historial reciente:
-{history}
+            Historial reciente:
+            {history}
 
-Contexto local:
-{context}
+            Contexto local:
+            {context}
 
-Pregunta:
-{question}
+            Pregunta:
+            {question}
 
-Respuesta breve:
-"""
+            Respuesta breve:
+        """
 
 
 def answer_question(question: str):
@@ -453,10 +486,17 @@ def answer_question(question: str):
     if cached_answer:
         return finish_answer(cached_answer)
 
+    reasoned_answer = answer_reasoning_question(resolved_question)
+
+    if reasoned_answer:
+        max_chars = 260 if assistant_mode == "feria" else 520
+        answer = limit_voice_response(reasoned_answer, max_chars=max_chars)
+        return finish_answer(answer, cache_key)
+
     exact_answer = answer_exact(resolved_question)
 
     if exact_answer:
-        max_chars = 170 if assistant_mode == "feria" else 220
+        max_chars = 260 if assistant_mode == "feria" else 520
         answer = limit_voice_response(exact_answer, max_chars=max_chars)
         return finish_answer(answer, cache_key)
 
@@ -474,16 +514,16 @@ def answer_question(question: str):
 
     if assistant_mode == "feria":
         prompt += """
-Modo feria activado:
-- Responde como asesor de feria universitaria.
-- Sé breve, claro y amable.
-- Prioriza datos útiles para visitantes.
-- Máximo una frase corta.
-"""
+        Modo feria activado:
+        - Responde como asesor de feria universitaria.
+        - Sé breve, claro y amable.
+        - Prioriza datos útiles para visitantes.
+        - Máximo una frase corta.
+        """
 
     answer = generate_voice_answer(
         prompt,
-        max_tokens=35 if assistant_mode == "feria" else 45,
+        max_tokens=35 if assistant_mode == "feria" else 55,
         temperature=0.15
     )
 
@@ -501,6 +541,16 @@ Modo feria activado:
         "empresa",
         "organización con ese nombre",
         "disciplina académica reconocida",
+        "nombre específico no mencionado",
+        "universidad nombre específico",
+        "generalmente",
+        "normalmente",
+        "puede incluir",
+        "rama de la ingeniería",
+        "conjuntos interconectados",
+        "wikipedia",
+        "en términos generales",
+        "se refiere a",
     ]
 
     lowered = answer.lower()
