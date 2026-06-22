@@ -344,6 +344,51 @@ def is_probably_udi_related(question: str) -> bool:
         "criminalistica",
         "diseño",
         "diseno",
+        "ecopetrol",
+        "empresa",
+        "empresarial",
+        "visita",
+        "visitante",
+        "visita empresarial",
+        "aliado",
+        "aliados",
+        "convenio",
+        "evento",
+        "zuu",
+        "asistente",
+        "quien eres",
+        "quién eres",
+        "creador",
+        "creado",
+        "personal udi",
+        "personal de la udi",
+        "ecopetrol",
+        "acciones",
+        "accion",
+        "acción",
+        "bolsa",
+        "bvc",
+        "nyse",
+        "adr",
+        "mercado",
+        "inversion",
+        "inversión",
+        "precio accion",
+        "precio acción",
+        "zuu",
+        "quien te creo",
+        "quién te creó",
+        "quien te creó",
+        "quién te creo",
+        "te creo",
+        "te creó",
+        "quien te hizo",
+        "quién te hizo",
+        "creador",
+        "creado",
+        "creada",
+        "desarrollado",
+        "desarrollaron",
     ]
 
     return any(keyword in q for keyword in keywords)
@@ -418,6 +463,12 @@ def build_rag_prompt(question: str, context: str) -> str:
     return f"""
             Eres ZUU, el asistente virtual de la Universidad de Investigación y Desarrollo UDI.
 
+            Puedes responder sobre:
+            - Información institucional de la UDI.
+            - Programas académicos cargados en la base local.
+            - Empresas, eventos o visitas cargadas en la base local.
+            - Información personal autorizada de ZUU o de la UDI cargada en la base local.
+
             REGLAS OBLIGATORIAS:
             - Responde SOLO usando el contexto local.
             - No uses conocimiento general.
@@ -427,7 +478,7 @@ def build_rag_prompt(question: str, context: str) -> str:
             - No hagas suposiciones.
             - No uses frases como "generalmente", "normalmente", "puede incluir" o "se refiere a".
             - Si el contexto no contiene la respuesta exacta, responde únicamente:
-            "No encontré esa información en mi base local de la UDI."
+            "No encontré esa información en mi base local."
             - Máximo dos frases.
             - Devuelve solo la respuesta final.
 
@@ -538,7 +589,6 @@ def answer_question(question: str):
         "mitología",
         "pais",
         "país",
-        "empresa",
         "organización con ese nombre",
         "disciplina académica reconocida",
         "nombre específico no mencionado",

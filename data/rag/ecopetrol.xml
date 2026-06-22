@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento tipo="empresa" id="ecopetrol" version="2026-06-22">
+    <titulo>Empresa visitante: Ecopetrol</titulo>
+
+    <empresa>
+        <nombre>Ecopetrol S.A.</nombre>
+        <alias>Ecopetrol</alias>
+        <pais>Colombia</pais>
+        <sector>Energía, hidrocarburos y transición energética</sector>
+        <sede_principal>Bogotá, Colombia</sede_principal>
+    </empresa>
+
+    <resumen>
+        Ecopetrol S.A. es una empresa colombiana del sector energético. 
+        Hace parte del Grupo Ecopetrol y desarrolla actividades relacionadas con hidrocarburos,
+        soluciones de bajas emisiones, transmisión, vías y telecomunicaciones.
+    </resumen>
+
+    <naturaleza>
+        Ecopetrol S.A. está organizada como sociedad anónima del orden nacional
+        y está vinculada al Ministerio de Minas y Energía.
+    </naturaleza>
+
+    <lineas_negocio>
+        <linea>Hidrocarburos</linea>
+        <linea>Soluciones de bajas emisiones</linea>
+        <linea>Transmisión, vías y telecomunicaciones</linea>
+    </lineas_negocio>
+
+    <actividades>
+        <actividad>Exploración y producción</actividad>
+        <actividad>Transporte y logística</actividad>
+        <actividad>Refinación y petroquímica</actividad>
+        <actividad>Transmisión de energía y vías</actividad>
+    </actividades>
+
+    <contacto>
+        <direccion>Edificio Principal, Carrera 13 No. 36 - 24, Bogotá, Colombia</direccion>
+        <horario>7:30 a.m. a 4:30 p.m.</horario>
+        <conmutador>+57 310 315 8600</conmutador>
+        <linea_gratuita>018000 918418</linea_gratuita>
+        <notificaciones_judiciales>notificacionesjudicialesecopetrol@ecopetrol.com.co</notificaciones_judiciales>
+    </contacto>
+
+    <relacion_con_udi>
+        <motivo_visita>
+            ZUU puede apoyar la visita respondiendo preguntas básicas sobre Ecopetrol,
+            su sector, sus líneas de negocio y posibles temas de interés académico.
+        </motivo_visita>
+
+        <temas_para_estudiantes>
+            <tema>Innovación tecnológica en el sector energético</tema>
+            <tema>Transición energética</tema>
+            <tema>Automatización y datos en empresas industriales</tema>
+            <tema>Oportunidades para ingeniería, administración, comunicación y áreas afines</tema>
+        </temas_para_estudiantes>
+    </relacion_con_udi>
+
+    <preguntas_frecuentes>
+        <pregunta>
+            <texto>¿Qué es Ecopetrol?</texto>
+            <respuesta>
+                Ecopetrol es una empresa colombiana del sector energético, relacionada con hidrocarburos,
+                soluciones de bajas emisiones, transmisión, vías y telecomunicaciones.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Por qué es importante para los estudiantes de la UDI?</texto>
+            <respuesta>
+                Es importante porque permite relacionar la formación académica con tecnología,
+                energía, innovación, sostenibilidad y procesos empresariales reales.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué temas puede preguntar un estudiante durante la visita?</texto>
+            <respuesta>
+                Puede preguntar sobre innovación, transición energética, perfiles profesionales,
+                tecnología, automatización, seguridad industrial y proyectos de sostenibilidad.
+            </respuesta>
+        </pregunta>
+    </preguntas_frecuentes>
+    <mercado_accionario>
+        <fecha_ultima_consulta>2026-06-22</fecha_ultima_consulta>
+
+        <nota_offline>
+            ZUU funciona sin conexión a internet. Si preguntan por el precio actual de las acciones,
+            debe aclarar que no puede consultar datos en tiempo real y que la última consulta registrada
+            fue el 22 de junio de 2026.
+        </nota_offline>
+
+        <adr_estados_unidos>
+            <empresa>Ecopetrol S.A.</empresa>
+            <ticker>EC</ticker>
+            <bolsa>NYSE</bolsa>
+            <instrumento>ADR de Ecopetrol en Estados Unidos</instrumento>
+            <moneda>USD</moneda>
+            <precio_referencia_google>15.78</precio_referencia_google>
+            <hora_referencia_google>2026-06-22 11:42 GMT-4</hora_referencia_google>
+            <precio_ultima_consulta_financiera>15.96</precio_ultima_consulta_financiera>
+            <hora_ultima_consulta_financiera>2026-06-22 15:36:41 UTC</hora_ultima_consulta_financiera>
+            <apertura>17.02</apertura>
+            <maximo_dia>17.86</maximo_dia>
+            <minimo_dia>15.85</minimo_dia>
+            <observacion>
+                Este precio corresponde al ADR EC en NYSE y cambia durante la jornada.
+                No es el mismo precio de la acción ordinaria de Ecopetrol en la Bolsa de Valores de Colombia.
+            </observacion>
+        </adr_estados_unidos>
+
+        <accion_colombia>
+            <empresa>Ecopetrol S.A.</empresa>
+            <ticker>ECOPETROL</ticker>
+            <bolsa>Bolsa de Valores de Colombia</bolsa>
+            <moneda>COP</moneda>
+            <observacion>
+                La acción colombiana se consulta con el ticker ECOPETROL en la Bolsa de Valores de Colombia.
+                Su precio está en pesos colombianos y no debe confundirse con el ADR EC de NYSE.
+            </observacion>
+        </accion_colombia>
+
+        <respuesta_recomendada>
+            Recuerda que soy un asistente offline y no tengo conexión a internet en tiempo real.
+            La última vez que consulté esta información fue el 22 de junio de 2026.
+            En esa consulta, el ADR de Ecopetrol en NYSE, ticker EC, estaba alrededor de 15.78 a 15.96 dólares.
+            Este dato cambia con el mercado y no es una recomendación de inversión.
+        </respuesta_recomendada>
+    </mercado_accionario>
+</documento>

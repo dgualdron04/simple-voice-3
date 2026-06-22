@@ -1,6 +1,10 @@
 import time
 import re
 import unicodedata
+import threading
+import contextlib
+import io
+import sounddevice as sd
 
 from src.audio_recorder import record_until_silence, calibrate_noise
 from src.stt_vosk import transcribe_audio, warm_up_vosk
@@ -36,6 +40,92 @@ BAD_WORDS = [
     "imbecil",
 ]
 
+STOP_COMMANDS = [
+    "para",
+    "stop",
+    "callate",
+    "cállate",
+    "silencio",
+    "haz silencio",
+    "espera",
+    "detente",
+    "pausa",
+
+    "para zuu",
+    "stop zuu",
+    "callate zuu",
+    "cállate zuu",
+    "haz silencio zuu",
+    "silencio zuu",
+    "espera zuu",
+    "detente zuu",
+    "pausa zuu",
+
+    "zuu para",
+    "zuu stop",
+    "zuu callate",
+    "zuu cállate",
+    "zuu haz silencio",
+    "zuu espera",
+]
+
+
+def is_stop_command(text: str) -> bool:
+    if not text:
+        return False
+
+    raw = normalize_for_wake(text)
+    without_wake = normalize_for_wake(remove_wake_word(text))
+
+    normalized_commands = {
+        normalize_for_wake(command)
+        for command in STOP_COMMANDS
+    }
+
+    return raw in normalized_commands or without_wake in normalized_commands
+
+
+def watch_interrupt_command(finish_event, interrupted_event):
+    while not finish_event.is_set():
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                heard_text = listen_once(
+                    max_seconds=0.9,
+                    min_seconds=0.2,
+                    silence_seconds=0.25,
+                    energy_threshold=voice_threshold,
+                )
+
+            if is_stop_command(heard_text):
+                interrupted_event.set()
+                finish_event.set()
+                sd.stop()
+                print("ZUU fue interrumpido. Esperando nueva instrucción.")
+                return
+
+        except Exception:
+            time.sleep(0.1)
+
+
+def speak_interruptible(text: str) -> bool:
+    finish_event = threading.Event()
+    interrupted_event = threading.Event()
+
+    watcher = threading.Thread(
+        target=watch_interrupt_command,
+        args=(finish_event, interrupted_event),
+        daemon=True
+    )
+
+    watcher.start()
+
+    try:
+        speak(text)
+    finally:
+        finish_event.set()
+        watcher.join(timeout=0.3)
+
+    return interrupted_event.is_set()
 
 def censor_bad_words(text: str) -> str:
     words = text.split()
@@ -200,24 +290,36 @@ def speak_fast(text: str, question: str = ""):
     last_answer = text
 
     print(f"ZUU: {text}")
+    #was_interrupted = speak_interruptible(text)
+
     speak(text)
+    was_interrupted = False
 
-    time.sleep(0.3)
+    if not was_interrupted:
+        time.sleep(0.3)
 
-def answer_and_speak(question: str):
+def answer_and_speak(question: str, prefix: str = ""):
     global last_answer
 
     start = time.time()
 
     answer = answer_question(question)
+
+    if prefix:
+        answer = f"{prefix}{answer}"
+
     last_answer = answer
 
     print(f"ZUU: {answer}")
     print(f"Tiempo respuesta: {time.time() - start:.2f} segundos")
 
-    speak(answer)
+    # was_interrupted = speak_interruptible(answer)
 
-    time.sleep(0.3)
+    speak(answer)
+    was_interrupted = False
+
+    if not was_interrupted:
+        time.sleep(0.3)
 
     return answer
 
@@ -369,6 +471,7 @@ def main():
 
     conversation_mode = False
     last_interaction = 0
+    first_interaction = True
 
     while True:
         try:
@@ -402,14 +505,28 @@ def main():
                 last_interaction = now
 
                 question = remove_wake_word(heard_text)
+                prefix = ""
+
+                if first_interaction:
+                    prefix = "Hola, soy Zú. "
+                    first_interaction = False
+
+                if is_stop_command(question):
+                    mimic_mode = False
+                    last_interaction = now
+                    print("ZUU quedó en silencio. Esperando nueva instrucción.")
+                    continue
 
                 if not question:
-                    answer_and_speak("hola")
+                    speak_fast("Hola, soy Zú. Estoy listo para ayudarte con información de la UDI.", "hola")
                     continue
 
                 fast_answer = handle_fast_command(question)
 
                 if fast_answer:
+                    if prefix:
+                        fast_answer = f"{prefix}{fast_answer}"
+
                     speak_fast(fast_answer, question)
                     continue
 

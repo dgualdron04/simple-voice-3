@@ -191,6 +191,64 @@ def xml_to_key_lines(element, prefix=""):
 
     return lines
 
+def is_program_xml(root) -> bool:
+    root_name = tag_name(root.tag)
+
+    return root_name in [
+        "programa",
+        "carrera",
+        "program",
+        "programa_academico",
+    ]
+
+
+def extract_general_document_data(xml_path: Path):
+    root = parse_xml(xml_path)
+
+    title = (
+        find_text(root, ["titulo", "title", "nombre", "name"])
+        or xml_path.stem.replace("_", " ").title()
+    )
+
+    document_type = root.attrib.get("tipo", "general")
+    document_id = root.attrib.get("id", xml_path.stem)
+
+    content_parts = [
+        f"Tipo de documento: {document_type}",
+        f"ID del documento: {document_id}",
+        "",
+        "\n".join(xml_to_key_lines(root)),
+    ]
+
+    return {
+        "title": title,
+        "content": "\n".join(part for part in content_parts if part.strip()),
+        "source_file": str(xml_path),
+    }
+
+
+def insert_general_document(conn, data):
+    cur = conn.cursor()
+
+    source_file = data["source_file"]
+
+    cur.execute("DELETE FROM documents_fts WHERE source_file = ?", (source_file,))
+    cur.execute("DELETE FROM program_fields WHERE source_file = ?", (source_file,))
+    cur.execute("DELETE FROM programs WHERE source_file = ?", (source_file,))
+
+    cur.execute("""
+    INSERT INTO documents_fts (
+        title,
+        content,
+        source_file,
+        program_id
+    )
+    VALUES (?, ?, ?, NULL)
+    """, (
+        data.get("title", ""),
+        data.get("content", ""),
+        source_file,
+    ))
 
 def xml_to_field_rows(element, prefix=""):
     name = tag_name(element.tag)
@@ -457,8 +515,15 @@ def ingest_xml_files():
         print(f"Ingestando: {xml_path}")
 
         try:
-            data = extract_program_data(xml_path)
-            insert_program(conn, data)
+            root = parse_xml(xml_path)
+
+            if is_program_xml(root):
+                data = extract_program_data(xml_path)
+                insert_program(conn, data)
+            else:
+                data = extract_general_document_data(xml_path)
+                insert_general_document(conn, data)
+
             total_ok += 1
 
         except Exception as error:

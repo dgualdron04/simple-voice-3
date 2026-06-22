@@ -46,6 +46,10 @@ DOMAIN_WORDS = [
     "contacto",
     "correo",
     "teléfono",
+    "ecopetrol",
+    "empresa",
+    "visita",
+    "empresarial",
 ]
 
 
@@ -132,6 +136,30 @@ COMMON_FIXES = {
     "me puede dar una lista": "dame una lista",
     "me puedes dar una lista": "dame una lista",
     "carreras que ofertas": "carreras que oferta",
+
+    "eco petrol": "ecopetrol",
+    "copetrol": "ecopetrol",
+    "he copetrol": "ecopetrol",
+    "ecopetrol": "ecopetrol",
+
+    "estop zuu": "stop zuu",
+    "para su": "para zuu",
+    "para suu": "para zuu",
+    "calla te zuu": "cállate zuu",
+    "cayate zuu": "cállate zuu",
+    "haz silencio su": "haz silencio zuu",
+    "espera su": "espera zuu","eco petrol": "ecopetrol",
+    "copetrol": "ecopetrol",
+    "he copetrol": "ecopetrol",
+    "ecopetrol": "ecopetrol",
+
+    "estop zuu": "stop zuu",
+    "para su": "para zuu",
+    "para suu": "para zuu",
+    "calla te zuu": "cállate zuu",
+    "cayate zuu": "cállate zuu",
+    "haz silencio su": "haz silencio zuu",
+    "espera su": "espera zuu",
 }
 
 
