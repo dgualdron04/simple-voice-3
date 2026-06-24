@@ -1,0 +1,43 @@
+<programa>
+    <nombre>Especialización en TIC Aplicadas a la Educación</nombre>
+    <titulo>Especialista en TIC Aplicadas a la Educación</titulo>
+    <duracion> 2 semestres</duracion>
+    <modalidad>virtual</modalidad>
+    <codigo_snies> 117614</codigo_snies>
+    <resolucion>N° 025581</resolucion>
+    <fecha_registro_calificado>27 de diciembre de 2024</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>26 de diciembre de 2031</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>33</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>4216000</diurno>
+    </costo>
+    <estado>Activo en Oferta</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>RECURSOS EDUCATIVOS</asignatura>
+            <asignatura>INTEGRACIÓN DE RECURSOS EDUCATIVOS</asignatura>
+            <asignatura>AMBIENTES VIRTUALES DE APRENDIZAJE I</asignatura>
+            <asignatura>EVALUACIÓN EN AMBIENTES VIRTUALES </asignatura>
+            <asignatura>TALLER OPTATIVO I</asignatura>
+            <asignatura>SEMINARIO DE GRADO I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>CHATBOTS Y ASISTENTES VIRTUALES</asignatura>
+            <asignatura>PLATAFORMAS APRENDIZAJE</asignatura>
+            <asignatura>AMBIENTES VIRTUALES DE APRENDIZAJE II</asignatura>
+            <asignatura>SISTEMAS DE TUTORÍA INTELIGENTE</asignatura>
+            <asignatura>TALLER OPTATIVO II</asignatura>
+            <asignatura>SEMINARIO DE GRADO II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

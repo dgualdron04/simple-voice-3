@@ -1,0 +1,108 @@
+<programa>
+    <nombre>Psicología</nombre>
+    <titulo>Psicólogo</titulo>
+    <duracion>9 semestres</duracion>
+    <modalidad>Presencial y Virtual</modalidad>
+    <codigo_snies>90364</codigo_snies>
+    <resolucion>N° 003346</resolucion>
+    <fecha_registro_calificado>28 de febrero de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>27 de febrero de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>153</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>4167100</diurno>
+        <nocturno>4167100</nocturno>
+        <virtual>1694100</virtual>
+    </costo>
+
+    <estado>Activo</estado>
+  
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>INTRODUCCIÓN A LA PSICOLOGÍA</asignatura>
+            <asignatura>BASES SOCIO CULTURALES  </asignatura>
+            <asignatura>EPISTEMOLOGÍA</asignatura>
+            <asignatura>PSICOBIOLOGÍA Y PSICOFISIOLOGÍA </asignatura>
+            <asignatura>TÉCNICAS  DE EXPRESIÓN ORAL Y ESCRITA </asignatura>
+            <asignatura>DEPORTE Y CULTURA I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>ENFOQUE PSICOANALÍTICO</asignatura>
+            <asignatura>ENFOQUE CONDUCTUAL </asignatura>
+            <asignatura>PENSAMIENTO LÓGICO MATEMÁTICO</asignatura>
+            <asignatura>NEUROANATOMÍA</asignatura>
+            <asignatura>ESTADÍSTICA Y PROBABILIDADES </asignatura>
+            <asignatura>PROCESOS PSICOLÓGICOS BÁSICOS</asignatura>
+            <asignatura>DEPORTE Y CULTURA II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>ENFOQUE HUMANISTA</asignatura>
+            <asignatura>ENFOQUE CONIGTIVO-CONDUCTUAL</asignatura>
+            <asignatura>METODOLOGÍA DE LA INVESTIGACIÓN</asignatura>
+            <asignatura>NEUROPSICOLOGÍA </asignatura>
+            <asignatura>ESTADÍSTICA INFERENCIAL</asignatura>
+            <asignatura>PROCESOS PSICOLÓGICOS SUPERIORES</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>TEORÍAS DE LA PERSONALIDAD</asignatura>
+            <asignatura>PSICOLOGÍA COMUNITARIA</asignatura>
+            <asignatura>INVESTIGACIÓN EN  PSICOLOGÍA  I </asignatura>
+            <asignatura>PSICOLOGÍA EVOLUTIVA I : NIÑEZ Y  ADOLESCENCIA</asignatura>
+            <asignatura>PSICOMETRÍA</asignatura>
+            <asignatura>MOTIVACIÓN Y EMOCIÓN</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>PSICOLOGÍA SOCIAL</asignatura>
+            <asignatura>PSICOPATOLOGÍA I</asignatura>
+            <asignatura>INVESTIGACIÓN EN PSICOLOGÍA II</asignatura>
+            <asignatura>PSICOLOGÍA EVOLUTIVA II: ADOLESCENCIA A LA SENECTUD</asignatura>
+            <asignatura>PRUEBAS PSICOLÓGICAS </asignatura>
+            <asignatura>TÉCNICAS DE ENTREVISTA</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>PSICOLOGÍA ORGANIZACIONAL </asignatura>
+            <asignatura>PSICOPATOLOGÍA II</asignatura>
+            <asignatura>FAMILIA Y GRUPOS </asignatura>
+            <asignatura>DESARROLLO HUMANO Y PROFESIONAL</asignatura>
+            <asignatura>PSICOLOGÍA EDUCATIVA</asignatura>
+            <asignatura>HERRAMIENTAS BÁSICAS DE EMPRENDIMIENTO</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>FUNDAMENTOS DE LA PSICOLOGÍA JURÍDICA </asignatura>
+            <asignatura>PSICOLOGÍA CLÍNICA Y DE LA SALUD</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL I</asignatura>
+            <asignatura>ÉTICA CIUDADANA Y  PROFESIONAL</asignatura>
+            <asignatura>OPTATIVA LIBRE I</asignatura>
+            <asignatura>PROYECTO EMPRENDEDOR </asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>PSICOLOGÍA FORENSE I </asignatura>
+            <asignatura>PROYECTO DE GRADO I</asignatura>
+            <asignatura>PRÁCTICA PROFESIONAL I</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL  II</asignatura>
+            <asignatura>OPTATIVA LIBRE II </asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>PSICOLOGÍA FORENSE II </asignatura>
+            <asignatura>PROYECTO DE GRADO  II </asignatura>
+            <asignatura>PRÁCTICA PROFESIONAL II </asignatura>
+            <asignatura>ELECTIVA PROFESIONAL  III </asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 129</telefono>
+        <correo>je.negocios@udi.edu.co</correo>
+    </contacto>
+</programa>

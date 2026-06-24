@@ -1,0 +1,45 @@
+<programa>
+    <nombre>Especialización en Seguridad Informática</nombre>
+    <titulo>Especialista en Seguridad Informática</titulo>
+    <duracion>2 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>53213</codigo_snies>
+    <resolucion>N° 015400</resolucion>
+    <fecha_registro_calificado>18 de diciembre de 2019</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>17 de diciembre de 2026</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>34</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>7942200</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>SEGURIDAD Y GESTIÓN DE RIESGOS</asignatura>
+            <asignatura>CRIPTOGRAFÍA </asignatura>
+            <asignatura>MODELOS Y ESTÁNDARES DE SEGURIDAD</asignatura>
+            <asignatura>PROTOCOLOS DE SEGURIDAD FORENSE</asignatura>
+            <asignatura>COMUNICACIÓN Y SEGURIDAD EN REDES</asignatura>
+            <asignatura>SEMINARIO DE TRABAJO DE GRADO I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>ARQUITECTURA DE SEGURIDAD E INGENIERÍA</asignatura>
+            <asignatura>EVALUACIÓN DE SEGURIDAD Y PRUEBAS DE CONTROL</asignatura>
+            <asignatura>MARCO LEGAL Y ÉTICO DE LA SEGURIDAD INFORMÁTICA</asignatura>
+            <asignatura>INFORMÁTICA FORENSE</asignatura>
+            <asignatura>TALLER OPTATIVO</asignatura>
+            <asignatura>SEMINARIO DE TRABAJO DE GRADO II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

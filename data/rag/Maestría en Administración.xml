@@ -1,0 +1,59 @@
+<programa>
+    <nombre>Maestría en Administración</nombre>
+    <titulo>Magíster en Administración</titulo>
+    <duracion>4 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>105073</codigo_snies>
+    <resolucion>N° 016183</resolucion>
+    <fecha_registro_calificado>30 de julio de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>29 de julio de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>53</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>5848800</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Contexto Internacional de los negocios</asignatura>
+            <asignatura>Estrategia competitiva en los negocios</asignatura>
+            <asignatura>Aspectos éticos y legales en los negocios</asignatura>
+            <asignatura>Énfasis I</asignatura>
+            <asignatura>Seminario de Investigación</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Gerencia de talento humano</asignatura>
+            <asignatura>Gerencia contable y financiera</asignatura>
+            <asignatura>Marketing estratégico competitivo</asignatura>
+            <asignatura>Énfasis II</asignatura>
+            <asignatura>Seminario de grado I</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Gerencia de producción y logística integral</asignatura>
+            <asignatura>Análisis y valoración de empresas</asignatura>
+            <asignatura>Gerencia de lo público</asignatura>
+            <asignatura>Énfasis III</asignatura>
+            <asignatura>Seminario de grado II</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Estrategias de internacionalización empresarial</asignatura>
+            <asignatura>Entorno económico y responsabilidad social</asignatura>
+            <asignatura>Análisis de datos para la toma de decisiones gerenciales</asignatura>
+            <asignatura>Énfasis IV</asignatura>
+            <asignatura>Seminario de grado III</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

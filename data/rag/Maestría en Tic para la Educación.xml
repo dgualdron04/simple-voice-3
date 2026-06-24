@@ -1,0 +1,52 @@
+<programa>
+    <nombre>Maestría en Tic para la Educación</nombre>
+    <titulo>Magíster en TIC para la Educación</titulo>
+    <duracion> 4 semestres</duracion>
+    <modalidad>virtual</modalidad>
+    <codigo_snies>108468</codigo_snies>
+    <resolucion>N° 011928</resolucion>
+    <fecha_registro_calificado>14 de noviembre de 2019</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>13 de noviembre de 2026</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>52</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>5275600</diurno>
+    </costo>
+    <estado>Activo en Oferta</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Recursos Educativos Digitales</asignatura>
+            <asignatura>Educación con TIC</asignatura>
+            <asignatura>Seminario de Investigación</asignatura>
+            <asignatura>Énfasis I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Selección y Evaluación de Recursos Educativos Digitales</asignatura>
+            <asignatura>Ambientes Educativos mediados por TIC I</asignatura>
+            <asignatura>Seminario de Grado I</asignatura>
+            <asignatura>Énfasis II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Elaboración de Recursos Educativos Digitales I</asignatura>
+            <asignatura>Ambientes Educativos mediados por TIC II</asignatura>
+            <asignatura>Seminario de Grado II</asignatura>
+            <asignatura>Énfasis III</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Elaboración de Recursos Educativos Digitales II</asignatura>
+            <asignatura>Evaluación del Aprendizaje en Ambientes Mediados por TIC</asignatura>
+            <asignatura>Seminario de Grado III</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

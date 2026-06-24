@@ -1,0 +1,55 @@
+<programa>
+    <nombre>Maestría en Gestión de Tecnologías de la Información</nombre>
+    <titulo>Magister En Gestión De Tecnologías de la Información</titulo>
+    <duracion>4 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>104731</codigo_snies>
+    <resolucion>N° 010013</resolucion>
+    <fecha_registro_calificado>22 de junio de 2023</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>21 de junio de 2030</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>51</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>5848800</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Gestión de proyectos</asignatura>
+            <asignatura>Gestión de requerimientos</asignatura>
+            <asignatura>Arquitectura de tecnologías de la información</asignatura>
+            <asignatura>Curso de énfasis I</asignatura>
+            <asignatura>Curso de énfasis II</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Gestión de la calidad en tecnologias de la información</asignatura>
+            <asignatura>Gestión de servicios en tecnologias de la información</asignatura>
+            <asignatura>Curso de énfasis III</asignatura>
+            <asignatura>Curso de énfasis IV</asignatura>
+            <asignatura>Seminario de investigación</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Gobierno de tecnologías de la información</asignatura>
+            <asignatura>Inteligencia de negocios</asignatura>
+            <asignatura>Curso de énfasis V</asignatura>
+            <asignatura>Seminario de grado I</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>Marco legal y ético de tecnologías de la información</asignatura>
+            <asignatura>Seminario de grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

@@ -1,0 +1,47 @@
+<programa>
+    <nombre>Especialización en Diseño Publicitario</nombre>
+    <titulo> Especialista en Diseño Publicitario</titulo>
+    <duracion>2 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>54122</codigo_snies>
+    <resolucion>N° 001600</resolucion>
+    <fecha_registro_calificado>16 de febrero de 2022</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>15 de febrero de 2029</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>36</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>7942200</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Taller de diseño y comunicación publicitaria </asignatura>
+            <asignatura>Laboratorio de redacción publicitaria</asignatura>
+            <asignatura>Taller de medios publicitarios</asignatura>
+            <asignatura>Investigación y análisis de marcas y mercados</asignatura>
+            <asignatura>Taller optativo I</asignatura>
+            <asignatura>Planeación y estrategia integrada de comunicación publicitaria </asignatura>
+            <asignatura>Seminario de trabajo de grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Marketing relacional branding y CRM psicología publicitaria </asignatura>
+            <asignatura>Marketing digital</asignatura>
+            <asignatura>Marketing directo BTL</asignatura>
+            <asignatura>Taller optativo II</asignatura>
+            <asignatura>Producción y postproducción de comerciales de televisión</asignatura>
+            <asignatura>Gerencia de campañas publicitarias</asignatura>
+            <asignatura>Seminario de trabajo de grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

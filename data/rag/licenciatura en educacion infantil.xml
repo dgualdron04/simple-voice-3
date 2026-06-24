@@ -1,0 +1,106 @@
+<programa>
+    <nombre>Licenciatura en Educación Infantil</nombre>
+    <titulo> Licenciado en Educación Infantil</titulo>
+    <duracion>8 semestres</duracion>
+    <modalidad>Presencial y virtual</modalidad>
+    <codigo_snies>
+        <presencial> 117615 </presencial>
+        <virtual> 117616 </virtual>
+    </codigo_snies>
+    <resolucion>N° 025582</resolucion>
+    <fecha_registro_calificado>27 de diciembre de 2024</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>26 de diciembre de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>140</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>2108000</diurno>
+        <virtual>2108000</virtual>
+        <nocturna>2108000</nocturna>
+    </costo>
+
+    <estado>Activo</estado>
+   
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>HISTORIA Y EVOLUCIÓN DE LA  PEDAGOGÍA Y LA DIDÁCTICA</asignatura>
+            <asignatura>PRÁCTICA OBSERVACIÓN DEL CONTEXTO EDUCATIVO</asignatura>
+            <asignatura>FUNDAMENTOS Y CONCEPCIONES DE LA EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>POLÍTICA Y LEGISLACIÓN EDUCATIVA</asignatura>
+            <asignatura>IDENTIDAD PROFESIONAL DEL MAESTRO</asignatura>
+            <asignatura>TÉCNICAS DE EXPRESIÓN ORAL Y ESCRITA</asignatura>
+            <asignatura>DEPORTE Y CULTURA I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>ENFOQUES Y TEORIAS CURRICULARES EN EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>MODELOS PEDAGÓGICOS EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>DESARROLLO INFANTIL DE 0 A 6 AÑOS</asignatura>
+            <asignatura>PRÁCTICA OBSERVACIÓN DEL MAESTRO</asignatura>
+            <asignatura>SALUD Y PRIMEROS AUXILIOS EN LA EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>DEPORTE Y CULTURA II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>ESTRATEGIAS PEDAGÓGICAS Y CURRICULARES EN EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>JUEGO Y LÚDICA</asignatura>
+            <asignatura>LITERATURA INFANTIL</asignatura>
+            <asignatura>PRÁCTICA EN GESTIÓN EDUCATIVA</asignatura>
+            <asignatura>PROYECTOS TRANSVERSALES PARA LA EDUCACIÓN EN PRIMERA INFANCIA</asignatura>
+            <asignatura>ESCUELA FAMILIA Y COMUNIDAD</asignatura>
+            <asignatura>GESTIÓN EDUCATIVA</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>CURRÍCULO Y EVALUACIÓN EN LA EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>DESARROLLO DEL PENSAMIENTO LÓGICO MATEMÁTICO</asignatura>
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA EDUCACIÓN INICIAL</asignatura>
+            <asignatura>FUNDAMENTO DEL DISEÑO Y EVALUACIÓN DE PROGRAMAS Y PROYECTOS</asignatura>
+            <asignatura>CONTEXTO SOCIOEDUCATIVO</asignatura>
+            <asignatura>OPTATIVA LIBRE I</asignatura>
+            <asignatura>HERRAMIENTAS BÁSICAS DE EMPRENDIMIENTO</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>DESARROLLO DEL PENSAMIENTO SOCIAL Y NATURAL</asignatura>
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA(0 A 3 AÑOS)</asignatura>
+            <asignatura>PLANEACIÓN ESTRATEGICA Y GERENCIA DE PROYECTOS</asignatura>
+            <asignatura>EDUCACIÓN Y DESARROLLO SOSTENIBLE</asignatura>
+            <asignatura>DIVERSIDAD EDUCATIVA  EN LA PRIMERA INFANCIA</asignatura>
+            <asignatura>OPTATIVA LIBRE II</asignatura>
+            <asignatura>PROYECTO EMPRENDEDOR</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>DESARROLLO DE LA CREATIVIDAD Y LA EXPRESIÓN ARTÍSTICA</asignatura>
+            <asignatura>DESARROLLO DEL PENSAMIENTO CIENTÍFICO Y CUIDADO DEL MEDIO AMBIENTE</asignatura>
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA(3 A 6 AÑOS)</asignatura>
+            <asignatura>IDENTIDAD Y CIUDADANÍA EN LA EDUCACIÓN INFANTIL</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL I</asignatura>
+            <asignatura>METODOLOGÍA DE LA INVESTIGACIÓN</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA INTEGRAL I</asignatura>
+            <asignatura>FORMACIÓN EN EDUCACIÓN PARA LA PAZ</asignatura>
+            <asignatura>EDUCACIÓN CON TIC</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL II</asignatura>
+            <asignatura>ÉTICA CIUDADANA Y PROFESIONAL</asignatura>
+            <asignatura>PROYECTO DE GRADO I</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA INTEGRAL II</asignatura>
+            <asignatura>PROYECTOS DE POLÍTICA PARA LA PAZ DESDE LA INFANCIA</asignatura>
+            <asignatura>RECURSOS EDUCATIVOS DIGITALES</asignatura>
+            <asignatura>PROYECTO DE GRADO II</asignatura>
+        </semestre>
+
+    </malla>
+    <contacto>
+        <telefono>6352525 Ext. 129</telefono>
+        <correo>je.negocios@udi.edu.co</correo>
+    </contacto>
+</programa>

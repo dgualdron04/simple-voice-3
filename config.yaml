@@ -18,7 +18,7 @@ paths:
 llm:
   provider: "ollama"
   url: "http://localhost:11434/api/generate"
-  model: "qwen2.5:3b-instruct"
+  model: "qwen2.5:3b-instruct-zuu-v4"
   keep_alive: "30m"
   num_ctx: 2048
   default_max_tokens: 70

@@ -1,0 +1,45 @@
+<programa>
+    <nombre>Especialización en Logística</nombre>
+    <titulo>Especialista en Logística</titulo>
+    <duracion> 2 semestres</duracion>
+    <modalidad>virtual</modalidad>
+    <codigo_snies> 105623</codigo_snies>
+    <resolucion>N° 007435</resolucion>
+    <fecha_registro_calificado>14 de mayo de 2024</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>13 de mayo de 2031</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>36</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>6807700</diurno>
+    </costo>
+    <estado>Activo en Oferta</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Fundamentos de Logística</asignatura>
+            <asignatura>Gestión Logística Integral</asignatura>
+            <asignatura>Modelación Matemática</asignatura>
+            <asignatura>Costos y Finanzas en las Redes de Suministro</asignatura>
+            <asignatura>Gestión de Compras y Proveedores</asignatura>
+            <asignatura>Taller Optativo I</asignatura>
+            <asignatura>Seminario de Trabajo de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Gestión de Almacenamiento, Empaques y Embalaje</asignatura>
+            <asignatura>Gestión de Inventarios en la Red de Abastecimiento</asignatura>
+            <asignatura>Gestión de Sistemas de Transporte y Redes de Distribución</asignatura>
+            <asignatura>Sistemas de Información y Comunicación en Logística</asignatura>
+            <asignatura>Logística de los Negocios Internacionales</asignatura>
+            <asignatura>Taller Optativo II: Megatendencias en logística</asignatura>
+            <asignatura>Seminario de Trabajo de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

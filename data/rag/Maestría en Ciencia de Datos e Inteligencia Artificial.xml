@@ -1,0 +1,50 @@
+<programa>
+    <nombre>Maestría en Ciencia de Datos e Inteligencia Artificial</nombre>
+    <titulo>Magíster en Ciencia de Datos e Inteligencia Artificial</titulo>
+    <duracion> 3 semestres</duracion>
+    <modalidad>virtual</modalidad>
+    <codigo_snies>SIN CÓDIGO SNIES</codigo_snies>
+    <resolucion>N° 014336</resolucion>
+    <fecha_registro_calificado>26 de mayo de 2026</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>26 de mayo de 2033</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>44</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>5848800</diurno>
+    </costo>
+    <estado>Registro Calificado Nuevo</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Matemáticas para CDIA</asignatura>
+            <asignatura>Programación con IA</asignatura>
+            <asignatura>Machine Learning I</asignatura>
+            <asignatura>Introducción a la IA Generativa</asignatura>
+            <asignatura>Énfasis I</asignatura>
+            <asignatura>Seminario de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Gobierno y Calidad de Datos en CDIA</asignatura>
+            <asignatura>CD y Analítica Descriptiva</asignatura>
+            <asignatura>Machine Learning II</asignatura>
+            <asignatura>Ética y Responsabilidad Social CDIA </asignatura>
+            <asignatura>Énfasis II</asignatura>
+            <asignatura>Seminario de Grado II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>Gestión de Proyectos de CDIA</asignatura>
+            <asignatura>Arquitectura y Herramientas de CDIA</asignatura>
+            <asignatura>Énfasis III</asignatura>
+            <asignatura>Seminario de Grado III</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

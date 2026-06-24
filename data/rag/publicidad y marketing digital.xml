@@ -1,0 +1,109 @@
+<programa>
+    <nombre>Publicidad y Marketing Digital</nombre>
+    <titulo>Profesional en Publicidad y Marketing Digital </titulo>
+    <duracion>9 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>106295</codigo_snies>
+    <resolucion>N° 002411</resolucion>
+    <fecha_registro_calificado>06 de marzo de 2024</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>5 de abril de 2031</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>151</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>3388200</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>HISTORIA DEL ARTE UNIVERSAL</asignatura>
+            <asignatura>FUNDAMENTOS DE LA COMUNICACIÓN </asignatura>
+            <asignatura>INTRODUCCIÓN A LA PUBLICIDAD</asignatura>
+            <asignatura>CULTURA DIGITAL</asignatura>
+            <asignatura>TÉCNICAS  DE EXPRESIÓN ORAL Y ESCRITA</asignatura>
+            <asignatura>DEPORTE Y CULTURA I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>DISEÑO PUBLICITARIO I</asignatura>
+            <asignatura>FUNDAMENTOS DE MARKETING</asignatura>
+            <asignatura>TEORÍA CRÍTICA</asignatura>
+            <asignatura>MATEMÁTICA APLICADA</asignatura>
+            <asignatura>NARRATIVA UNIVERSAL</asignatura>
+            <asignatura>DEPORTE Y CULTURA II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>FOTOGRAFÍA BÁSICA</asignatura>
+            <asignatura>DISEÑO PUBLICITARIO II</asignatura>
+            <asignatura>INVESTIGACIÓN DE MERCADOS</asignatura>
+            <asignatura>SEMIÓTICA DE LO AUDIOVISUAL</asignatura>
+            <asignatura>ESTADÍSTICAS Y PROBABILIDADES</asignatura>
+            <asignatura>FUNDAMENTOS DE PROGRAMACIÓN</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>FOTOGRAFÍA PUBLICITARIA</asignatura>
+            <asignatura>MARKETING EN LA ERA DIGITAL</asignatura>
+            <asignatura>PSICOLOGÍA DEL CONSUMIDOR</asignatura>
+            <asignatura>FUNDAMENTOS Y ANÁLISIS DE MEDIOS</asignatura>
+            <asignatura>DISEÑO WEB I</asignatura>
+            <asignatura>OPTATIVA LIBRE I</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>CRM Y MARKETING RELACIONAL</asignatura>
+            <asignatura>HERRAMIENTAS BÁSICAS DE EMPRENDIMIENTO</asignatura>
+            <asignatura>REALIZACIÓN AUDIOVISUAL</asignatura>
+            <asignatura>DISEÑO WEB II</asignatura>
+            <asignatura>NARRATIVA AUDIOVISUAL</asignatura>
+            <asignatura>OPTATIVA LIBRE II</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>ANÁLISIS Y MÉTRICAS ONLINE</asignatura>
+            <asignatura>REDACCIÓN PUBLICITARIA</asignatura>
+            <asignatura>PROYECTO EMPRENDEDOR</asignatura>
+            <asignatura>POSTPRODUCCIÓN AUDIOVISUAL</asignatura>
+            <asignatura>PROGRAMACIÓN EN MÓVILES</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL I</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>PLAN DE MEDIOS</asignatura>
+            <asignatura>BRANDING</asignatura>
+            <asignatura>METODOLOGÍA DE LA INVESTIGACIÓN</asignatura>
+            <asignatura>COMERCIO ELECTRÓNICO</asignatura>
+            <asignatura>NARRATIVA TRANSMEDIA</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL II</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>GERENCIA PUBLICITARIA</asignatura>
+            <asignatura>CAMPAÑAS PUBLICITARIAS</asignatura>
+            <asignatura>GESTIÓN DE REDES SOCIALES</asignatura>
+            <asignatura>PLAN DE MEDIOS DIGITAL </asignatura>
+            <asignatura>ÉTICA CIUDADANA Y PROFESIONAL</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL III</asignatura>
+            <asignatura>PROYECTO DE GRADO I</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>PRÁCTICA PROFESIONAL</asignatura>
+            <asignatura>PORTAFOLIO PROFESIONAL</asignatura>
+            <asignatura>PROYECTO DE GRADO II</asignatura>
+            <asignatura>GERENCIA MARKETING DIGITAL</asignatura>
+            <asignatura>SEMINARIO NUEVAS FORMAS DE CREACIÓN</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 129</telefono>
+        <correo>je.negocios@udi.edu.co</correo>
+    </contacto>
+</programa>

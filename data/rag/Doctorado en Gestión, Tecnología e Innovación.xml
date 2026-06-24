@@ -1,0 +1,76 @@
+<programa>
+    <nombre>Doctorado en Gestión, Tecnología e Innovación</nombre>
+    <titulo>Doctor(a) en Gestión, Tecnología e Innovación</titulo>
+    <duracion>8 semestres</duracion>
+    <modalidad>virtual</modalidad>
+    <codigo_snies>SIN CÓDIGO SNIES</codigo_snies>
+    <resolucion>N° 009095</resolucion>
+    <fecha_registro_calificado>01 de abril de 2026</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>01 de abril de 2033</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>89</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+    <costo>
+        <diurno>13000000</diurno>
+    </costo>
+    <estado>Registro Calificado Nuevo</estado>
+    <observacion>La jornada nocturna no se esta ofertando</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>EPISTEMOLOGÍA DE LA GESTIÓN ESTRATÉGICA</asignatura>
+            <asignatura>ÉTICA Y RESPONSABILIDAD SOCIAL</asignatura>
+            <asignatura>GESTIÓN DE LA ESTRATEGIA DIGITAL</asignatura>
+            <asignatura>EPISTEMOLOGÍA DE LA INVESTIGACIÓN </asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>EPISTEMOLOGÍA DE LA TECNOLOGÍA ESTRATÉGICA</asignatura>
+            <asignatura>TENDENCIAS TECNOLÓGICAS ESTRATÉGICAS</asignatura>
+            <asignatura>ARQUITECTURA Y DISEÑO DE SISTEMAS TECNOLÓGICOS ESTRATÉGICOS</asignatura>
+            <asignatura>MÉTODOS DE INVESTIGACIÓN </asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>EPISTEMOLOGÍA DE LA INNOVACIÓN ESTRATÉGICA</asignatura>
+            <asignatura>EMPRENDIMIENTO Y DESARROLLO ESTRATÉGICO</asignatura>
+            <asignatura>INNOVACIÓN ESTRATÉGICA, ABIERTA Y COLABORATIVA</asignatura>
+            <asignatura>RPROCESAMIENTO DE DATOS </asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>ÉNFASIS I</asignatura>
+            <asignatura>ÉNFASIS II</asignatura>
+            <asignatura>SEMINARIO DE INVESTIGACIÓN I</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>ÉNFASIS III</asignatura>
+            <asignatura>SEMINARIO DE INVESTIGACIÓN II</asignatura>
+            <asignatura>HABILIDADES AVANZADAS PARA LA CREACIÓN CIENTÍFICA I</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>ÉNFASIS IV</asignatura>
+            <asignatura>ESTANCIA DE INVESTIGACIÓN I</asignatura>
+            <asignatura>HABILIDADES AVANZADAS PARA LA CREACIÓN CIENTÍFICA II </asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>ÉNFASIS V</asignatura>
+            <asignatura>SEMINARIO DE INVESTIGACIÓN III</asignatura>
+            <asignatura>HABILIDADES AVANZADAS PARA LA CREACIÓN CIENTÍFICA III </asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>ÉNFASIS VI</asignatura>
+            <asignatura>ESTANCIA DE INVESTIGACIÓN II</asignatura>
+            <asignatura>SEMINARIO DE INVESTIGACIÓN IV </asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 212</telefono>
+        <correo>je.electronica@udi.edu.co</correo>
+    </contacto>
+</programa>

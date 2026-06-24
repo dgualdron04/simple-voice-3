@@ -1,0 +1,98 @@
+<programa>
+    <nombre>Licenciatura en Literatura y Lengua Castellana</nombre>
+    <titulo> Licenciado (a) en Literatura y Lengua Castellana </titulo>
+    <duracion>8 semestres</duracion>
+    <modalidad>Presencial y Virtual</modalidad>
+    <codigo_snies> SIN CÓDIGOS SNIES</codigo_snies>
+    <resolucion>N° 023346</resolucion>
+    <fecha_registro_calificado>28 de noviembre de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>27 de noviembre de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>140</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>2000000</diurno>
+        <virtual>2000000</virtual>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>DEPORTE Y CULTURA I</asignatura>
+            <asignatura>DIVERSIDAD EDUCATIVA</asignatura>
+            <asignatura>HISTORIA Y EVOLUCIÓN DE LA PEDAGOGÍA Y LA DIDÁCTICA </asignatura>
+            <asignatura>INTRODUCCIÓN A LA LITERATURA</asignatura>
+            <asignatura>MODELOS PEDAGÓGICOS</asignatura>
+            <asignatura>PRÁCTICA OBSERVACIÓN DEL CONTEXTO EDUCATIVO</asignatura>
+            <asignatura>TÉCNICAS DE EXPRESIÓN ORAL Y ESCRITA</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>DEPORTE Y CULTURA II</asignatura>
+            <asignatura>ENFOQUES Y TEORÍAS CURRICULARES</asignatura>
+            <asignatura>IDENTIDAD PROFESIONAL DEL MAESTRO</asignatura>
+            <asignatura>LINGÜÍSTICA</asignatura>
+            <asignatura>PRÁCTICA OBSERVACIÓN DEL MAESTRO</asignatura>
+            <asignatura>TEORÍA Y ANÁLISIS LITERARIO I: LÍRICA</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>ESTRATÉGIAS PEDAGÓGICAS Y CURRICULARES</asignatura>
+            <asignatura>PRÁCTICA EN GESTIÓN EDUCATIVA</asignatura>
+            <asignatura>RECURSOS EDUCATIVOS DIGITALES</asignatura>
+            <asignatura>SOCIOLINGÜÍSTICA</asignatura>
+            <asignatura>TALLER DE LENGUAJE</asignatura>
+            <asignatura>TEORÍA Y ANÁLISIS LITERARIO II: NARRATIVA</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>CURRÍCULO Y EVALUACIÓN</asignatura>
+            <asignatura>DIDÁCTICA GENERAL</asignatura>
+            <asignatura>OPTATIVA LIBRE I</asignatura>
+            <asignatura>PRÁCTICA EN PROMOCIÓN DE LA LECTURA</asignatura>
+            <asignatura>SEMIÓTICA</asignatura>
+            <asignatura>TEORÍA Y ANÁLISIS LITERARIO III: DRAMATURGIA</asignatura>
+            <asignatura>HERRAMIENTAS BÁSICAS DE EMPRENDIMIENTO</asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>DIDÁCTICA DE LA LITERATURA</asignatura>
+            <asignatura>LITERATURA ESPAÑOLA</asignatura>
+            <asignatura>OPTATIVA LIBRE II</asignatura>
+            <asignatura>PRÁCTICA EN EDUACIÓN BÁSICA PRIMARIA</asignatura>
+            <asignatura>TALLER DE LECTURA Y ESCRITURA DE TEXTOS LITERARIOS </asignatura>
+            <asignatura>PROYECTO EMPRENDEDOR</asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>ELECTIVA PROFESIONAL I</asignatura>
+            <asignatura>LITERATURA LATINOAMERICANA</asignatura>
+            <asignatura>PRÁCTICA EN EDUACIÓN BÁSICA SECUNDARIA</asignatura>
+            <asignatura>TALLER DE LECTURA Y ESCRITURA DE TEXTOS ARGUMENTATIVOS</asignatura>
+            <asignatura>METODOLOGÍA DE LA INVESTIGACIÓN</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>ANÁLISIS DEL DISCURSO</asignatura>
+            <asignatura>LITERATURA COLOMBIANA</asignatura>
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA INTEGRAL I</asignatura>
+            <asignatura>PROYECTO DE GRADO I </asignatura>
+            <asignatura>ÉTICA CIUDADANA Y PROFESIONAL</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>ELECTIVA PROFESIONAL II </asignatura>
+            <asignatura>PRÁCTICA PEDAGÓGICA INVESTIGATIVA INTEGRAL II</asignatura>
+            <asignatura>PROYECTO DE GRADO II</asignatura>
+            <asignatura>SEMINARIO DE AUTOR</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 129</telefono>
+        <correo>je.negocios@udi.edu.co</correo>
+    </contacto>
+</programa>

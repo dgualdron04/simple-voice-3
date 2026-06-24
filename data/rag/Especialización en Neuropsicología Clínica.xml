@@ -1,0 +1,48 @@
+<programa>
+    <nombre>Especialización en Neuropsicología Clínica</nombre>
+    <titulo>Especialista en Neuropsicología Clínica </titulo>
+    <duracion>2 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>106272</codigo_snies>
+    <resolucion>N° 020377</resolucion>
+    <fecha_registro_calificado>14 de octubre de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>13 de octubre de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>36</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>8063000</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Neurociencias</asignatura>
+            <asignatura>Fundamentos de neuropsicología</asignatura>
+            <asignatura>Procesos y funciones neurocognitivas</asignatura>
+            <asignatura>Neuropsicología del desarrollo</asignatura>
+            <asignatura>Alteraciones y síndromes en neuropsicología</asignatura>
+            <asignatura>Taller optativo I</asignatura>
+            <asignatura>Bioética</asignatura>
+            <asignatura>Seminario de Trabajo de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Neuropsicología de los trastornos del aprendizaje</asignatura>
+            <asignatura>Evaluación y diagnóstico neuropsicológico</asignatura>
+            <asignatura>Estimulación y rehabilitación neurocognitiva</asignatura>
+            <asignatura>Neuropsicología de los trastornos psiquiátricos</asignatura>
+            <asignatura>Neuropsicología clínica aplicada al ámbito forense</asignatura>
+            <asignatura>Taller Optativo II</asignatura>
+            <asignatura>Seminario de Trabajo de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

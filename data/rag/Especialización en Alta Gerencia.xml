@@ -1,0 +1,49 @@
+<programa>
+    <nombre>Especialización en Alta Gerencia</nombre>
+    <titulo> Especialista en Alta Gerencia</titulo>
+    <duracion>2 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>53898</codigo_snies>
+    <resolucion>N° 006643</resolucion>
+    <fecha_registro_calificado>26 de abril de 2022</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>25 de abril de 2029</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>35</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>7942200</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Derecho corporativo</asignatura>
+            <asignatura>Entorno económico y desarrollo sostenible</asignatura>
+            <asignatura>Ética del empresario y responabilidad social</asignatura>
+            <asignatura>Gestión de la calidad</asignatura>
+            <asignatura>Habilidades de liderazgo y comunicación</asignatura>
+            <asignatura>Gestión estratégica empresarial</asignatura>
+            <asignatura>Taller optativo I</asignatura>
+            <asignatura>Seminario de trabajo de grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Desarrollo de capital humano</asignatura>
+            <asignatura>Investigación + Desarrollo + Innovación Empresarial</asignatura>
+            <asignatura>Marketing Estratégico competitivo</asignatura>
+            <asignatura>Maximización del capital financiero de la empresa</asignatura>
+            <asignatura>Estrategia en la gestión pública</asignatura>
+            <asignatura>Logística integral</asignatura>
+            <asignatura>Taller optativo II</asignatura>
+            <asignatura>Seminario de trabajo de grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

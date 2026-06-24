@@ -1,0 +1,118 @@
+<programa>
+    <nombre>Medicina Veterinaria y Zootecnia</nombre>
+    <titulo> Médico Veterinario Zootecnista</titulo>
+    <duracion>10 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>118495</codigo_snies>
+    <resolucion>N° 020392</resolucion>
+    <fecha_registro_calificado>14 de octubre de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>13 de octubre de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>171</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>4300000</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>QUÍMICA BASÍCA</asignatura>
+            <asignatura>BIOLOGÍA CELULAR</asignatura>
+            <asignatura>BIOFÍSICA</asignatura>
+            <asignatura>HISTOLOGÍA Y EMBRIOLOGÍA VETERINARIA</asignatura>
+            <asignatura>INTRODUCCIÓN A LA MEDICINA VETERINARIA Y ZOOTECNIA</asignatura>
+            <asignatura>DEPORTE Y CULTURA I</asignatura>
+            <asignatura>TÉCNICAS DE EXPRESIÓN ORAL Y ESCRITA</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>BIOQUÍMICA ESTRUCTURAL</asignatura>
+            <asignatura>ECOLOGÍA</asignatura>
+            <asignatura>BIOESTADÍSTICA</asignatura>
+            <asignatura>ANATOMIA GENERAL</asignatura>
+            <asignatura>ECONOMIA AGROPECUARIA</asignatura>
+            <asignatura>ANTROPOLOGÍA Y SOCIOLOGÍA RURAL</asignatura>
+            <asignatura>DEPORTE Y CULTURA II</asignatura>
+        </semestre>
+
+        <semestre numero="3">
+            <asignatura>BIOQUÍMICA METABÓLICA</asignatura>
+            <asignatura>DISEÑO EXPERIMENTAL</asignatura>
+            <asignatura>ANATOMIA COMPARADA</asignatura>
+            <asignatura>MICROBIOLOGÍA Y VIROLOGÍA</asignatura>
+            <asignatura>EDAFOLOGÍA</asignatura>
+            <asignatura>ADMINISTRACIÓN AGROPECUARIA</asignatura>
+        </semestre>
+
+        <semestre numero="4">
+            <asignatura>FISIOLOGÍA GENERAL</asignatura>
+            <asignatura>PASTOS Y FORRAJES</asignatura>
+            <asignatura>NUTRICIÓN ANIMAL</asignatura>
+            <asignatura>GENÉTICA ANIMAL</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL I</asignatura>
+            <asignatura>HERRAMIENTAS BÁSICAS DE EMPRENDIMIENTO </asignatura>
+        </semestre>
+
+        <semestre numero="5">
+            <asignatura>FISIOLOGÍA MÉDICA</asignatura>
+            <asignatura>PARASITOLOGÍA VETERINARIA</asignatura>
+            <asignatura>NUTRICIÓN DE RUMIANTES</asignatura>
+            <asignatura>MEJORAMIENTO ANIMAL</asignatura>
+            <asignatura>FORMULACIÓN DE PROYECTOS AGROPECUARIOS</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL II</asignatura>
+            <asignatura>PROYECTO EMPRENDEDOR </asignatura>
+        </semestre>
+
+        <semestre numero="6">
+            <asignatura>FARMACOLOGÍA VETERINARIA</asignatura>
+            <asignatura>PATOLOGÍA GENERAL</asignatura>
+            <asignatura>SEMIOLOGÍA</asignatura>
+            <asignatura>REPRODUCCIÓN ANIMAL Y OBSTETRICIA</asignatura>
+            <asignatura>EXTENSIÓN Y DESARROLLO RURAL</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL III</asignatura>
+            <asignatura>OPTATIVA LIBRE I</asignatura>
+        </semestre>
+
+        <semestre numero="7">
+            <asignatura>TOXICOLOGÍA VETERINARIA</asignatura>
+            <asignatura>PATOLOGÍA SISTÉMICA</asignatura>
+            <asignatura>ENFERMEDADES INFECCIOSAS</asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN PORCINA</asignatura>
+            <asignatura>ELECTIVA PROFESIONAL IV</asignatura>
+            <asignatura>OPTATIVA LIBRE II</asignatura>
+            <asignatura>ÉTICA CIUDADANA Y PROFESIONAL</asignatura>
+        </semestre>
+
+        <semestre numero="8">
+            <asignatura>EPIDEMIOLOGÍA VETERINARIA</asignatura>
+            <asignatura>CIRUGÍA</asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN AVÍCOLA</asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN DE ANIMALES DE COMPAÑÍA</asignatura>
+            <asignatura>SALUD PÚBLICA</asignatura>
+            <asignatura>METODOLOGÍA DE INVESTIGACIÓN</asignatura>
+        </semestre>
+
+        <semestre numero="9">
+            <asignatura>MEDICINA INTERNA</asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN DE CAPRINOS Y OVINOS</asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN BOVINA</asignatura>
+            <asignatura>CLINICA </asignatura>
+            <asignatura>SALUD Y PRODUCCIÓN EQUINA</asignatura>
+            <asignatura>PROYECTO DE GRADO I</asignatura>
+        </semestre>
+
+        <semestre numero="10">
+            <asignatura>PRACTICA PROFESIONAL</asignatura>
+            <asignatura>PROYECTO DE GRADO II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>

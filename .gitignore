@@ -13,3 +13,6 @@ model/*
 /model/*
 ./model/*
 vosk-*
+# Local LLM models
+zuu_model/
+*.gguf

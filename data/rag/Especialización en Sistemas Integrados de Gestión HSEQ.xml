@@ -1,0 +1,48 @@
+<programa>
+    <nombre>Especialización en Sistemas Integrados de Gestión HSEQ</nombre>
+    <titulo>Especialista en Sistemas Integrados de Gestión (HSEQ)</titulo>
+    <duracion>2 semestres</duracion>
+    <modalidad>Presencial</modalidad>
+    <codigo_snies>105357</codigo_snies>
+    <resolucion>N° 002529</resolucion>
+    <fecha_registro_calificado>14 de febrero de 2025</fecha_registro_calificado>
+    <fecha_vigencia_registro_calificado>13 de febrero de 2032</fecha_vigencia_registro_calificado>
+    <vigencia_registro_calificado>7 años</vigencia_registro_calificado>
+    <creditos>34</creditos>
+    <periodicidad_admision>Semestral</periodicidad_admision>
+
+    <costo>
+        <diurno>7154700</diurno>
+    </costo>
+
+    <estado>Activo</estado>
+    <observacion>La jornada nocturna no se está ofertando.</observacion>
+
+    <malla>
+        <semestre numero="1">
+            <asignatura>Gestión por Procesos</asignatura>
+            <asignatura>Fundamentos ISO 9001</asignatura>
+            <asignatura>Fundamentos ISO 14001</asignatura>
+            <asignatura>Fundamentos OHSAS 18001</asignatura>
+            <asignatura>Introducción a los Sistemas Integrados de Gestión</asignatura>
+            <asignatura>Gestión de las Competencias en un Sistema Integrado</asignatura>
+            <asignatura>Taller Optativo I</asignatura>
+            <asignatura>Seminario de Trabajo de Grado I</asignatura>
+        </semestre>
+
+        <semestre numero="2">
+            <asignatura>Gestión de Planificación en un Sistema Integrado</asignatura>
+            <asignatura>Gestión de la Documentación en un Sistema Integrado</asignatura>
+            <asignatura>Control de la Gestión en un Sistema Integrado de Gestión</asignatura>
+            <asignatura>Gestión de Indicadores en un Sistema Integrado</asignatura>
+            <asignatura>Auditoría de un Sistema Integrado de Gestión</asignatura>
+            <asignatura>Taller Optativo II</asignatura>
+            <asignatura>Seminario de Trabajo de Grado II</asignatura>
+        </semestre>
+    </malla>
+
+    <contacto>
+        <telefono>6352525 Ext. 162</telefono>
+        <correo>je.derecho@udi.edu.co</correo>
+    </contacto>
+</programa>
