@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento tipo="persona" id="rector_udi" version="2026-10-05">
+    <titulo>Rector de la UDI: Jairo Augusto Castro Castro</titulo>
+
+    <persona>
+        <nombre>Jairo Augusto Castro Castro</nombre>
+        <alias>Rector de la UDI</alias>
+        <cargo>Rector</cargo>
+        <institucion>Universidad de Investigación y Desarrollo, UDI</institucion>
+        <profesion>Ingeniero de Sistemas</profesion>
+        <fecha_designacion>16 de junio de 2020</fecha_designacion>
+    </persona>
+
+    <resumen>
+        El ingeniero Jairo Augusto Castro Castro es el Rector de la Universidad de Investigación y Desarrollo, UDI.
+        Fue designado el 16 de junio de 2020, sucediendo al doctor Jairo Castro Castro, fundador de la institución,
+        quien pasó a ocupar la Presidencia Institucional.
+    </resumen>
+
+    <formacion>
+        <titulo_profesional>Ingeniero de Sistemas</titulo_profesional>
+        <posgrados>
+            <posgrado>Alta Gerencia</posgrado>
+            <posgrado>Docencia Universitaria</posgrado>
+            <posgrado>Maestría en Educación</posgrado>
+        </posgrados>
+    </formacion>
+
+    <trayectoria>
+        <descripcion>
+            Tiene más de dos décadas de vinculación con la UDI. No llegó directamente a la Rectoría:
+            desarrolló diferentes responsabilidades dentro de la universidad durante varios años.
+        </descripcion>
+        <cargos_previos>
+            <cargo>Director del Programa de Ingeniería de Sistemas</cargo>
+            <cargo>Vicerrector Administrativo y Financiero</cargo>
+            <cargo>Vicerrector Académico</cargo>
+            <cargo>Vicerrector General</cargo>
+        </cargos_previos>
+        <cargo_actual>Rector de la UDI</cargo_actual>
+    </trayectoria>
+
+    <designacion>
+        <fecha>16 de junio de 2020</fecha>
+        <predecesor>Dr. Jairo Castro Castro, fundador de la UDI</predecesor>
+        <descripcion>
+            El cambio representó una nueva etapa en la dirección de la universidad,
+            manteniendo la continuidad del proyecto institucional iniciado por sus fundadores.
+        </descripcion>
+    </designacion>
+
+    <relacion_con_fundador>
+        <fundador>Dr. Jairo Castro Castro</fundador>
+        <cargo_fundador>Presidente Institucional</cargo_fundador>
+        <parentesco>El Dr. Jairo Castro Castro es el padre del Ing. Jairo Augusto Castro Castro.</parentesco>
+        <cargo_rector>Rector</cargo_rector>
+    </relacion_con_fundador>
+
+    <funciones>
+        <descripcion>
+            El Rector es una de las principales autoridades de la universidad.
+            Lidera la institución y orienta sus procesos académicos, administrativos e institucionales.
+        </descripcion>
+    </funciones>
+
+    <respuestas_frecuentes>
+        <pregunta>
+            <texto>¿Quién es el rector de la UDI?</texto>
+            <respuesta>
+                El Rector de la Universidad de Investigación y Desarrollo, UDI, es el ingeniero Jairo Augusto Castro Castro.
+                Es Ingeniero de Sistemas y tiene formación en Alta Gerencia, Docencia Universitaria y una Maestría en Educación.
+                Además, lleva más de dos décadas vinculado a la UDI y antes de ser Rector ocupó diferentes cargos directivos dentro de la universidad.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién es Jairo Augusto Castro?</texto>
+            <respuesta>
+                Jairo Augusto Castro Castro es el actual Rector de la UDI. Es Ingeniero de Sistemas y tiene una amplia trayectoria dentro de la universidad.
+                Antes de llegar a la Rectoría fue Director del Programa de Ingeniería de Sistemas y posteriormente ocupó cargos como las Vicerrectorías Administrativa y Financiera, Académica y General.
+                Fue designado Rector en junio de 2020.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué estudió el rector?</texto>
+            <respuesta>
+                El ingeniero Jairo Augusto Castro Castro estudió Ingeniería de Sistemas.
+                Además, tiene formación en Alta Gerencia y Docencia Universitaria, y cuenta con una Maestría en Educación.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Desde cuándo es rector?</texto>
+            <respuesta>
+                Fue designado como Rector de la UDI el 16 de junio de 2020.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién era el rector antes?</texto>
+            <respuesta>
+                Antes de Jairo Augusto Castro Castro, el Rector era el doctor Jairo Castro Castro, fundador de la UDI.
+                En 2020, el doctor Jairo Castro pasó a ocupar la Presidencia Institucional y Jairo Augusto Castro asumió la Rectoría.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿El rector es hijo del dueño?</texto>
+            <respuesta>
+                El Rector, Jairo Augusto Castro Castro, es hijo del doctor Jairo Castro Castro, fundador de la UDI.
+                Pero hay un detalle importante: antes de convertirse en Rector ya llevaba más de dos décadas trabajando en diferentes áreas y cargos directivos de la universidad.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿El rector es hijo de Jairo Castro?</texto>
+            <respuesta>
+                Sí. El ingeniero Jairo Augusto Castro Castro es hijo del doctor Jairo Castro Castro, fundador de la UDI.
+                Actualmente tienen cargos diferentes: Jairo Castro Castro es Presidente Institucional y Jairo Augusto Castro Castro es Rector.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué hacía antes de ser rector?</texto>
+            <respuesta>
+                Antes de ser Rector, Jairo Augusto Castro Castro ocupó diferentes cargos dentro de la UDI.
+                Fue Director del Programa de Ingeniería de Sistemas, Vicerrector Administrativo y Financiero, Vicerrector Académico y Vicerrector General, entre otros cargos de dirección.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Cuánto tiempo lleva trabajando en la UDI?</texto>
+            <respuesta>
+                Cuando fue designado Rector en 2020, la UDI informó que llevaba más de dos décadas liderando procesos académicos, administrativos e investigativos dentro de la institución.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿El rector es ingeniero?</texto>
+            <respuesta>
+                Sí. Es Ingeniero de Sistemas.
+                Y además tiene formación en Alta Gerencia, Docencia Universitaria y una Maestría en Educación.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué relación tiene con el fundador?</texto>
+            <respuesta>
+                Jairo Augusto Castro Castro es hijo del doctor Jairo Castro Castro, fundador de la UDI.
+                Actualmente el padre ocupa la Presidencia Institucional y el hijo ocupa la Rectoría.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién es más importante, el presidente o el rector?</texto>
+            <respuesta>
+                Son cargos diferentes dentro de la estructura institucional.
+                El doctor Jairo Castro Castro ocupa la Presidencia Institucional y el ingeniero Jairo Augusto Castro Castro ocupa la Rectoría.
+                La Rectoría está relacionada directamente con la dirección de la universidad y sus procesos académicos y administrativos.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué hace un rector?</texto>
+            <respuesta>
+                El Rector es una de las principales autoridades de una universidad y tiene la responsabilidad de liderar y orientar diferentes procesos académicos, administrativos e institucionales.
+                En la UDI, esa responsabilidad está actualmente a cargo del ingeniero Jairo Augusto Castro Castro.
+            </respuesta>
+        </pregunta>
+    </respuestas_frecuentes>
+</documento>

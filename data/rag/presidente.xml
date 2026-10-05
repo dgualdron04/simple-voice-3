@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento tipo="persona" id="presidente_udi" version="2026-10-05">
+    <titulo>Presidente Institucional y fundador de la UDI: Jairo Castro Castro</titulo>
+
+    <persona>
+        <nombre>Jairo Castro Castro</nombre>
+        <alias>Presidente de la UDI</alias>
+        <alias>Fundador de la UDI</alias>
+        <cargo>Presidente Institucional</cargo>
+        <institucion>Universidad de Investigación y Desarrollo, UDI</institucion>
+        <profesion>Ingeniero Químico</profesion>
+        <lugar_nacimiento>Charalá, Santander</lugar_nacimiento>
+    </persona>
+
+    <resumen>
+        El Dr. Jairo Castro Castro es el fundador de la Universidad de Investigación y Desarrollo, UDI,
+        y actualmente se desempeña como Presidente Institucional de la universidad.
+    </resumen>
+
+    <formacion>
+        <titulo_profesional>Ingeniería Química</titulo_profesional>
+        <universidad>Universidad Industrial de Santander, UIS</universidad>
+        <descripcion>
+            Nació en Charalá, Santander. Se trasladó a Bucaramanga, donde estudió Ingeniería Química en la UIS.
+        </descripcion>
+    </formacion>
+
+    <historia_udi>
+        <origen>
+            La UDI no comenzó directamente como una universidad. Su historia se remonta a los años 80,
+            cuando en Bucaramanga existía una creciente necesidad de formación relacionada con sistemas y tecnología.
+            En ese contexto surgió Centrosistemas, proyecto educativo impulsado por el Dr. Jairo Castro Castro.
+        </origen>
+        <etapas>
+            <etapa anio="1980s">Nace Centrosistemas.</etapa>
+            <etapa anio="1985">Obtiene su Personería Jurídica.</etapa>
+            <etapa anio="1993">Pasa a ser una institución tecnológica.</etapa>
+            <etapa anio="2002">Se convierte en Corporación Universitaria Centrosistemas.</etapa>
+            <etapa anio="2003">Adopta el nombre Corporación Universitaria de Investigación y Desarrollo, UDI.</etapa>
+            <etapa anio="2017">Recibe oficialmente el reconocimiento como Universidad.</etapa>
+        </etapas>
+        <motivacion>
+            El Dr. Jairo Castro identificó una necesidad importante de formación en sistemas en Bucaramanga.
+            Para él, la educación era fundamental para contribuir al desarrollo de la región y del país.
+            El proyecto no fue sencillo: él mismo ha relatado los retos de los primeros años,
+            incluyendo limitaciones de recursos, competencia y largas jornadas de trabajo.
+        </motivacion>
+    </historia_udi>
+
+    <familia>
+        <rector>Ing. Jairo Augusto Castro Castro, Rector de la UDI e hijo del Dr. Jairo Castro Castro.</rector>
+        <vicerrectora_general>Martha Lenis Castro Castro ocupa la Vicerrectoría General.</vicerrectora_general>
+    </familia>
+
+    <naturaleza_juridica>
+        <descripcion>
+            La UDI es una corporación de derecho privado sin ánimo de lucro.
+            No es correcto describirla simplemente como una empresa propiedad de una persona.
+        </descripcion>
+        <gobierno>
+            La Sala General es el máximo órgano de gobierno. El Dr. Jairo Castro Castro ocupa la Presidencia Institucional
+            y el Ing. Jairo Augusto Castro Castro ocupa la Rectoría.
+        </gobierno>
+    </naturaleza_juridica>
+
+    <respuestas_frecuentes>
+        <pregunta>
+            <texto>¿Quién es el dueño de la UDI?</texto>
+            <respuesta>
+                Si te refieres a la persona que fundó la UDI, es el doctor Jairo Castro Castro. Él impulsó este proyecto educativo en los años 80, cuando todavía se llamaba Centrosistemas.
+                Actualmente es el Presidente Institucional de la UDI. Técnicamente es más preciso llamarlo fundador y Presidente Institucional que simplemente dueño.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién fundó la UDI?</texto>
+            <respuesta>
+                La UDI fue fundada por el doctor Jairo Castro Castro. El proyecto comenzó en los años 80 con una institución llamada Centrosistemas, enfocada en la formación relacionada con sistemas y tecnología.
+                Con el paso de los años fue creciendo hasta convertirse en la Universidad de Investigación y Desarrollo.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién creó la Universidad de Investigación y Desarrollo?</texto>
+            <respuesta>
+                El principal fundador de la UDI fue el doctor Jairo Castro Castro. Él inició este proyecto educativo en los años 80, cuando todavía se conocía como Centrosistemas.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién es el presidente de la UDI?</texto>
+            <respuesta>
+                El Presidente Institucional de la UDI es el doctor Jairo Castro Castro, fundador de la universidad.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Jairo Castro todavía está en la UDI?</texto>
+            <respuesta>
+                Sí. Actualmente el doctor Jairo Castro Castro es el Presidente Institucional de la UDI. Así que sigue vinculado directamente con la institución que ayudó a crear.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Jairo Castro es el rector?</texto>
+            <respuesta>
+                No. Actualmente el Rector de la UDI es el ingeniero Jairo Augusto Castro Castro.
+                El doctor Jairo Castro Castro, fundador de la universidad, ocupa el cargo de Presidente Institucional.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿El rector es hijo de Jairo Castro?</texto>
+            <respuesta>
+                Sí. El ingeniero Jairo Augusto Castro Castro, actual Rector de la UDI, es hijo del doctor Jairo Castro Castro, fundador de la universidad.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Cómo empezó la UDI?</texto>
+            <respuesta>
+                La historia comenzó en los años 80 con Centrosistemas. En esa época había una necesidad creciente de formación en sistemas y tecnología en Bucaramanga.
+                El proyecto fue creciendo y pasando por diferentes etapas hasta convertirse oficialmente en universidad en 2017.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Siempre se llamó UDI?</texto>
+            <respuesta>
+                No. Comenzó como Centrosistemas en los años 80. Después pasó por diferentes etapas institucionales hasta adoptar el nombre de Corporación Universitaria de Investigación y Desarrollo, UDI, en 2003.
+                Finalmente, en 2017 recibió el reconocimiento oficial como universidad.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Por qué se creó la UDI?</texto>
+            <respuesta>
+                Según lo contado por su fundador, el doctor Jairo Castro Castro, en aquella época existía una necesidad importante de formación en sistemas en Bucaramanga.
+                Él veía la educación como una herramienta para contribuir al desarrollo de la región y decidió convertir esa necesidad en un proyecto educativo.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿De dónde es Jairo Castro?</texto>
+            <respuesta>
+                El doctor Jairo Castro Castro nació en Charalá, Santander. Posteriormente se trasladó a Bucaramanga, donde estudió Ingeniería Química en la Universidad Industrial de Santander.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué estudió Jairo Castro?</texto>
+            <respuesta>
+                Estudió Ingeniería Química en la Universidad Industrial de Santander, la UIS.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Qué hacía antes de crear la UDI?</texto>
+            <respuesta>
+                Su formación profesional es en Ingeniería Química, pero posteriormente desarrolló un proyecto educativo relacionado con la formación en sistemas y tecnología.
+                Ese proyecto comenzó con Centrosistemas y con el tiempo evolucionó hasta convertirse en la UDI.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿La UDI es de Jairo Castro?</texto>
+            <respuesta>
+                El doctor Jairo Castro Castro es el fundador de la UDI y actualmente es su Presidente Institucional.
+                Sin embargo, la UDI es una corporación de derecho privado sin ánimo de lucro, por lo que no es correcto describirla simplemente como una empresa propiedad de una persona.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién manda en la UDI?</texto>
+            <respuesta>
+                La estructura de gobierno de la UDI tiene diferentes órganos. La Sala General es el máximo órgano de gobierno.
+                Además, actualmente el doctor Jairo Castro Castro ocupa la Presidencia Institucional y el ingeniero Jairo Augusto Castro Castro ocupa la Rectoría.
+            </respuesta>
+        </pregunta>
+
+        <pregunta>
+            <texto>¿Quién es la vicerrectora general?</texto>
+            <respuesta>
+                Martha Lenis Castro Castro ocupa la Vicerrectoría General de la UDI.
+            </respuesta>
+        </pregunta>
+    </respuestas_frecuentes>
+</documento>
