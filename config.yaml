@@ -18,7 +18,7 @@ paths:
 llm:
   provider: "ollama"
   url: "http://localhost:11434/api/generate"
-  model: "qwen2.5:3b-instruct"
+  model: "qwen2.5:3b-instruct-q4_K_M"
   keep_alive: "30m"
   num_ctx: 2048
   default_max_tokens: 70
@@ -26,6 +26,10 @@ llm:
 
 tts:
   provider: "piper"
+
+  # Salida de audio: "local" (parlante/HDMI de este equipo) o "robot_speaker" (parlante del G1)
+  output_device: "robot_speaker"
+  robot_network_interface: "eth0"
 
   # PIPER
   voice_model: "${PIPER_VOICE_MODEL_PATH}"
@@ -48,3 +52,16 @@ assistant:
   max_history_messages: 8
   use_voice: true
   greeting_response: "¡Hola! Estoy muy bien, gracias. ¿Cómo estás? También puedo ayudarte con información de la UDI."
+
+gestures:
+  enabled: true
+  network_interface: "eth0"
+
+vision:
+  enabled: true
+  # llava:7b alucina menos que moondream (mas conservador con imagenes IR de
+  # baja calidad) aunque es mas grande/lento. moondream sigue instalado por
+  # si se quiere volver a algo mas rapido.
+  model: "llava:7b"
+  ollama_url: "http://localhost:11434/api/generate"
+  camera_device: "/dev/video2"

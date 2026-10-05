@@ -18,6 +18,8 @@ settings = get_settings()
 VOICE_MODEL = resolve_path(settings["tts"]["voice_model"])
 OUTPUT_WAV = resolve_path(settings["paths"]["audio_output"])
 INCLUDE_CURRENCY_WORD = settings["tts"].get("include_currency_word", True)
+OUTPUT_DEVICE = settings["tts"].get("output_device", "local")
+ROBOT_NETWORK_INTERFACE = settings["tts"].get("robot_network_interface", "eth0")
 
 _voice = None
 
@@ -273,7 +275,17 @@ def play_wav_with_system(path: str | Path):
     raise RuntimeError("No encontré reproductor WAV compatible.")
 
 
+def play_wav_on_robot_speaker(path: str | Path):
+    from src.robot_speaker import play_wav_on_robot
+
+    play_wav_on_robot(path, network_interface=ROBOT_NETWORK_INTERFACE)
+
+
 def play_wav(path: str | Path):
+    if OUTPUT_DEVICE == "robot_speaker":
+        play_wav_on_robot_speaker(path)
+        return
+
     try:
         play_wav_with_sounddevice(path)
     except Exception:

@@ -275,6 +275,64 @@ def is_thanks(question: str) -> bool:
 
     return any(phrase in q for phrase in thanks_phrases)
 
+def is_handshake_request(question: str) -> bool:
+    q = normalize_question(question)
+
+    handshake_phrases = [
+        "dame la mano",
+        "dame tu mano",
+        "dame la manito",
+        "dame esa mano",
+        "choca esa mano",
+        "chocala",
+        "chócala",
+        "saludame de mano",
+        "salúdame de mano",
+        "estrechame la mano",
+        "estréchame la mano",
+    ]
+
+    return any(phrase in q for phrase in handshake_phrases)
+
+
+def is_vision_request(question: str) -> bool:
+    q = normalize_question(question)
+
+    vision_phrases = [
+        "que ves",
+        "qué ves",
+        "que vez",
+        "qué vez",
+        "que estas viendo",
+        "qué estás viendo",
+        "que puedes ver",
+        "qué puedes ver",
+        "que ve el robot",
+        "qué ve el robot",
+        "dime que ves",
+        "dime qué ves",
+        "cuentame que ves",
+        "cuéntame qué ves",
+    ]
+
+    return any(phrase in q for phrase in vision_phrases)
+
+
+def is_right_hand_wave_request(question: str) -> bool:
+    q = normalize_question(question)
+
+    phrases = [
+        "saludar mano derecha",
+        "saluda mano derecha",
+        "saludar con la mano derecha",
+        "saluda con la mano derecha",
+        "saludar mano der",
+        "saluda mano der",
+    ]
+
+    return any(phrase in q for phrase in phrases)
+
+
 def is_small_talk(question: str) -> bool:
     q = normalize_question(question)
 
@@ -510,6 +568,20 @@ def answer_question(question: str):
             "¡Con gusto! Estoy aquí para ayudarte.",
             "¡De nada! Me alegra poder ayudarte.",
             "Con mucho gusto. ¿Necesitas otra información de la UDI?",
+        ])
+        return finish_answer(answer)
+
+    if is_handshake_request(question):
+        answer = random.choice([
+            "¡Claro que sí! Aquí tienes mi mano.",
+            "¡Con gusto! Te doy la mano.",
+        ])
+        return finish_answer(answer)
+
+    if is_right_hand_wave_request(question):
+        answer = random.choice([
+            "¡Claro! Saludo con la mano derecha.",
+            "¡Aquí va! Un saludo con la derecha.",
         ])
         return finish_answer(answer)
 
