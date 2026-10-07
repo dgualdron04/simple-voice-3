@@ -19,6 +19,10 @@ DB_PATH = resolve_path(settings["paths"]["database"])
 _model = None
 _grammar = None
 
+# Con gramática cerrada la confianza suele ser alta incluso para ruido,
+# así que conviene un umbral más exigente que 0.35. Ajustar probando en sitio.
+MIN_CONFIDENCE = 0.6
+
 
 BASE_GRAMMAR = [
     "zuu",
@@ -324,13 +328,31 @@ def transcribe_audio(audio_path: str | Path) -> str:
 
         result = json.loads(recognizer.FinalResult())
 
-    text = result.get("text", "").strip()
-    confidence = get_average_confidence(result)
+    words = result.get("result", [])
 
-    if confidence and confidence < 0.35:
+    # Con gramática cerrada, Vosk marca como "[unk]" lo que no reconoce
+    # (ruido, voces de fondo). Antes esos "[unk]" llegaban como texto y el
+    # asistente respondía "Solo puedo ayudarte con información de la UDI".
+    known_words = [
+        item for item in words
+        if item.get("word") and item.get("word") != "[unk]"
+    ]
+
+    if not known_words:
         return ""
 
-    return text
+    unk_count = len(words) - len(known_words)
+
+    # Si la mayor parte del audio fue desconocida, es ruido/conversación de fondo.
+    if unk_count > len(known_words):
+        return ""
+
+    confidence = sum(item.get("conf", 0.0) for item in known_words) / len(known_words)
+
+    if confidence < MIN_CONFIDENCE:
+        return ""
+
+    return " ".join(item["word"] for item in known_words).strip()
 
 
 def warm_up_vosk():

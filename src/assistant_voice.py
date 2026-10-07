@@ -13,16 +13,37 @@ from src.assistant import answer_question, set_assistant_mode, get_assistant_mod
 from src.tts import warm_up_tts, speak
 from src.llm import generate_voice_answer
 
+# "su" se quitó: es una palabra muy común en español y Vosk la produce a
+# partir de ruido, lo que activaba a ZUU sin que nadie lo llamara.
 WAKE_WORDS = [
     "zuu",
     "zu",
     "zú",
-    "su",
     "suu",
     "zoo",
-    "oye zuu",
-    "hola zuu",
 ]
+
+# La palabra de activación debe estar entre las primeras palabras de la frase.
+WAKE_WORD_MAX_POSITION = 2
+
+# Respuestas que indican que lo escuchado no era una pregunta útil.
+REJECTION_ANSWERS = [
+    "Solo puedo ayudarte con información relacionada",
+    "No escuché una pregunta",
+]
+
+# Cuántas veces seguidas puede responder "fuera de tema" antes de volver a espera.
+MAX_REJECTIONS_IN_A_ROW = 1
+
+# Pausa tras hablar para que el micrófono no capte el final de la propia voz
+# (el parlante del robot tiene algo de latencia y eco en la sala).
+POST_SPEAK_PAUSE = 0.8
+
+# Palabras sueltas que sí se aceptan en modo conversación.
+SINGLE_WORD_COMMANDS = {
+    "salir", "terminar", "adios", "gracias", "chiste", "hola",
+    "para", "stop", "silencio", "pausa", "espera", "detente", "callate",
+}
 
 BAD_WORDS = [
     "puta",
@@ -203,9 +224,31 @@ def normalize_for_wake(text: str) -> str:
 
 
 def has_wake_word(text: str) -> bool:
-    text = normalize_for_wake(text)
+    words = normalize_for_wake(text).split()
+    first_words = words[:WAKE_WORD_MAX_POSITION]
+    wake_set = {normalize_for_wake(wake) for wake in WAKE_WORDS}
 
-    return any(wake in text for wake in WAKE_WORDS)
+    # Coincidencia por palabra completa: antes "su" coincidía dentro de
+    # "resultado", "usuario", "consulta", etc.
+    return any(word in wake_set for word in first_words)
+
+
+def is_rejection(answer: str) -> bool:
+    return any(answer.startswith(prefix) for prefix in REJECTION_ANSWERS)
+
+
+def looks_like_noise(text: str) -> bool:
+    words = normalize_for_wake(text).split()
+
+    if not words:
+        return True
+
+    # Una sola palabra suelta suele ser ruido que Vosk forzó a la gramática
+    # ("dia", "valor", "hola"...). Solo se aceptan comandos conocidos.
+    if len(words) == 1 and words[0] not in SINGLE_WORD_COMMANDS:
+        return True
+
+    return False
 
 
 def remove_wake_word(text: str) -> str:
@@ -220,7 +263,6 @@ def remove_wake_word(text: str) -> str:
         "zuu",
         "zu",
         "zú",
-        "su",
         "suu",
         "zoo",
     ]
@@ -296,14 +338,18 @@ def speak_fast(text: str, question: str = ""):
     was_interrupted = False
 
     if not was_interrupted:
-        time.sleep(0.3)
+        time.sleep(POST_SPEAK_PAUSE)
 
-def answer_and_speak(question: str, prefix: str = ""):
+def answer_and_speak(question: str, prefix: str = "", speak_rejection: bool = True):
     global last_answer
 
     start = time.time()
 
     answer = answer_question(question)
+
+    if is_rejection(answer) and not speak_rejection:
+        print(f"(Fuera de tema, se ignora en silencio): {question}")
+        return answer
 
     if prefix:
         answer = f"{prefix}{answer}"
@@ -319,7 +365,7 @@ def answer_and_speak(question: str, prefix: str = ""):
     was_interrupted = False
 
     if not was_interrupted:
-        time.sleep(0.3)
+        time.sleep(POST_SPEAK_PAUSE)
 
     return answer
 
@@ -472,6 +518,7 @@ def main():
     conversation_mode = False
     last_interaction = 0
     first_interaction = True
+    rejections_in_a_row = 0
 
     while True:
         try:
@@ -503,6 +550,7 @@ def main():
 
                 conversation_mode = True
                 last_interaction = now
+                rejections_in_a_row = 0
 
                 question = remove_wake_word(heard_text)
                 prefix = ""
@@ -534,7 +582,14 @@ def main():
                 continue
 
             # Si ya está en conversación, no necesita decir ZUU otra vez.
+            said_wake_word = has_wake_word(heard_text)
             question = remove_wake_word(heard_text)
+
+            # Ruido o palabra suelta: se ignora sin hablar y SIN renovar el
+            # tiempo de conversación, para que ZUU vuelva solo a modo espera.
+            if not said_wake_word and looks_like_noise(question):
+                print(f"Parece ruido, se ignora: {heard_text!r}")
+                continue
 
             if normalize_for_wake(question) in ["salir", "terminar", "adios", "adiós"]:
                 conversation_mode = False
@@ -560,7 +615,26 @@ def main():
                 last_interaction = now
                 continue
 
-            answer_and_speak(question)
+            # Solo dice "fuera de tema" si lo llamaron por su nombre o si aún no
+            # lo ha dicho seguido; así no queda en bucle respondiéndole al ruido.
+            allow_rejection = said_wake_word or rejections_in_a_row < MAX_REJECTIONS_IN_A_ROW
+            answer = answer_and_speak(question, speak_rejection=allow_rejection)
+
+            if is_rejection(answer):
+                # Si lo llamaron por su nombre, el rechazo se dijo y no cuenta
+                # para volver a espera.
+                rejections_in_a_row = 0 if said_wake_word else rejections_in_a_row + 1
+
+                if rejections_in_a_row > MAX_REJECTIONS_IN_A_ROW:
+                    conversation_mode = False
+                    mimic_mode = False
+                    rejections_in_a_row = 0
+                    print("Demasiadas entradas fuera de tema. ZUU vuelve a modo espera.")
+
+                # No se renueva last_interaction: el ruido no mantiene viva la conversación.
+                continue
+
+            rejections_in_a_row = 0
             last_interaction = now
 
         except KeyboardInterrupt:
