@@ -64,6 +64,27 @@ def normalize_question(text: str) -> str:
     return text
 
 
+_UDI_PAREN_PATTERN = re.compile(r"\bUDI\s*\(([^)]*)\)", re.IGNORECASE)
+UDI_CORRECT_EXPANSION = "Universidad de Investigación y Desarrollo"
+
+
+def fix_udi_acronym(text: str) -> str:
+    """El LLM a veces 'explica' la sigla UDI con una expansion inventada
+    (p. ej. 'Universidad de Ingeniería y Arquitectura') a pesar de que el
+    prompt ya le dice el significado correcto y le pide no expandirla.
+    Como no es 100% confiable que un modelo tan pequeño siga esa regla,
+    se corrige aqui de forma deterministica cualquier expansion entre
+    parentesis que no sea la correcta."""
+
+    def _replace(match):
+        inner = match.group(1).strip().lower()
+        if "investigaci" in inner and "desarrollo" in inner:
+            return match.group(0)
+        return f"UDI ({UDI_CORRECT_EXPANSION})"
+
+    return _UDI_PAREN_PATTERN.sub(_replace, text)
+
+
 def clean_response(text: str) -> str:
     text = text.strip()
 
@@ -83,6 +104,7 @@ def clean_response(text: str) -> str:
     text = text.replace("*", "")
     text = text.replace("#", "")
     text = re.sub(r"\s+", " ", text)
+    text = fix_udi_acronym(text)
 
     return text.strip()
 
@@ -447,6 +469,30 @@ def is_probably_udi_related(question: str) -> bool:
         "creada",
         "desarrollado",
         "desarrollaron",
+        "rector",
+        "rectoria",
+        "rectoría",
+        "presidente",
+        "presidencia",
+        "jairo",
+        "castro",
+        "fundador",
+        "fundadora",
+        "fundo la udi",
+        "fundó la udi",
+        "dueño",
+        "dueña",
+        "vicerrector",
+        "vicerrectora",
+        "vicerrectoria",
+        "vicerrectoría",
+        "sala general",
+        "autoridades",
+        "directivos",
+        "quien dirige",
+        "quién dirige",
+        "quien maneja",
+        "quién maneja",
     ]
 
     return any(keyword in q for keyword in keywords)
@@ -535,6 +581,7 @@ def build_rag_prompt(question: str, context: str) -> str:
             - No respondas como Wikipedia.
             - No hagas suposiciones.
             - No uses frases como "generalmente", "normalmente", "puede incluir" o "se refiere a".
+            - La sigla UDI significa "Universidad de Investigación y Desarrollo". No expliques ni expandas esa sigla en tu respuesta salvo que te pregunten explícitamente qué significa UDI.
             - Si el contexto no contiene la respuesta exacta, responde únicamente:
             "No encontré esa información en mi base local."
             - Máximo dos frases.
