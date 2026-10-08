@@ -34,6 +34,24 @@ BASE_GRAMMAR = [
     "oye zuu",
     "hey zuu",
     "ok zuu",
+    # Wake word compuesta para el microfono del robot: "zuu" sola se
+    # confundia acusticamente con palabras cortas comunes (tu, si, su), y
+    # "robot" sola genera falsos positivos en frases normales. Combinando
+    # ambas ("robot su", "robot tu"...) se reduce falsos positivos y
+    # negativos. "zuu", "zú" y "sú" no estan en el vocabulario del modelo
+    # Vosk pequeno (vosk-model-small-es-0.42, ver .env), asi que no se usan
+    # como variantes del segundo sonido.
+    "robot",
+    "robot zu",
+    "robot su",
+    "robot suu",
+    "robot zoo",
+    "robot tu",
+    "robot tú",
+    "oye robot",
+    "hola robot",
+    "hey robot",
+    "ok robot",
     "hola suu",
     "hola su",
     "su",
@@ -143,6 +161,170 @@ BASE_GRAMMAR = [
     "zuu callate",
     "zuu cállate",
     "zuu espera",
+
+    # NOTA IMPORTANTE: desde que se cambio al modelo Vosk pequeno
+    # (vosk-model-small-es-0.42, ver .env) la gramatica cerrada SI se
+    # aplica de verdad (antes, con el modelo grande, se ignoraba por
+    # completo -- ver "Runtime graphs are not supported"). Eso significa
+    # que cualquier palabra/frase que el codigo intenta reconocer por
+    # texto (is_handshake_request, is_probably_udi_related, etc. en
+    # assistant.py, o handle_fast_command en assistant_voice_zuu_micro.py)
+    # pero que NO este aqui, es literalmente imposible que Vosk la
+    # transcriba -- ya no hay reconocimiento libre de respaldo. Todo lo
+    # de abajo se agrego para cerrar ese hueco tras detectar que preguntas
+    # como "quien es el rector de la udi" o "dame la mano" no se
+    # reconocian para nada con el modelo pequeno.
+
+    # Rector / presidente / fundador / Jairo Castro
+    "rector",
+    "rectoria",
+    "rectoría",
+    "quien es el rector",
+    "quién es el rector",
+    "rector de la udi",
+    "quien es el rector de la udi",
+    "quién es el rector de la udi",
+    "presidente",
+    "presidencia",
+    "presidente de la udi",
+    "quien es el presidente",
+    "quién es el presidente",
+    "quien es el presidente de la udi",
+    "quién es el presidente de la udi",
+    "fundador",
+    "fundadora",
+    "quien fundo la udi",
+    "quién fundó la udi",
+    "quien es el fundador",
+    "quién es el fundador",
+    "dueño",
+    "dueña",
+    "quien es el dueño",
+    "quién es el dueño",
+    "quien es el dueño de la udi",
+    "quién es el dueño de la udi",
+    "jairo",
+    "castro",
+    "jairo castro",
+    "jairo augusto castro castro",
+    "quien es jairo castro",
+    "quién es jairo castro",
+    "vicerrector",
+    "vicerrectora",
+    "vicerrectoria",
+    "vicerrectoría",
+    "sala general",
+    "autoridades",
+    "directivos",
+    "quien dirige",
+    "quién dirige",
+    "quien dirige la udi",
+    "quién dirige la udi",
+    "quien maneja",
+    "quién maneja",
+    "quien maneja la udi",
+    "quién maneja la udi",
+    "quien te creo",
+    "quién te creó",
+    "quien te hizo",
+    "quién te hizo",
+    "creador",
+    "creado",
+    "creada",
+    "desarrollado",
+    "desarrollaron",
+
+    # Gestos: dar la mano
+    "dame la mano",
+    "dame tu mano",
+    "dame la manito",
+    "dame esa mano",
+    "choca esa mano",
+    "chocala",
+    "chócala",
+    "saludame de mano",
+    "salúdame de mano",
+    "estrechame la mano",
+    "estréchame la mano",
+
+    # Gestos: saludo con la mano derecha
+    "saludar mano derecha",
+    "saluda mano derecha",
+    "saludar con la mano derecha",
+    "saluda con la mano derecha",
+    "saludar mano der",
+    "saluda mano der",
+
+    # Vision (camara)
+    "que ves",
+    "qué ves",
+    "que vez",
+    "qué vez",
+    "que estas viendo",
+    "qué estás viendo",
+    "que puedes ver",
+    "qué puedes ver",
+    "que ve el robot",
+    "qué ve el robot",
+    "dime que ves",
+    "dime qué ves",
+    "cuentame que ves",
+    "cuéntame qué ves",
+
+    # Small talk / cortesia adicional
+    "como vas",
+    "cómo vas",
+    "que haces",
+    "qué haces",
+    "como te llamas",
+    "cómo te llamas",
+    "hey",
+    "holi",
+    "que tal",
+    "qué tal",
+    "muchas gracias",
+    "mil gracias",
+    "te agradezco",
+    "vale gracias",
+    "ok gracias",
+    "listo gracias",
+    "perfecto gracias",
+    "muy amable",
+
+    # Comandos rapidos (handle_fast_command en assistant_voice_zuu_micro.py)
+    "haz un chiste",
+    "cuenta un chiste",
+    "di un chiste",
+    "es un chiste",
+    "modo feria",
+    "activa modo feria",
+    "activar modo feria",
+    "modo normal",
+    "activa modo normal",
+    "desactiva modo feria",
+    "que modo estas usando",
+    "en que modo estas",
+    "modo actual",
+    "calibra ruido",
+    "calibrar ruido",
+    "recalibra ruido",
+    "ajusta microfono",
+    "ajusta micrófono",
+    "imita lo que yo diga",
+    "repite lo que yo diga",
+    "repite lo que diga",
+    "modo loro",
+    "modo imitacion",
+    "modo imitación",
+    "deja de imitar",
+    "salir de modo imitacion",
+    "salir de modo imitación",
+    "desactiva modo loro",
+    "para de repetir",
+    "repite tu respuesta",
+    "repite lo ultimo",
+    "repite lo último",
+    "otra vez",
 ]
 
 
@@ -299,7 +481,7 @@ def get_average_confidence(result: dict) -> float:
     return sum(confidences) / len(confidences)
 
 
-def transcribe_audio(audio_path: str | Path) -> str:
+def transcribe_audio(audio_path: str | Path, min_confidence: float | None = None) -> str:
     audio_path = Path(audio_path)
 
     if not audio_path.exists():
@@ -348,8 +530,9 @@ def transcribe_audio(audio_path: str | Path) -> str:
         return ""
 
     confidence = sum(item.get("conf", 0.0) for item in known_words) / len(known_words)
+    threshold = MIN_CONFIDENCE if min_confidence is None else min_confidence
 
-    if confidence < MIN_CONFIDENCE:
+    if confidence < threshold:
         return ""
 
     return " ".join(item["word"] for item in known_words).strip()

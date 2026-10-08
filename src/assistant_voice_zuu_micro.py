@@ -24,16 +24,50 @@ from src.gesture_triggers import (
     wait_for_active_gestures,
 )
 
+# "zuu" sola se confundia acusticamente con palabras cortas comunes (tu, si,
+# su) y casi nunca se reconocia. "robot" sola tambien genera falsos positivos
+# (aparece en frases normales). Por eso ahora se exige la combinacion
+# "robot" + sonido tipo "zuu" (con varias variantes de como Vosk puede
+# transcribir ese segundo sonido) como palabra de activacion compuesta.
+# Con el modelo Vosk pequeño (gramatica cerrada real, ver .env) las formas
+# "zuu", "zú" y "sú" quedan fuera del vocabulario del modelo y Vosk nunca
+# las puede producir como salida, asi que no sirven como variantes.
 WAKE_WORDS = [
-    "zuu",
-    "zu",
-    "zú",
-    "su",
-    "suu",
-    "zoo",
-    "oye zuu",
-    "hola zuu",
+    "robot zu",
+    "robot su",
+    "robot suu",
+    "robot zoo",
+    "robot tu",
+    "robot tú",
 ]
+
+# La palabra de activación debe estar entre las primeras palabras de la frase.
+WAKE_WORD_MAX_POSITION = 3
+
+# Respuestas que indican que lo escuchado no era una pregunta útil.
+REJECTION_ANSWERS = [
+    "Solo puedo ayudarte con información relacionada",
+    "No escuché una pregunta",
+]
+
+# Cuántas veces seguidas puede responder "fuera de tema" antes de volver a espera.
+MAX_REJECTIONS_IN_A_ROW = 1
+
+# Pausa tras hablar para que el micrófono no capte el final de la propia voz
+# (el parlante del robot tiene algo de latencia y eco en la sala).
+POST_SPEAK_PAUSE = 0.8
+
+# Palabras sueltas que sí se aceptan en modo conversación.
+SINGLE_WORD_COMMANDS = {
+    "salir", "terminar", "adios", "gracias", "chiste", "hola",
+    "para", "stop", "silencio", "pausa", "espera", "detente", "callate",
+}
+
+# El microfono del robot capta mas bajo que el local en el que se calibro
+# el umbral de 0.6 (stt_vosk.MIN_CONFIDENCE). Con ese umbral, una palabra
+# corta y no estandar como "zuu" dicha a volumen normal caia por debajo y
+# Vosk la descartaba -- de ahi que "no se reconociera para nada".
+ROBOT_MIC_MIN_CONFIDENCE = 0.4
 
 BAD_WORDS = [
     "puta",
@@ -228,16 +262,79 @@ def normalize_for_wake(text: str) -> str:
 
 
 def has_wake_word(text: str) -> bool:
-    text = normalize_for_wake(text)
+    words = normalize_for_wake(text).split()
+    wake_set = {normalize_for_wake(wake) for wake in WAKE_WORDS}
+    max_wake_len = max((len(wake.split()) for wake in wake_set), default=1)
 
-    return any(wake in text for wake in WAKE_WORDS)
+    # Ahora la palabra de activación es una frase compuesta ("robot su",
+    # "robot tu"...), así que se busca por palabra completa (evita que "su"
+    # coincida dentro de "resultado", "usuario", etc.) en cualquier posición
+    # que empiece dentro de las primeras WAKE_WORD_MAX_POSITION palabras.
+    for start in range(min(len(words), WAKE_WORD_MAX_POSITION)):
+        for length in range(1, max_wake_len + 1):
+            candidate = " ".join(words[start:start + length])
+
+            if candidate in wake_set:
+                return True
+
+    return False
+
+
+def is_rejection(answer: str) -> bool:
+    return any(answer.startswith(prefix) for prefix in REJECTION_ANSWERS)
+
+
+def looks_like_noise(text: str) -> bool:
+    words = normalize_for_wake(text).split()
+
+    if not words:
+        return True
+
+    # Una sola palabra suelta suele ser ruido que Vosk forzó a la gramática
+    # ("dia", "valor", "hola"...). Solo se aceptan comandos conocidos.
+    if len(words) == 1 and words[0] not in SINGLE_WORD_COMMANDS:
+        return True
+
+    return False
 
 
 def remove_wake_word(text: str) -> str:
     original = text.strip()
+    words = original.split()
+    normalized_words = normalize_for_wake(original).split()
+
+    # Usa la MISMA búsqueda que has_wake_word (cualquier posición dentro de
+    # las primeras WAKE_WORD_MAX_POSITION palabras, no solo al inicio de la
+    # frase). Antes, con "hola robot su algo", has_wake_word encontraba
+    # "robot su" en la posición 1, pero esta función buscaba desde el
+    # principio y cortaba por "hola robot" (que coincide primero en la
+    # lista de abajo), dejando "su algo" en vez de "algo" como pregunta.
+    wake_set = {normalize_for_wake(wake) for wake in WAKE_WORDS}
+    max_wake_len = max((len(wake.split()) for wake in wake_set), default=1)
+
+    for start in range(min(len(normalized_words), WAKE_WORD_MAX_POSITION)):
+        for length in range(max_wake_len, 0, -1):
+            candidate = " ".join(normalized_words[start:start + length])
+
+            if candidate in wake_set:
+                return " ".join(words[start + length:]).strip()
+
     normalized = normalize_for_wake(original)
 
+    # Respaldo para formas antiguas ("zuu", "oye zuu"...) que ya no son
+    # palabra de activación valida pero se siguen usando en STOP_COMMANDS.
     wake_phrases = [
+        "robot zu",
+        "robot su",
+        "robot suu",
+        "robot zoo",
+        "robot tu",
+        "robot tú",
+        "oye robot",
+        "hola robot",
+        "hey robot",
+        "ok robot",
+        "robot",
         "oye zuu",
         "hola zuu",
         "hey zuu",
@@ -245,7 +342,6 @@ def remove_wake_word(text: str) -> str:
         "zuu",
         "zu",
         "zú",
-        "su",
         "suu",
         "zoo",
     ]
@@ -295,7 +391,7 @@ def listen_once(
     if not audio_path:
         return ""
 
-    raw_text = transcribe_audio(audio_path)
+    raw_text = transcribe_audio(audio_path, min_confidence=ROBOT_MIC_MIN_CONFIDENCE)
     fixed_text = fix_stt_text(raw_text)
 
     print(f"Tú bruto: {raw_text}")
@@ -321,14 +417,18 @@ def speak_fast(text: str, question: str = ""):
     was_interrupted = False
 
     if not was_interrupted:
-        time.sleep(0.3)
+        time.sleep(POST_SPEAK_PAUSE)
 
-def answer_and_speak(question: str, prefix: str = ""):
+def answer_and_speak(question: str, prefix: str = "", speak_rejection: bool = True):
     global last_answer
 
     start = time.time()
 
     answer = answer_question(question)
+
+    if is_rejection(answer) and not speak_rejection:
+        print(f"(Fuera de tema, se ignora en silencio): {question}")
+        return answer
 
     if prefix:
         answer = f"{prefix}{answer}"
@@ -344,7 +444,7 @@ def answer_and_speak(question: str, prefix: str = ""):
     was_interrupted = False
 
     if not was_interrupted:
-        time.sleep(0.3)
+        time.sleep(POST_SPEAK_PAUSE)
 
     return answer
 
@@ -448,7 +548,7 @@ def handle_fast_command(question: str):
         return translate_to_mandarin(mandarin_text)
 
     if "mandarin" in q or "mandarin" in q or "mandarín" in question.lower():
-        return "Claro, dime la frase completa. Por ejemplo: ZUU di esto en mandarín, hola cómo estás."
+        return "Claro, dime la frase completa. Por ejemplo: robot su di esto en mandarín, hola cómo estás."
 
     # Repetir algo directo
     repeat_text = text_after_prefix(question, [
@@ -477,14 +577,14 @@ def main():
 
     print("=" * 60)
     print("ZUU - Asistente por voz (micrófono propio del G1)")
-    print("Di 'ZUU' para activarme.")
+    print("Di 'robot su' (o robot zu, robot tu, robot zoo...) para activarme.")
     print("Ejemplos:")
-    print("- ZUU hola")
-    print("- ZUU háblame de ingeniería de sistemas")
-    print("- ZUU modo feria")
-    print("- ZUU haz un chiste")
-    print("- ZUU imita lo que yo diga")
-    print("- ZUU di esto en mandarín hola cómo estás")
+    print("- robot su hola")
+    print("- robot su háblame de ingeniería de sistemas")
+    print("- robot su modo feria")
+    print("- robot su haz un chiste")
+    print("- robot su imita lo que yo diga")
+    print("- robot su di esto en mandarín hola cómo estás")
     print("Para cerrar usa Ctrl + C")
     print("=" * 60)
 
@@ -518,6 +618,7 @@ def _run_loop():
     conversation_mode = False
     last_interaction = 0
     first_interaction = True
+    rejections_in_a_row = 0
 
     while True:
         try:
@@ -526,7 +627,7 @@ def _run_loop():
             if conversation_mode and now - last_interaction > CONVERSATION_TIMEOUT:
                 conversation_mode = False
                 mimic_mode = False
-                print("ZUU volvió a modo espera. Di 'ZUU' para activarlo.")
+                print("ZUU volvió a modo espera. Di 'robot su' para activarlo.")
 
             # Si el turno anterior disparo un gesto (saludo, dar la mano...),
             # se espera a que termine antes de volver a escuchar -- si no,
@@ -536,10 +637,14 @@ def _run_loop():
 
             print("\nEscuchando...")
 
+            # max_seconds y silence_seconds se subieron porque la grabacion
+            # cortaba a mitad de frases largas (0.8s de silencio es muy poco
+            # para una pausa natural al pensar la pregunta completa, y 4-6s
+            # no alcanza para preguntas largas con nombre del programa, etc.)
             heard_text = listen_once(
-                max_seconds=6 if conversation_mode else 4,
+                max_seconds=10 if conversation_mode else 7,
                 min_seconds=0.6,
-                silence_seconds=0.8,
+                silence_seconds=1.3,
                 energy_threshold=voice_threshold,
             )
 
@@ -550,11 +655,12 @@ def _run_loop():
 
             if not conversation_mode:
                 if not has_wake_word(heard_text):
-                    print("No escuché la palabra ZUU. Ignorando...")
+                    print("No escuché la palabra de activación. Ignorando...")
                     continue
 
                 conversation_mode = True
                 last_interaction = now
+                rejections_in_a_row = 0
 
                 question = remove_wake_word(heard_text)
                 maybe_trigger_gestures(question)
@@ -587,13 +693,21 @@ def _run_loop():
                 continue
 
             # Si ya está en conversación, no necesita decir ZUU otra vez.
+            said_wake_word = has_wake_word(heard_text)
             question = remove_wake_word(heard_text)
+
+            # Ruido o palabra suelta: se ignora sin hablar y SIN renovar el
+            # tiempo de conversación, para que ZUU vuelva solo a modo espera.
+            if not said_wake_word and looks_like_noise(question):
+                print(f"Parece ruido, se ignora: {heard_text!r}")
+                continue
+
             maybe_trigger_gestures(question)
 
             if normalize_for_wake(question) in ["salir", "terminar", "adios", "adiós"]:
                 conversation_mode = False
                 mimic_mode = False
-                speak_fast("Modo conversación cerrado. Di ZUU para activarme otra vez.", question)
+                speak_fast("Modo conversación cerrado. Di robot su para activarme otra vez.", question)
                 continue
 
             fast_answer = handle_fast_command(question)
@@ -614,7 +728,26 @@ def _run_loop():
                 last_interaction = now
                 continue
 
-            answer_and_speak(question)
+            # Solo dice "fuera de tema" si lo llamaron por su nombre o si aún no
+            # lo ha dicho seguido; así no queda en bucle respondiéndole al ruido.
+            allow_rejection = said_wake_word or rejections_in_a_row < MAX_REJECTIONS_IN_A_ROW
+            answer = answer_and_speak(question, speak_rejection=allow_rejection)
+
+            if is_rejection(answer):
+                # Si lo llamaron por su nombre, el rechazo se dijo y no cuenta
+                # para volver a espera.
+                rejections_in_a_row = 0 if said_wake_word else rejections_in_a_row + 1
+
+                if rejections_in_a_row > MAX_REJECTIONS_IN_A_ROW:
+                    conversation_mode = False
+                    mimic_mode = False
+                    rejections_in_a_row = 0
+                    print("Demasiadas entradas fuera de tema. ZUU vuelve a modo espera.")
+
+                # No se renueva last_interaction: el ruido no mantiene viva la conversación.
+                continue
+
+            rejections_in_a_row = 0
             last_interaction = now
 
         except KeyboardInterrupt:
