@@ -501,6 +501,10 @@ def ingest_xml_files():
     conn = sqlite3.connect(DB_PATH)
     ensure_schema(conn)
 
+    # Reconstrucción completa: evita filas duplicadas cuando cambia la ruta del XML entre equipos.
+    for table in ("documents_fts", "program_fields", "programs"):
+        conn.execute(f"DELETE FROM {table}")
+
     xml_files = sorted(XML_DIR.glob("*.xml"))
 
     if not xml_files:

@@ -3,7 +3,7 @@ robot:
   id: g1
   name: Zuu
   model: Unitree G1 EDU
-  aliases: [zu, zuu, suu, zoo, su, sus, asume]
+  aliases: [zu, zuu, suu, zoo, su, sus]
 audio:
   input_device: null        # POR VERIFICAR: nombre del arreglo de micrófonos en ALSA (arecord -l)
   output_device: null       # POR VERIFICAR: parlante del G1 vía DDS no implementado; usar salida local/USB

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento tipo="udi_institucional" id="udi_institucional" version="2026-10-12">
+    <titulo>Información institucional de la Universidad de Investigación y Desarrollo, UDI</titulo>
+
+    <institucion>
+        <nombre>Universidad de Investigación y Desarrollo</nombre>
+        <sigla>UDI</sigla>
+        <ciudad>Bucaramanga</ciudad>
+        <departamento>Santander</departamento>
+        <pais>Colombia</pais>
+        <direccion>Calle 9 número 23-55</direccion>
+        <telefonos>
+            <pbx_1>6076352525</pbx_1>
+            <pbx_2>6076855117</pbx_2>
+            <movil>573156888530</movil>
+        </telefonos>
+        <correo_contacto>rectoria@udi.edu.co</correo_contacto>
+        <correo_facturacion>recepcionfacturacion@udi.edu.co</correo_facturacion>
+    </institucion>
+
+    <reconocimiento_legal>
+        <supervision>La UDI es una institución sujeta a inspección y vigilancia por el Ministerio de Educación Nacional.</supervision>
+        <personeria_juridica>Personería Jurídica número 22195 de 1985 del Ministerio de Educación Nacional</personeria_juridica>
+        <reconocimiento_universidad>Resolución 15422 del Ministerio de Educación Nacional, del 3 de agosto de 2017, que le otorgó el reconocimiento como universidad</reconocimiento_universidad>
+    </reconocimiento_legal>
+
+    <respuestas_frecuentes>
+        <pregunta>
+            <texto>¿Dónde queda la UDI? ¿Cuál es la dirección?</texto>
+            <respuesta>La UDI queda en la Calle 9 número 23-55, en Bucaramanga, Santander, Colombia.</respuesta>
+        </pregunta>
+        <pregunta>
+            <texto>¿Cuál es el teléfono de la UDI?</texto>
+            <respuesta>El PBX de la UDI es 607 635 2525, y también 607 685 5117. El móvil es 315 688 8530.</respuesta>
+        </pregunta>
+        <pregunta>
+            <texto>¿Cuál es el correo de la UDI?</texto>
+            <respuesta>El correo de contacto de la UDI es rectoria arroba udi punto edu punto co.</respuesta>
+        </pregunta>
+        <pregunta>
+            <texto>¿La UDI es una universidad reconocida? ¿Tiene personería jurídica?</texto>
+            <respuesta>Sí. Tiene personería jurídica número 22195 de 1985 y fue reconocida como universidad por el Ministerio de Educación Nacional mediante la resolución 15422 del 3 de agosto de 2017. Está sujeta a inspección y vigilancia del Ministerio.</respuesta>
+        </pregunta>
+    </respuestas_frecuentes>
+</documento>

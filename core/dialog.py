@@ -109,6 +109,7 @@ class DialogEngine:
         self.wake_mode = settings["wake"]["mode"]
         self.session_secs = settings["wake"]["session_secs"]
         self.greetings = {v.norm(g) for g in settings["wake"]["greetings"]}
+        self.wake_prefix = v.norm(settings["wake"]["prefix"])
         self.mode = settings["dialog"]["mode"]
         self.echo_similarity = settings["dialog"]["echo_similarity"]
         self.store = store
@@ -159,12 +160,21 @@ class DialogEngine:
         return False
 
     def _wake(self, text: str) -> tuple[bool, str]:
-        """(activó, resto). Alias o saludo en las primeras 3 palabras."""
+        """(activó, resto). Frase de activación: «robot» + nombre del robot, en las primeras palabras.
+
+        Acepta «hola robot zuu», «oye robot axl» y nombres partidos por Whisper («team su»).
+        """
         original = text.split()
-        for i, raw in enumerate(original[:3]):
-            parts = v.words(raw)
-            if parts and (parts[0] in self.aliases or parts[0] in self.greetings):
-                return True, " ".join(original[i + 1:]).strip(" ,.")
+        normalized = [(v.words(raw) or [""])[0] for raw in original]
+        for i, word in enumerate(normalized[:4]):
+            if word != self.wake_prefix:
+                continue
+            nxt = normalized[i + 1] if i + 1 < len(normalized) else ""
+            nxt2 = normalized[i + 2] if i + 2 < len(normalized) else ""
+            if nxt in self.aliases:
+                return True, " ".join(original[i + 2:]).strip(" ,.")
+            if nxt and nxt2 and (nxt + nxt2) in self.aliases:
+                return True, " ".join(original[i + 3:]).strip(" ,.")
         return False, text
 
     # --------------------------------------------------------------- manejo
@@ -187,11 +197,6 @@ class DialogEngine:
             if not woke:
                 return []
             text = rest
-            while text:                       # "hola zuu ..." / "oye zuu, ..."
-                first = v.words(text.split()[0])
-                if not first or not (first[0] in self.aliases or first[0] in self.greetings):
-                    break
-                text = " ".join(text.split()[1:]).strip(" ,.")
             if not text:
                 self._touch()
                 return [Say(f"Hola, soy {self.robot_name}. ¿En qué te puedo ayudar?")]
@@ -322,6 +327,11 @@ class _Knowledge:
 
     def answer(self, question: str) -> str | None:
         self._load()
+        if self._sa.detect_program(question) is None:
+            from core.knowledge.institution import institutional_answer
+            fact = institutional_answer(question)
+            if fact:
+                return fact
         return self._rr.answer_reasoning_question(question) or self._sa.answer_exact(question)
 
     def is_udi_related(self, question: str) -> bool:

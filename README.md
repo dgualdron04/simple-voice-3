@@ -43,8 +43,9 @@ mic → VAD Silero → Whisper → DialogProcessor ─┬─ respuesta directa (
      (`TailMuteStrategy` + segunda barrera en `DialogProcessor`).
   2. Filtro de texto: descarta transcripciones casi idénticas a lo último que dijo el robot.
   3. Filtro de alucinaciones de Whisper (“gracias por ver el video”, “subtítulos…”) y de ruido (palabras sueltas).
-  4. Palabra de activación por texto (`wake.mode: text`): nombre del robot o un saludo en las 3 primeras
-     palabras; luego la sesión dura `session_secs` sin repetirlo.
+  4. Activación por texto: «**robot** + nombre del robot» (p. ej. «robot Zuu», «robot Axl», «robot Teamsu»; también
+     «hola robot Zuu»). Los nombres y variantes que Whisper suele oír mal están en `robot.aliases` de cada YAML.
+     Luego la sesión dura `wake.session_secs` sin repetirlo. Un robot ignora la frase de otro.
   5. Todo flujo tiene reintentos acotados y caducidad por inactividad; una excepción en el diálogo se
      captura y el robot sigue escuchando.
   6. Si Ollama no está, el robot sigue con respuestas directas y avisa; no se queda mudo ni reintentando.
@@ -147,7 +148,9 @@ data/            zuu.db (conocimiento UDI), rag/*.xml; (local, ignorado) registr
 legacy/          prototipo anterior (Vosk+Ollama por /api/generate, visión, emociones); solo referencia, ya no corre
 ```
 
-Reingestar conocimiento (tras editar `data/rag/*.xml`): `python -m core.knowledge.xml_ingest`.
+Reingestar conocimiento (tras editar `data/rag/*.xml`): `python -m core.knowledge.xml_ingest` (reconstruye la base completa, sin duplicados).
+Datos básicos de la UDI (dirección, teléfonos, correo, personería, reconocimiento): `data/rag/udi_institucional.xml`, respondidos sin LLM (`core/knowledge/institution.py`).
+`data/rag/udi.xml` aún describe a «ZUU»: para Axl y Teamsu conviene una versión con su nombre.
 
 ## Qué se dejó fuera (decisión: ver plan aprobado)
 Visión (llava), motor de emociones, modo imitación/mandarín y chistes por LLM quedaron en `legacy/`.

@@ -3,7 +3,7 @@ robot:
   id: h2
   name: Teamsu
   model: Unitree H2 EDU
-  aliases: [teamsu, tim su, timsu, team su, tinsu]
+  aliases: [teamsu, timsu, tinsu, tamsu, teansu]
 audio:
   input_device: null        # POR VERIFICAR
   barge_in: false

@@ -59,6 +59,7 @@ DEFAULTS: dict = {
     },
     "wake": {
         "mode": "text",             # text | none
+        "prefix": "robot",          # se activa con «robot» + nombre del robot
         "session_secs": 45,
         "greetings": ["hola", "buenas", "buenos dias", "buen dia", "buenas tardes", "buenas noches", "hey", "oye"],
     },
