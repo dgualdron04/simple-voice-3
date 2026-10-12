@@ -1,0 +1,28 @@
+# Zuu - Unitree G1 EDU (Jetson Orin NX, por verificar 8 o 16 GB; arreglo de 4 micrófonos; parlante 5 W).
+robot:
+  id: g1
+  name: Zuu
+  model: Unitree G1 EDU
+  aliases: [zu, zuu, suu, zoo]
+audio:
+  input_device: null        # POR VERIFICAR: nombre del arreglo de micrófonos en ALSA (arecord -l)
+  output_device: null       # POR VERIFICAR: parlante del G1 vía DDS no implementado; usar salida local/USB
+  barge_in: false           # sin AEC: half-duplex
+  post_speech_mute_secs: 0.9
+stt:
+  model: small              # en Jetson: whisper.cpp + CUDA (por verificar integración); aquí faster-whisper
+  device: cuda
+  compute_type: int8_float16
+llm:
+  model: qwen3:4b-instruct  # POR VERIFICAR tag exacto; ver README
+  max_tokens: 80
+tts: {engine: piper, voice: "test_epoch10100/zuu_10100"}
+persona: >
+  Eres Zuu, asistente virtual de la UDI en un robot humanoide. Hablas en español colombiano,
+  amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
+gestures:
+  adapter: g1
+  allowed: [saludar, dar_mano]
+  g1:
+    network_interface: eth0
+    poses_dir: poses_guardadas   # POR VERIFICAR: copiar las poses a este directorio del robot

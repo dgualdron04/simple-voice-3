@@ -1,0 +1,24 @@
+# Axl - Unitree Go2 X con módulo externo (Jetson Orin Nano Super/NX + altavoz-micrófono USB con AEC por hardware).
+robot:
+  id: go2x
+  name: Axl
+  model: Unitree Go2 X
+  aliases: [axl, axel, accel, ax]
+audio:
+  input_device: USB        # fragmento del nombre del altavoz-micrófono USB (por verificar)
+  output_device: USB
+  barge_in: true           # AEC por hardware -> se puede interrumpir al robot (probar; si se oye a sí mismo poner false)
+  post_speech_mute_secs: 0.3
+stt:
+  model: base
+  device: cuda
+  compute_type: int8_float16
+llm:
+  model: qwen3:4b-instruct  # POR VERIFICAR
+  max_tokens: 70
+persona: >
+  Eres Axl, asistente virtual de la UDI en un robot cuadrúpedo. Hablas en español colombiano,
+  amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
+gestures:
+  adapter: simulated        # Go2: por verificar si Ethernet/WiFi propio expone API de gestos
+  enabled: false

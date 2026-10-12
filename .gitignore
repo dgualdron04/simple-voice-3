@@ -1,15 +1,18 @@
-./.venv/
-.venv
+.venv/
+__pycache__/
+*.pyc
 .env
-./voices/
-/voices/*
-!voices/test_esp_500_epoch_10100
-/data/zuu_backup*
-* copy.py
-* copy_*.py
-*-old.py
-*-old*.py
-model/*
-/model/*
-./model/*
-vosk-*
+# modelos pesados y voces: se descargan aparte (ver README)
+model/
+voices/
+# datos locales sensibles
+data/registros.db
+data/registros.key
+data/export/
+data/audio/
+data/zuu_backup*
+poses_guardadas/
+.pytest_cache/
+
+legacy/**/*-old*.py
+legacy/**/* copy.py

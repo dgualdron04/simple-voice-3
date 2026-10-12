@@ -1,0 +1,23 @@
+# Teamsu - Unitree H2 EDU (Jetson AGX Thor 128 GB). Todo el stack corre en la Thor; el i5 (locomoción) no se toca.
+robot:
+  id: h2
+  name: Teamsu
+  model: Unitree H2 EDU
+  aliases: [teamsu, tim su, timsu, team su, tinsu]
+audio:
+  input_device: null        # POR VERIFICAR
+  barge_in: false
+stt:
+  model: large-v3-turbo     # POR VERIFICAR: no está en la caché local; ver README
+  device: cuda
+  compute_type: float16
+llm:
+  model: qwen3:30b-a3b-instruct-2507   # POR VERIFICAR tag exacto
+  max_tokens: 110
+tts: {engine: piper, voice: "test_epoch10100/zuu_10100"}   # Kokoro es opción (por verificar voz en español)
+persona: >
+  Eres Teamsu, asistente virtual de la UDI en un robot humanoide grande. Hablas en español colombiano,
+  amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
+gestures:
+  adapter: simulated        # H2: gestos DESACTIVADOS hasta confirmar SDK/API de brazos (por verificar)
+  enabled: false
