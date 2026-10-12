@@ -47,7 +47,7 @@ DEFAULTS: dict = {
         "base_url": "http://localhost:11434/v1",
         "model": "qwen2.5:3b-instruct-zuu",
         "max_tokens": 90,
-        "temperature": 0.4,
+        "temperature": 0.25,
         "history_messages": 6,
     },
     "tts": {

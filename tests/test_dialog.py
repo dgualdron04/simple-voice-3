@@ -128,3 +128,25 @@ def test_single_word_noise_ignored_in_session(setup):
     engine, _, _ = setup
     engine.handle("hola zuu")
     assert engine.handle("mesa") == []
+
+
+def test_whisper_hears_name_as_su(setup):
+    engine, _, _ = setup
+    assert "Zuu" in says(engine.handle("Hola, su."))
+
+
+def test_cuanto_vale_is_answered_without_llm(setup):
+    engine, _, _ = setup
+    out = engine.handle("Hola asume puedes decir cuánto vale negocios internacionales?")
+    assert out and all(isinstance(a, Say) for a in out) and "2.491.900" in says(out)
+
+
+def test_phone_dictated_in_chunks(setup):
+    engine, _, store = setup
+    engine.handle("zuu que me llamen")
+    engine.handle("sí autorizo")
+    assert "continúa" in says(engine.handle("304"))
+    assert "continúa" in says(engine.handle("338"))
+    assert "Confirmemos" in says(engine.handle("0795"))
+    engine.handle("sí")
+    assert store.fetch_all()[0]["telefono"] == "3043380795"

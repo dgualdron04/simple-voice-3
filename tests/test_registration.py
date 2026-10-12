@@ -138,7 +138,7 @@ def test_correction_loop(store):
 def test_bad_phone_gives_up_without_saving(store):
     flow = make_flow(store, kind="phone", retries=2)
     flow.start()
-    reply = run(flow, "sí", "uno dos", "tres", "cuatro")
+    reply = run(flow, "sí", "uno dos", "dos tres", "cuatro cinco")
     assert reply.done and store.count() == 0
 
 

@@ -105,7 +105,6 @@ class DialogProcessor(FrameProcessor):
             elif isinstance(action, Say):
                 logger.info(f"Robot: {action.text}")
                 self.engine.note_bot_said(action.text)
-                self.context.add_message({"role": "assistant", "content": action.text})
                 await self.push_frame(TTSSpeakFrame(action.text))
 
         if llm_action is None:
@@ -191,7 +190,8 @@ def build_task(settings: dict | None = None, llm_ok: bool = True) -> tuple[Pipel
     mute = [TailMuteStrategy(audio["post_speech_mute_secs"])] if half_duplex else []
     user_agg, assistant_agg = LLMContextAggregatorPair(
         context,
-        user_params=LLMUserAggregatorParams(vad_analyzer=build_vad(settings), user_mute_strategies=mute),
+        user_params=LLMUserAggregatorParams(vad_analyzer=build_vad(settings), user_mute_strategies=mute,
+                                      empty_user_turn=None),
     )
 
     dialog = DialogProcessor(engine, gestures, context, half_duplex, audio["post_speech_mute_secs"], llm_ok)

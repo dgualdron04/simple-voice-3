@@ -95,14 +95,22 @@ def spoken_to_digits(text: str) -> str:
     return "".join(out)
 
 
+def is_partial_phone(digits: str) -> bool:
+    """Dígitos que aún pueden completar un número válido (celular 3xx... / fijo 60...)."""
+    return 0 < len(digits) < 10 and (digits.startswith("3") or digits.startswith("60") or digits.startswith("5"))
+
+
 def parse_phone(text: str) -> str | None:
     """Celular colombiano (10 dígitos, empieza en 3) o fijo (7 dígitos, o 10 con 60)."""
-    digits = spoken_to_digits(text)
+    return phone_from_digits(spoken_to_digits(text))
+
+
+def phone_from_digits(digits: str) -> str | None:
     if digits.startswith("57") and len(digits) == 12:
         digits = digits[2:]
     if len(digits) == 10 and (digits.startswith("3") or digits.startswith("60")):
         return digits
-    if len(digits) == 7:
+    if len(digits) == 7 and not digits.startswith("3"):
         return digits
     return None
 

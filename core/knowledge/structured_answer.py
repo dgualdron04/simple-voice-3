@@ -277,7 +277,7 @@ def detect_program(question: str):
 def detect_intent(question: str):
     q = normalize(question)
 
-    if any(word in q for word in ["cuanto cuesta", "valor", "precio", "costo", "matricula", "matrícula"]):
+    if any(word in q for word in ["cuanto cuesta", "cuanto vale", "cuanto pago", "cuanto cobran", "cuanto sale", "valor", "precio", "costo", "matricula", "matrícula"]):
         if any(word in q for word in ["virtual"]):
             return "valor_virtual"
 
@@ -289,7 +289,7 @@ def detect_intent(question: str):
 
         return "valor"
 
-    if any(word in q for word in ["cuanto dura", "duracion", "duración", "semestres"]):
+    if any(word in q for word in ["cuanto dura", "cuanto tiempo", "cuanto demora", "cuantos semestres", "duracion", "duración", "semestres"]):
         return "duracion"
 
     if any(word in q for word in ["modalidad", "presencial", "virtual"]):

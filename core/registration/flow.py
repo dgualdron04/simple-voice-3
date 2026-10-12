@@ -64,6 +64,8 @@ class RegistrationFlow:
     program: ProgramInfo | None = None
     consent_at: str | None = None
     failures: int = 0
+    _phone_partial: str = ""
+    _partial_turns: int = 0
     queue: list[str] = field(default_factory=list)   # campos por (re)preguntar antes de confirmar
 
     # ---------------------------------------------------------------- inicio
@@ -163,10 +165,18 @@ class RegistrationFlow:
         return self._fail("No te entendí el nombre. ¿Me lo repites despacio?", self._give_up)
 
     def _on_telefono(self, text: str) -> FlowReply:
-        phone = v.parse_phone(text)
+        # Quien dicta un número suele hacer pausas: se acumulan los dígitos de varios turnos.
+        digits = self._phone_partial + v.spoken_to_digits(text)
+        phone = v.phone_from_digits(digits)
         if phone:
+            self._phone_partial = ""
             self.data["telefono"] = phone
             return self._next_field()
+        if v.is_partial_phone(digits) and self._partial_turns < 4:
+            self._phone_partial = digits
+            self._partial_turns += 1
+            return FlowReply(["Te escucho, continúa."])
+        self._phone_partial, self._partial_turns = "", 0
         return self._fail("No alcancé a captar el teléfono. Repítelo dígito por dígito, por favor.", self._give_up)
 
     def _on_correo(self, text: str) -> FlowReply:

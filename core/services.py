@@ -89,6 +89,29 @@ def build_vad(settings: dict) -> SileroVADAnalyzer:
     )
 
 
+def build_stt_prompt(settings: dict) -> str:
+    """Vocabulario del dominio para que Whisper acierte nombres propios y carreras."""
+    import re
+    import sqlite3
+
+    parts = [settings["stt"].get("initial_prompt") or ""]
+    parts.append(f"Habla con {settings['robot']['name']}.")
+    try:
+        xml_dir = resolve_path(settings["paths"]["xml_dir"])
+        for file, cargo in (("rector.xml", "Rector"), ("presidente.xml", "Presidente")):
+            match = re.search(r"<nombre>([^<]+)</nombre>", (xml_dir / file).read_text(encoding="utf-8"))
+            if match:
+                parts.append(f"{cargo}: {match.group(1).strip()}.")
+        conn = sqlite3.connect(resolve_path(settings["paths"]["database"]))
+        names = sorted({r[0] for r in conn.execute("SELECT nombre FROM programs") if r[0]})
+        conn.close()
+        if names:
+            parts.append("Programas: " + ", ".join(names) + ".")
+    except Exception as error:      # sin base de conocimiento todavía: prompt básico
+        print(f"[stt] prompt de dominio parcial ({error})")
+    return " ".join(p for p in parts if p)
+
+
 def build_stt(settings: dict) -> SpanishWhisperSTT:
     c = settings["stt"]
     return SpanishWhisperSTT(
@@ -97,7 +120,7 @@ def build_stt(settings: dict) -> SpanishWhisperSTT:
         compute_type=c["compute_type"],
         settings=WhisperSTTService.Settings(
             model=c["model"], language=Language.ES, no_speech_prob=c["no_speech_prob"],
-            initial_prompt=c.get("initial_prompt"),
+            initial_prompt=build_stt_prompt(settings),
         ),
     )
 

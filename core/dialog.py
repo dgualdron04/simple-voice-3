@@ -70,7 +70,7 @@ UDI_KEYWORDS = (
     "semestre", "duracion", "modalidad", "jornada", "snies", "resolucion", "creditos", "contacto", "correo",
     "telefono", "malla", "materias", "asignaturas", "plan de estudios", "campo laboral", "ingenieria", "derecho",
     "negocios", "administracion", "comunicacion", "criminalistica", "diseno", "ecopetrol", "rector", "presidente",
-    "requisitos", "inscripcion", "admision", "becas", "beca", "sede", "titulo", "acreditad", "registro calificado",
+    "requisitos", "inscripcion", "tu creador", "quien te creo", "te hizo", "te crearon", "te desarrollo", "zuu", "tu nombre", "admision", "becas", "beca", "sede", "titulo", "acreditad", "registro calificado",
 )
 FOLLOW_UP = ("cuanto cuesta", "cuanto vale", "valor", "precio", "costo", "cuanto dura", "duracion", "modalidad",
              "jornada", "malla", "materias", "creditos", "snies", "resolucion", "contacto", "correo", "telefono",
