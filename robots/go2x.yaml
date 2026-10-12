@@ -17,7 +17,7 @@ llm:
   model: qwen3:4b-instruct  # POR VERIFICAR
   max_tokens: 70
 persona: >
-  Eres Axl, asistente virtual de la UDI en un robot cuadrúpedo. Hablas en español colombiano,
+  Eres Axl, asistente virtual de la UDI (Universidad de Investigación y Desarrollo, en Bucaramanga, Colombia) en un robot cuadrúpedo. Hablas en español colombiano,
   amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
 gestures:
   adapter: simulated        # Go2: por verificar si Ethernet/WiFi propio expone API de gestos

@@ -77,6 +77,9 @@ FOLLOW_UP = ("cuanto cuesta", "cuanto vale", "valor", "precio", "costo", "cuanto
              "nocturna", "nocturno", "noche", "diurna", "diurno", "virtual", "presencial", "semestre",
              "semestres", "costo total", "valor total", "que puedo trabajar", "campo laboral")
 
+INTERROGATIVES = ("cuanto", "cuantos", "cuanta", "cuantas", "cual", "cuales", "quien", "quienes",
+                 "como", "donde", "cuando", "porque", "hay", "tiene", "tienen", "existe")
+
 NO_INFO = ("No tengo ese dato en mi información. Si quieres, dejo tu teléfono para que un asesor de "
            "admisiones te llame. ¿Lo hacemos?")
 
@@ -100,6 +103,8 @@ def clean_for_voice(text: str, max_chars: int) -> str:
 
 
 class DialogEngine:
+    PREFIX_ONLY = {"robot", "robots", "roboto", "robotica", "robotico", "robotito"}
+
     def __init__(self, settings: dict, store: RegistrationStore | None = None,
                  knowledge=None, clock: Callable[[], float] = time.monotonic):
         self.settings = settings
@@ -110,6 +115,7 @@ class DialogEngine:
         self.session_secs = settings["wake"]["session_secs"]
         self.greetings = {v.norm(g) for g in settings["wake"]["greetings"]}
         self.wake_prefix = v.norm(settings["wake"]["prefix"])
+        self._wake_targets = [self.wake_prefix + a for a in self.aliases if len(a) >= 2]
         self.mode = settings["dialog"]["mode"]
         self.echo_similarity = settings["dialog"]["echo_similarity"]
         self.store = store
@@ -121,6 +127,7 @@ class DialogEngine:
         self.last_program: str | None = None
         self.last_said = ""
         self._recent_bot: deque[str] = deque(maxlen=5)
+        self._asked = False
 
     # ------------------------------------------------------------- estado
     def note_bot_said(self, text: str) -> None:
@@ -175,6 +182,15 @@ class DialogEngine:
                 return True, " ".join(original[i + 2:]).strip(" ,.")
             if nxt and nxt2 and (nxt + nxt2) in self.aliases:
                 return True, " ".join(original[i + 3:]).strip(" ,.")
+
+        # Whisper suele fundir o deformar «robot zuu» («rotsu», «rhozu», «robozu»): coincidencia difusa.
+        for i, word in enumerate(normalized[:3]):
+            for span in (1, 2):
+                candidate = "".join(normalized[i:i + span])
+                if len(candidate) < 4 or "robot" in candidate:
+                    continue
+                if max(SequenceMatcher(None, candidate, t).ratio() for t in self._wake_targets) >= 0.65:
+                    return True, " ".join(original[i + span:]).strip(" ,.")
         return False, text
 
     # --------------------------------------------------------------- manejo
@@ -190,6 +206,7 @@ class DialogEngine:
             else:
                 return self._flow_turn(text)
 
+        self._asked = "?" in text               # Whisper puntúa; fix_stt_text la borra
         text = fix_stt_text(text) or text      # corrige nombres de carreras mal oídos
         woke = False
         if self.wake_mode == "text" and now >= self.session_until:
@@ -233,7 +250,7 @@ class DialogEngine:
         # oferta pendiente ("¿dejo tu teléfono?")
         if self.offer_pending:
             self.offer_pending = False
-            answer = v.is_yes(text)
+            answer = v.is_yes(text) if len(w) <= 3 else None     # frase larga = pregunta nueva
             if answer is True:
                 return self._start_flow("phone")
             if answer is False:
@@ -267,11 +284,11 @@ class DialogEngine:
                 return [Gesture(name), Say(_gesture_line(name))]
 
         # respuestas instantáneas
-        if t in self.greetings or t in {f"hola {a}" for a in self.aliases}:
+        if len(w) <= 3 and w[0] in self.greetings and not _asks_info(t):
             return [Say(f"¡Hola! Soy {self.robot_name}. ¿En qué te ayudo?")]
         if any(s in t for s in THANKS) and len(w) <= 5:
             return [Say(random.choice(["¡Con gusto!", "¡De nada! Aquí estoy para ayudarte.", "Con mucho gusto."]))]
-        if any(s in t for s in SMALL_TALK) and len(w) <= 6:
+        if any(s in t for s in SMALL_TALK) and len(w) <= 12:
             if "quien eres" in t or "te llamas" in t or "tu nombre" in t:
                 return [Say(f"Soy {self.robot_name}, el asistente virtual de la UDI. Puedo contarte de los programas y ayudarte a inscribirte.")]
             return [Say("Muy bien, gracias. ¿Y tú? ¿En qué te puedo ayudar?")]
@@ -280,7 +297,7 @@ class DialogEngine:
 
     def _answer(self, text: str) -> list[Action]:
         question = self.k.with_context(text, self)
-        direct = self.k.answer(question)
+        direct = self.k.answer(question, self._asked)
         if direct:
             return [Say(clean_for_voice(direct, self._max_chars()))]
 
@@ -319,27 +336,54 @@ class _Knowledge:
     def __init__(self):
         self._sa = None
         self._rr = None
+        self._names: set[str] | None = None
 
     def _load(self):
         if self._sa is None:
             from core.knowledge import rag_reasoner, structured_answer
             self._sa, self._rr = structured_answer, rag_reasoner
 
-    def answer(self, question: str) -> str | None:
+    def answer(self, question: str, asked: bool = False) -> str | None:
         self._load()
         if self._sa.detect_program(question) is None:
             from core.knowledge.institution import institutional_answer
             fact = institutional_answer(question)
             if fact:
                 return fact
-        return self._rr.answer_reasoning_question(question) or self._sa.answer_exact(question)
+        direct = self._rr.answer_reasoning_question(question) or self._sa.answer_exact(question)
+        if direct:
+            return direct
+        program = self._sa.detect_program(question)
+        t = " ".join(tokens(question))
+        if program is not None and not asked and not any(q in t.split() for q in INTERROGATIVES):
+            return self._sa.answer_exact(f"háblame de {self._sa.row_get(program, 'nombre')}")
+        return None
 
     def is_udi_related(self, question: str) -> bool:
         self._load()
         if self._sa.detect_program(question) is not None:
             return True
         t = " ".join(tokens(question))
-        return any(k in t for k in UDI_KEYWORDS)
+        if any(k in t for k in UDI_KEYWORDS):
+            return True
+        return bool(self._name_tokens() & set(t.split()))
+
+    def _name_tokens(self) -> set[str]:
+        """Palabras de los títulos de documentos no-programa (rector, presidente, empresas...)."""
+        if self._names is None:
+            import sqlite3
+            self._names = set()
+            try:
+                from core.config import get_settings, resolve_path
+                conn = sqlite3.connect(resolve_path(get_settings()["paths"]["database"]))
+                titles = [r[0] for r in conn.execute("SELECT title FROM documents_fts WHERE program_id IS NULL")]
+                conn.close()
+                skip = {"informacion", "institucional", "personal", "empresa", "visitante", "universidad", "investigacion", "desarrollo"}
+                for title in titles:
+                    self._names |= {x for x in tokens(title) if len(x) >= 4 and x not in skip}
+            except Exception:
+                pass
+        return self._names
 
     def context(self, question: str) -> str:
         self._load()

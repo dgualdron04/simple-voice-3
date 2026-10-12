@@ -178,3 +178,48 @@ def test_institutional_facts_are_exact(setup, question, expected):
     engine, _, _ = setup
     out = engine.handle(question)
     assert all(isinstance(a, Say) for a in out) and expected in says(out)
+
+
+@pytest.mark.parametrize("heard", ["Hola, Rotsu.", "Hola, Rhozu.", "Hola, Rho Zuu.", "robozu", "Hola, robot Zuu."])
+def test_fuzzy_wake_for_whisper_mishearings(setup, heard):
+    engine, _, _ = setup
+    assert "Zuu" in says(engine.handle(heard))
+
+
+def test_robot_word_alone_does_not_wake(setup):
+    engine, _, _ = setup
+    assert engine.handle("los robots son muy útiles en la industria") == []
+
+
+def test_tell_me_about_the_university_is_answered(setup):
+    engine, _, _ = setup
+    out = engine.handle("robot zuu quisiera que me hablaras sobre la universidad")
+    assert all(isinstance(a, Say) for a in out) and "Bucaramanga" in says(out)
+
+
+def test_offer_declined_but_new_question_is_not_swallowed(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu cuál es la fecha límite de inscripción")     # ofrece dejar teléfono
+    out = engine.handle("no quiero que me expliques el programa de negocios")
+    assert "Está bien" not in says(out) and "Negocios" in says(out)
+
+
+def test_program_mentioned_without_question_gets_summary_not_llm(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    out = engine.handle("porfa ahora vamos a ver el programa de negocios")
+    assert all(isinstance(a, Say) for a in out) and "9 semestres" in says(out)
+
+
+def test_known_people_are_not_free_chat(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    out = engine.handle("quién es Jairo Castro")
+    assert isinstance(out[0], AskLLM) and "Rector" in out[0].prompt or "Presidente" in out[0].prompt
+
+
+def test_who_are_you_long_phrase_is_deterministic(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    out = engine.handle("y si era que me dijeras quién eres")
+    assert all(isinstance(a, Say) for a in out) and "UDI" in says(out)

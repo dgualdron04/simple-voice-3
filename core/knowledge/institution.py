@@ -17,6 +17,9 @@ INTENTS = {
     "telefono": ("teléfono", ("telefono", "pbx", "celular", "numero de contacto", "numero de la")),
     "correo": ("correo", ("correo", "email", "e mail")),
     "legal": ("reconocida", ("personeria", "reconocida", "reconocimiento", "ministerio de educacion", "es legal", "es una universidad")),
+    "resumen": ("qué es la udi", ("que es la udi", "que es la universidad", "hablame de la universidad", "hablame de la udi",
+                                  "sobre la universidad", "sobre la udi", "cuentame de la universidad", "cuentame de la udi",
+                                  "informacion de la universidad", "informacion de la udi", "quienes son")),
 }
 
 

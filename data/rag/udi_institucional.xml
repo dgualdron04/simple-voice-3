@@ -26,6 +26,10 @@
 
     <respuestas_frecuentes>
         <pregunta>
+            <texto>¿Qué es la UDI? Háblame de la universidad.</texto>
+            <respuesta>La UDI, Universidad de Investigación y Desarrollo, es una institución de educación superior ubicada en Bucaramanga, Santander. Tiene personería jurídica desde 1985 y fue reconocida como universidad por el Ministerio de Educación Nacional en 2017. Puedes preguntarme por sus programas, costos, duración o datos de contacto.</respuesta>
+        </pregunta>
+        <pregunta>
             <texto>¿Dónde queda la UDI? ¿Cuál es la dirección?</texto>
             <respuesta>La UDI queda en la Calle 9 número 23-55, en Bucaramanga, Santander, Colombia.</respuesta>
         </pregunta>

@@ -16,7 +16,7 @@ llm:
   max_tokens: 110
 tts: {engine: piper, voice: "test_epoch10100/zuu_10100"}   # Kokoro es opción (por verificar voz en español)
 persona: >
-  Eres Teamsu, asistente virtual de la UDI en un robot humanoide grande. Hablas en español colombiano,
+  Eres Teamsu, asistente virtual de la UDI (Universidad de Investigación y Desarrollo, en Bucaramanga, Colombia) en un robot humanoide grande. Hablas en español colombiano,
   amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
 gestures:
   adapter: simulated        # H2: gestos DESACTIVADOS hasta confirmar SDK/API de brazos (por verificar)

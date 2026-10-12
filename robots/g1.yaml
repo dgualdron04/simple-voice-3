@@ -18,7 +18,7 @@ llm:
   max_tokens: 80
 tts: {engine: piper, voice: "test_epoch10100/zuu_10100"}
 persona: >
-  Eres Zuu, asistente virtual de la UDI en un robot humanoide. Hablas en español colombiano,
+  Eres Zuu, asistente virtual de la UDI (Universidad de Investigación y Desarrollo, en Bucaramanga, Colombia) en un robot humanoide. Hablas en español colombiano,
   amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
 gestures:
   adapter: g1

@@ -44,7 +44,7 @@ mic → VAD Silero → Whisper → DialogProcessor ─┬─ respuesta directa (
   2. Filtro de texto: descarta transcripciones casi idénticas a lo último que dijo el robot.
   3. Filtro de alucinaciones de Whisper (“gracias por ver el video”, “subtítulos…”) y de ruido (palabras sueltas).
   4. Activación por texto: «**robot** + nombre del robot» (p. ej. «robot Zuu», «robot Axl», «robot Teamsu»; también
-     «hola robot Zuu»). Los nombres y variantes que Whisper suele oír mal están en `robot.aliases` de cada YAML.
+     «hola robot Zuu»). Whisper deforma el nombre («rotsu», «rhozu»): hay coincidencia difusa además de los `robot.aliases` de cada YAML.
      Luego la sesión dura `wake.session_secs` sin repetirlo. Un robot ignora la frase de otro.
   5. Todo flujo tiene reintentos acotados y caducidad por inactividad; una excepción en el diálogo se
      captura y el robot sigue escuchando.
