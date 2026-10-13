@@ -15,32 +15,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from core.analytics import load_events, pct  # noqa: E402,F401
 from core.config import load_robot, resolve_path  # noqa: E402
-
-
-def load_events(log_dir: Path, days: int) -> list[dict]:
-    cutoff = (datetime.now() - timedelta(days=days)).date()
-    events = []
-    for path in sorted(log_dir.glob("uso_*.jsonl")):
-        try:
-            day = datetime.strptime(path.stem.split("_", 1)[1], "%Y-%m-%d").date()
-        except ValueError:
-            continue
-        if day < cutoff:
-            continue
-        for line in path.read_text(encoding="utf-8").splitlines():
-            try:
-                events.append(json.loads(line))
-            except json.JSONDecodeError:
-                pass
-    return events
-
-
-def pct(values: list[float], q: float) -> float:
-    if not values:
-        return 0.0
-    values = sorted(values)
-    return values[min(len(values) - 1, int(len(values) * q))]
 
 
 def build_report(events: list[dict], log_dir: Path, days: int, limit: int = 25) -> str:

@@ -30,12 +30,14 @@ CREATE TABLE IF NOT EXISTS registros (
     correo_enc TEXT,
     programa TEXT,
     modalidad TEXT,
-    jornada TEXT
+    jornada TEXT,
+    estado TEXT NOT NULL DEFAULT 'nuevo'
 )
 """
 
 EXPORT_COLUMNS = ["id", "created_at", "consent_at", "consent_version", "tipo", "robot_id",
-                  "nombre", "telefono", "correo", "programa", "modalidad", "jornada"]
+                  "nombre", "telefono", "correo", "programa", "modalidad", "jornada", "estado"]
+ESTADOS = ("nuevo", "contactado", "descartado")
 
 
 def utc_now() -> str:
@@ -49,6 +51,9 @@ class RegistrationStore:
         self._aes = AESGCM(self._load_key(Path(key_path)))
         with self._connect() as conn:
             conn.execute(SCHEMA)
+            columns = {r[1] for r in conn.execute("PRAGMA table_info(registros)")}
+            if "estado" not in columns:             # bases creadas antes del dashboard
+                conn.execute("ALTER TABLE registros ADD COLUMN estado TEXT NOT NULL DEFAULT 'nuevo'")
 
     @staticmethod
     def _load_key(path: Path) -> bytes:
@@ -101,8 +106,14 @@ class RegistrationStore:
             "consent_version": r["consent_version"], "tipo": r["tipo"], "robot_id": r["robot_id"],
             "nombre": self._dec(r["nombre_enc"]), "telefono": self._dec(r["telefono_enc"]),
             "correo": self._dec(r["correo_enc"]), "programa": r["programa"],
-            "modalidad": r["modalidad"], "jornada": r["jornada"],
+            "modalidad": r["modalidad"], "jornada": r["jornada"], "estado": r["estado"],
         } for r in rows]
+
+    def set_estado(self, registro_id: int, estado: str) -> bool:
+        if estado not in ESTADOS:
+            raise ValueError(f"estado inválido: {estado}")
+        with self._connect() as conn:
+            return conn.execute("UPDATE registros SET estado = ? WHERE id = ?", (estado, registro_id)).rowcount == 1
 
     def delete_ids(self, ids: list[int]) -> int:
         if not ids:

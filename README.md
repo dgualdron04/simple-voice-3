@@ -150,6 +150,27 @@ la carrera de la que se habló y el contexto reciente (6 mensajes). Si luego se 
 exigiría base legal, consentimiento y borrado propios (y el plan descarta reconocimiento facial); la única persistencia
 son los pre-registros cifrados, con consentimiento.
 
+
+## Dashboard (pre-registros y uso)
+
+```powershell
+.venv\Scripts\python.exe -m dashboard --robot g1 --open     # datos reales de ese perfil (http://127.0.0.1:8765)
+.venv\Scripts\python.exe -m dashboard --demo --open         # datos sintéticos para ver cómo se ve
+```
+
+* **Inscripciones:** total del periodo, por contactar / contactados, pre-registros por día, carreras de interés,
+  jornada y modalidad, por robot, y la tabla completa con búsqueda, filtros y **estado** (Nuevo / Contactado /
+  Descartado) que el asesor cambia al llamar. Botón *Descargar CSV*.
+* **Uso del robot:** frases oídas, % respondido sin modelo, latencias, actividad por hora y por día, qué decidió el robot
+  (rutas), frases ignoradas, preguntas que fueron al LLM (candidatas a FAQ), respuestas del LLM para auditar,
+  transcripciones dudosas y errores. *Copiar informe para Claude* deja en el portapapeles un resumen para pegarme en el chat.
+* **Privacidad:** escucha solo en `127.0.0.1` (este equipo); nombre, teléfono y correo aparecen ocultos hasta pulsar
+  *Mostrar datos personales*. Para abrirlo a otro equipo hay que dar `--host ... --token ...` (se exige en cada petición);
+  el programa se niega a escuchar fuera de este equipo sin token. No usa internet ni librerías externas.
+* **Importante:** no se publica como página web ni se sube a ningún servicio; contiene datos personales.
+* Si el robot corre en otra máquina (Jetson), copia `data/registros.db`, `data/registros.key` y `data/logs/` a este equipo
+  (o ejecuta el dashboard en el robot y accede por cable con `--token`).
+
 ## Por verificar (no confirmable desde código/documentación disponible)
 
 * Memoria del Orin NX del G1 (8 o 16 GB) → decide `small` vs `base` y 4 B vs menor.
