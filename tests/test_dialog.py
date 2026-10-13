@@ -257,3 +257,48 @@ def test_context_for_llm_is_trimmed():
     short = trim_context(ctx, "cuánto cuesta")
     assert "Malla" not in short and len(short) < 200
     assert "Malla" in trim_context(ctx, "cuál es la malla")
+
+
+@pytest.mark.parametrize("question", [
+    "qué programas vamos a ofertar", "qué carreras tienen", "qué programa le puedes ofertar",
+    "cuáles carreras ofrecen",
+])
+def test_program_listing_is_deterministic(setup, question):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    out = engine.handle(question)
+    assert all(isinstance(a, Say) for a in out) and "Derecho" in says(out) and "Ingeniería de Sistemas" in says(out)
+
+
+def test_how_many_programs(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    assert "11 programas" in says(engine.handle("cuántos programas tienen"))
+
+
+def test_general_knowledge_is_declined_not_invented(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    for q in ("¿Quién es Elon Musk?", "cuál es la capital de Francia", "quién ganó el mundial"):
+        out = engine.handle(q)
+        assert all(isinstance(a, Say) for a in out) and "UDI" in says(out), q
+
+
+def test_general_chat_still_reaches_llm(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    assert isinstance(engine.handle("cuéntame cómo va tu día")[0], AskLLM)
+    assert isinstance(engine.handle("yo soy Zuu no tú eres Zuu")[0], AskLLM)
+
+
+def test_pronoun_and_who_am_i(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    assert "De quién" in says(engine.handle("¿Y quién es él?"))
+    assert "cómo te llamas" in says(engine.handle("¿Quién soy yo?")).lower()
+
+
+def test_wake_prefix_variants(setup):
+    engine, _, _ = setup
+    assert "Zuu" in says(engine.handle("robots zuu"))
+    assert "Zuu" in says(engine.handle("Hola, roga, zuu"))

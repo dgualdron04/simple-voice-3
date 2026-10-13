@@ -96,7 +96,7 @@ def faq_answer(question: str, robot_name: str, aliases: set[str]) -> str | None:
     best, best_score = None, 0.0
     for entry in _entries:
         overlap = len(tokens & entry.tokens)
-        if overlap < min(2, len(tokens)):
+        if overlap < 2:
             continue
         score = 2 * overlap / (len(tokens) + len(entry.tokens))
         if score > best_score:

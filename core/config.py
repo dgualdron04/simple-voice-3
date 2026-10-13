@@ -67,6 +67,7 @@ DEFAULTS: dict = {
         "mode": "normal",           # normal | feria (respuestas más cortas)
         "max_voice_chars": 420,
         "feria_max_voice_chars": 240,
+        "factual_policy": "decline",  # decline | llm: preguntas de cultura general fuera de la UDI
         "echo_similarity": 0.8,     # descarta transcripciones casi idénticas a lo que dijo el robot
     },
     "gestures": {"adapter": "simulated", "enabled": True, "allowed": ["saludar", "dar_mano", "señalar"]},

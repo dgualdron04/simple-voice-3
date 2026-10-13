@@ -70,7 +70,7 @@ UDI_KEYWORDS = (
     "semestre", "duracion", "modalidad", "jornada", "snies", "resolucion", "creditos", "contacto", "correo",
     "telefono", "malla", "materias", "asignaturas", "plan de estudios", "campo laboral", "ingenieria", "derecho",
     "negocios", "administracion", "comunicacion", "criminalistica", "diseno", "ecopetrol", "rector", "presidente",
-    "requisitos", "inscripcion", "tu creador", "quien te creo", "te hizo", "te crearon", "te desarrollo", "zuu", "tu nombre", "admision", "becas", "beca", "sede", "titulo", "acreditad", "registro calificado",
+    "requisitos", "inscripcion", "tu creador", "quien te creo", "te hizo", "te crearon", "te desarrollo", "tu nombre", "admision", "becas", "beca", "sede", "titulo", "acreditad", "registro calificado",
 )
 FOLLOW_UP = ("cuanto cuesta", "cuanto vale", "valor", "precio", "costo", "cuanto dura", "duracion", "modalidad",
              "jornada", "malla", "materias", "creditos", "snies", "resolucion", "contacto", "correo", "telefono",
@@ -79,6 +79,11 @@ FOLLOW_UP = ("cuanto cuesta", "cuanto vale", "valor", "precio", "costo", "cuanto
 
 INTERROGATIVES = ("cuanto", "cuantos", "cuanta", "cuantas", "cual", "cuales", "quien", "quienes",
                  "como", "donde", "cuando", "porque", "hay", "tiene", "tienen", "existe")
+
+FACTUAL = re.compile(
+    r"(?<!\w)(quien (es|fue|era|son|eran)|que (es|son|fue) (el|la|los|las|un|una)?\s?\w+|cuando (fue|nacio|murio|se creo|empezo)|"
+    r"donde (nacio|queda|esta ubicad)|cual es la capital|capital de|cuantos habitantes|en que ano|quien invento|"
+    r"quien gano|presidente de|cuanto mide|cuanto pesa)(?!\w)")
 
 NO_INFO = ("No tengo ese dato en mi información. Si quieres, dejo tu teléfono para que un asesor de "
            "admisiones te llame. ¿Lo hacemos?")
@@ -103,7 +108,7 @@ def clean_for_voice(text: str, max_chars: int) -> str:
 
 
 class DialogEngine:
-    PREFIX_ONLY = {"robot", "robots", "roboto", "robotica", "robotico", "robotito"}
+    PREFIX_ONLY = {"robot", "robots", "roboto", "rovot", "robo", "roga", "rogo", "rob", "bot"}
 
     def __init__(self, settings: dict, store: RegistrationStore | None = None,
                  knowledge=None, clock: Callable[[], float] = time.monotonic):
@@ -176,7 +181,7 @@ class DialogEngine:
         original = text.split()
         normalized = [(v.words(raw) or [""])[0] for raw in original]
         for i, word in enumerate(normalized[:4]):
-            if word != self.wake_prefix:
+            if word != self.wake_prefix and word not in self.PREFIX_ONLY:
                 continue
             nxt = normalized[i + 1] if i + 1 < len(normalized) else ""
             nxt2 = normalized[i + 2] if i + 2 < len(normalized) else ""
@@ -315,6 +320,14 @@ class DialogEngine:
             )
             return [AskLLM(prompt, question)]
 
+        t = " ".join(tokens(text))
+        if re.fullmatch(r"(y )?quien es (el|ella|esa persona)", t):
+            return [Say("¿De quién me hablas? Dímelo con nombre y apellido.")]
+        if t in ("quien soy yo", "sabes quien soy", "sabes quien soy yo"):
+            return [Say("Todavía no sé quién eres. ¿Cómo te llamas?")]
+        if self.settings["dialog"]["factual_policy"] == "decline" and FACTUAL.search(t):
+            return [Say("Sobre eso no tengo información confiable; me enfoco en la UDI. "
+                        "Puedo contarte de sus programas, costos o ayudarte a inscribirte.")]
         return [AskLLM(text, text)]      # conversación libre
 
 
@@ -363,6 +376,9 @@ class _Knowledge:
     def answer(self, question: str, asked: bool = False) -> str | None:
         self._load()
         if self._sa.detect_program(question) is None:
+            listing = self._programs_listing(question)
+            if listing:
+                return listing
             from core.knowledge.institution import institutional_answer
             fact = institutional_answer(question)
             if fact:
@@ -379,6 +395,21 @@ class _Knowledge:
         if program is not None and not asked and not any(q in t.split() for q in INTERROGATIVES):
             return self._sa.answer_exact(f"háblame de {self._sa.row_get(program, 'nombre')}")
         return None
+
+    def _programs_listing(self, question: str) -> str | None:
+        t = " ".join(tokens(question))
+        words = set(t.split())
+        asks = (re.search(r"(?<!\w)(que|cuales|cuantos|cuantas)\s+(\w+\s+)?(programas?|carreras?)(?!\w)", t)
+                or ({"programas", "programa", "carreras", "carrera"} & words and {"ofrecen", "ofertan", "oferta", "ofertar", "ofrece", "tienen", "hay", "estudiar", "ofrecer"} & words)
+                or "oferta academica" in t)
+        if not asks:
+            return None
+        names = [self._sa.row_get(p, "nombre") for p in self._sa.get_all_programs() if self._sa.row_get(p, "nombre")]
+        names = list(dict.fromkeys(names))
+        if not names:
+            return None
+        count = f"Ofrecemos {len(names)} programas" if re.search(r"(?<!\w)cuant", t) else "La UDI ofrece estos programas"
+        return f"{count}: " + ", ".join(names[:-1]) + f" y {names[-1]}. Pregúntame por cualquiera para darte los detalles."
 
     def is_udi_related(self, question: str) -> bool:
         self._load()

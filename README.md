@@ -49,6 +49,9 @@ mic → VAD Silero → Whisper → DialogProcessor ─┬─ respuesta directa (
   5. Todo flujo tiene reintentos acotados y caducidad por inactividad; una excepción en el diálogo se
      captura y el robot sigue escuchando.
   6. Si Ollama no está, el robot sigue con respuestas directas y avisa; no se queda mudo ni reintentando.
+* **Cultura general fuera de la UDI** («¿quién es Elon Musk?», «capital de Francia»): `dialog.factual_policy: decline` (por defecto)
+  responde que no tiene información confiable y reconduce a la UDI, en vez de dejar que el modelo de 3 B invente. Con `llm`
+  responde con el LLM (puede alucinar). La charla informal («cuéntame cómo va tu día») sí va al LLM.
 * `barge_in: true` (interrumpir al robot hablando) **solo** donde hay AEC por hardware (Go2 X con altavoz-micrófono USB).
 
 ## Seguridad (crítico en el H2: 1,82 m, ~70 kg)
