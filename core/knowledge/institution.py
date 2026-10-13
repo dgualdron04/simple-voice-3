@@ -13,10 +13,11 @@ _facts: dict[str, str] | None = None
 
 # clave -> (fragmento del <texto> de la pregunta en el XML, palabras que la activan)
 INTENTS = {
-    "direccion": ("dirección", ("direccion", "donde queda", "donde se encuentra", "ubicacion", "ubicada", "como llego", "donde esta la udi", "donde esta la universidad")),
+    "direccion": ("dirección", ("direccion", "donde queda", "donde quedo", "donde esta ubicada", "donde esta la udi", "donde se encuentra", "ubicacion", "ubicada", "como llego", "donde esta la udi", "donde esta la universidad")),
     "telefono": ("teléfono", ("telefono", "pbx", "celular", "numero de contacto", "numero de la")),
     "correo": ("correo", ("correo", "email", "e mail")),
     "legal": ("reconocida", ("personeria", "reconocida", "reconocimiento", "ministerio de educacion", "es legal", "es una universidad")),
+    "contacto": ("contacto", ("comunicarme", "comunicarnos", "comunicar con", "comunicarse", "me comunico", "puedo hablar con", "contactar", "contactarlos", "como los llamo", "como me contacto", "como llamo")),
     "resumen": ("qué es la udi", ("que es la udi", "que es la universidad", "hablame de la universidad", "hablame de la udi",
                                   "sobre la universidad", "sobre la udi", "cuentame de la universidad", "cuentame de la udi",
                                   "informacion de la universidad", "informacion de la udi", "quienes son")),
@@ -41,7 +42,7 @@ def _load() -> dict[str, str]:
                 texto = (item.findtext("texto") or "").lower()
                 respuesta = " ".join((item.findtext("respuesta") or "").split())
                 for key, (fragment, _) in INTENTS.items():
-                    if fragment in texto and respuesta:
+                    if key != "contacto" and fragment in texto and respuesta:
                         _facts[key] = _speak_digits(respuesta)
         except (OSError, ET.ParseError) as error:
             print(f"[institucion] no pude leer {path}: {error}")
@@ -54,8 +55,10 @@ def institutional_answer(question: str) -> str | None:
     about_udi = "udi" in t.split() or "universidad" in t or "contacto" in t
     facts = _load()
     for key, (_, triggers) in INTENTS.items():
-        if key in facts and any(p in t for p in triggers):
+        if (key in facts or key == "contacto") and any(p in t for p in triggers):
             if key in ("telefono", "correo") and not about_udi:
                 continue
+            if key == "contacto":
+                return f"{facts.get('telefono', '')} {facts.get('correo', '')}".strip() or None
             return facts[key]
     return None

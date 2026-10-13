@@ -54,8 +54,10 @@ class SpanishWhisperSTT(WhisperSTTService):
                 condition_on_previous_text=False,
                 vad_filter=True,
                 initial_prompt=self._settings.initial_prompt or None,
+                max_new_tokens=max(24, int(len(samples) / 16000 * 8)),     # corta bucles «la la la…»
             )
-            return [s for s in segments if threshold is None or s.no_speech_prob < threshold]
+            return [s for s in segments
+                    if (threshold is None or s.no_speech_prob < threshold) and s.avg_logprob > -1.3]
 
         segments = await asyncio.to_thread(transcribe)
         await self.stop_processing_metrics()

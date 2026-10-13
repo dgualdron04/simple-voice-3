@@ -22,7 +22,7 @@ from core.services import warm_up_llm  # noqa: E402
 async def main(robot, seconds):
     settings = load_robot(robot)
     task, _ = build_task(settings, warm_up_llm(settings))
-    phrases = ["hola zuu cuánto cuesta derecho", "y cuánto dura", "qué opinas del café colombiano"]
+    phrases = ["robot zuu cuánto cuesta derecho", "y cuánto dura", "qué opinas del café colombiano"]
 
     async def feed():
         await asyncio.sleep(3)

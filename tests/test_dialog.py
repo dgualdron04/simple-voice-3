@@ -211,11 +211,13 @@ def test_program_mentioned_without_question_gets_summary_not_llm(setup):
     assert all(isinstance(a, Say) for a in out) and "9 semestres" in says(out)
 
 
-def test_known_people_are_not_free_chat(setup):
+def test_known_people_answered_from_curated_faq(setup):
     engine, _, _ = setup
     engine.handle("robot zuu hola")
     out = engine.handle("quién es Jairo Castro")
-    assert isinstance(out[0], AskLLM) and "Rector" in out[0].prompt or "Presidente" in out[0].prompt
+    assert all(isinstance(a, Say) for a in out) and "fundador" in says(out)
+    out = engine.handle("¿quién es el rector?")
+    assert all(isinstance(a, Say) for a in out) and "Jairo Augusto" in says(out)
 
 
 def test_who_are_you_long_phrase_is_deterministic(setup):
@@ -223,3 +225,35 @@ def test_who_are_you_long_phrase_is_deterministic(setup):
     engine.handle("robot zuu hola")
     out = engine.handle("y si era que me dijeras quién eres")
     assert all(isinstance(a, Say) for a in out) and "UDI" in says(out)
+
+
+@pytest.mark.parametrize("question,expected", [
+    ("quién es tu creador", "café"),
+    ("y quién te creó", "café"),
+    ("quién fundó la UDI", "Centrosistemas"),
+    ("¿Y dónde quedó la universidad?", "Calle 9"),
+    ("y a qué número o puedo comunicarme con ellos", "seis cero siete"),
+    ("cómo me puedo comunicar con la universidad", "rectoria"),
+])
+def test_curated_answers_never_reach_llm(setup, question, expected):
+    engine, _, _ = setup
+    engine.handle("robot zuu hola")
+    out = engine.handle(question)
+    assert all(isinstance(a, Say) for a in out) and expected in says(out)
+
+
+def test_faq_uses_this_robots_name(tmp_path):
+    h2 = load_robot("h2")
+    engine = DialogEngine(h2, store=RegistrationStore(tmp_path / "r.db", tmp_path / "r.key"))
+    engine.handle("robot teamsu hola")
+    out = says(engine.handle("quién te creó"))
+    assert "ZUU" not in out and "Zuu" not in out
+
+
+def test_context_for_llm_is_trimmed():
+    from core.dialog import trim_context
+    nl = chr(10)
+    ctx = nl.join(["programa.nombre: X", "Malla curricular: " + "a" * 5000, "programa.malla.semestre: y"])
+    short = trim_context(ctx, "cuánto cuesta")
+    assert "Malla" not in short and len(short) < 200
+    assert "Malla" in trim_context(ctx, "cuál es la malla")

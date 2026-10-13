@@ -120,6 +120,8 @@ class DialogEngine:
         self.echo_similarity = settings["dialog"]["echo_similarity"]
         self.store = store
         self.k = knowledge if knowledge is not None else _Knowledge()
+        if hasattr(self.k, "robot_name"):
+            self.k.robot_name, self.k.aliases = self.robot_name, self.aliases
         self.session_until = 0.0
         self.flow: RegistrationFlow | None = None
         self.flow_last = 0.0
@@ -302,7 +304,7 @@ class DialogEngine:
             return [Say(clean_for_voice(direct, self._max_chars()))]
 
         if self.k.is_udi_related(question):
-            context = self.k.context(question)
+            context = trim_context(self.k.context(question), question)
             if not context:
                 self.offer_pending = True
                 return [Say(NO_INFO)]
@@ -314,6 +316,19 @@ class DialogEngine:
             return [AskLLM(prompt, question)]
 
         return [AskLLM(text, text)]      # conversación libre
+
+
+def trim_context(context: str, question: str, max_chars: int = 1400) -> str:
+    """Contexto corto y limpio para el LLM pequeño: sin malla (salvo que la pidan) y sin prefijos técnicos."""
+    t = " ".join(tokens(question))
+    wants_curriculum = any(k in t for k in ("malla", "materias", "asignaturas", "plan de estudios", "semestre"))
+    lines = []
+    for line in context.splitlines():
+        if not wants_curriculum and re.match(r"\s*(programa\.malla|Malla)", line):
+            continue
+        line = re.sub(r"^(documento|programa)\.", "", line)
+        lines.append(line)
+    return chr(10).join(lines)[:max_chars]
 
 
 def _asks_info(t: str) -> bool:
@@ -337,6 +352,8 @@ class _Knowledge:
         self._sa = None
         self._rr = None
         self._names: set[str] | None = None
+        self.robot_name = "el robot"
+        self.aliases: set[str] = set()
 
     def _load(self):
         if self._sa is None:
@@ -350,6 +367,10 @@ class _Knowledge:
             fact = institutional_answer(question)
             if fact:
                 return fact
+            from core.knowledge.faq import faq_answer
+            curated = faq_answer(question, self.robot_name, self.aliases)
+            if curated:
+                return curated
         direct = self._rr.answer_reasoning_question(question) or self._sa.answer_exact(question)
         if direct:
             return direct
