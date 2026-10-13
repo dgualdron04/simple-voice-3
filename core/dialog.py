@@ -45,6 +45,7 @@ HALLUCINATIONS = (
     "gracias por su atencion", "hasta la proxima", "nos vemos en el proximo", "dale like",
     "musica", "aplausos", "sous titres",
 )
+SENSITIVE_STATES = {"nombre", "telefono", "correo", "prefill"}
 SINGLE_WORDS = {"hola", "gracias", "adios", "chao", "chau", "si", "no", "para", "stop", "silencio",
                 "espera", "pausa", "detente", "callate", "chiste"}
 STOP_WORDS = {"para", "stop", "silencio", "callate", "espera", "pausa", "detente", "alto"}
@@ -133,6 +134,11 @@ class DialogEngine:
         self.offer_pending = False
         self.last_program: str | None = None
         self.last_said = ""
+        self.memory: dict = {}                  # memoria de SESIÓN (RAM, se borra al terminar la conversación)
+        self.trace: dict = {}
+        self.saved: dict | None = None
+        self._why = "unknown"
+        self._sensitive = False
         self._recent_bot: deque[str] = deque(maxlen=5)
         self._asked = False
 
@@ -202,15 +208,36 @@ class DialogEngine:
 
     # --------------------------------------------------------------- manejo
     def handle(self, text: str) -> list[Action]:
+        """Decide qué hacer con una frase. Deja en self.trace por qué (para el registro de uso)."""
+        self._why = "unknown"
+        self._sensitive = bool(self.flow is not None and self.flow.state in SENSITIVE_STATES)
+        before = self.flow.state if self.flow is not None else None
+        actions = self._handle(text)
+        self.trace = {
+            "route": self._why, "flow_state": before, "sensitive": self._sensitive,
+            "session": self.in_session, "mode": self.mode, "memory": sorted(k for k, val in self.memory.items() if val),
+        }
+        return actions
+
+    def _handle(self, text: str) -> list[Action]:
         text = (text or "").strip()
-        if not text or self.is_noise(text) or self.is_echo(text):
+        if not text or self.is_noise(text):
+            self._why = "ignored:noise"
+            return []
+        if self.is_echo(text):
+            self._why = "ignored:echo"
             return []
 
         now = self.clock()
+        if self.wake_mode == "text" and now >= self.session_until and self.flow is None:
+            self.memory.clear()                # la memoria dura lo que dura la sesión con esa persona
+            self.last_program = None
         if self.flow is not None:
             if now - self.flow_last > self.settings["registration"]["idle_timeout_secs"]:
                 self.flow = None   # abandonó a medias: no se guarda nada
+                self._why = "flow:timeout"
             else:
+                self._why = f"flow:{self.flow.state}"
                 return self._flow_turn(text)
 
         self._asked = "?" in text               # Whisper puntúa; fix_stt_text la borra
@@ -219,14 +246,17 @@ class DialogEngine:
         if self.wake_mode == "text" and now >= self.session_until:
             woke, rest = self._wake(text)
             if not woke:
+                self._why = "ignored:no_wake"
                 return []
             text = rest
             if not text:
                 self._touch()
+                self._why = "wake:greeting"
                 return [Say(f"Hola, soy {self.robot_name}. ¿En qué te puedo ayudar?")]
 
         w = tokens(text)
         if len(w) == 1 and w[0] not in SINGLE_WORDS:
+            self._why = "ignored:single_word"
             return []                                        # palabra suelta = ruido
         self._touch()
         return self._route(text)
@@ -235,6 +265,9 @@ class DialogEngine:
         self.flow_last = self.clock()
         reply = self.flow.handle(text)
         actions: list[Action] = [Say(s) for s in reply.say]
+        if reply.saved_id:
+            self._why = "flow:saved"
+            self.saved = {"id": reply.saved_id, "tipo": self.flow.kind, "programa": self.flow.data.get("programa")}
         if reply.done:
             self.flow = None
             self._touch()
@@ -244,8 +277,14 @@ class DialogEngine:
         if self.store is None:
             return [Say("El registro no está disponible en este momento. Puedes acercarte a admisiones de la UDI.")]
         retries = self.settings["registration"]["retries_per_field"]
+        prefill = {}
+        if kind == "full":
+            if self.memory.get("nombre"):
+                prefill["nombre"] = self.memory["nombre"]
+            if self.last_program:
+                prefill["programa"] = self.last_program
         self.flow = RegistrationFlow(self.store, self.settings["robot"]["id"], self.k.lookup_program,
-                                     retries=retries, kind=kind)
+                                     retries=retries, kind=kind, prefill=prefill)
         self.flow_last = self.clock()
         reply = self.flow.start()
         return ([Say(intro)] if intro else []) + [Say(s) for s in reply.say]
@@ -259,43 +298,65 @@ class DialogEngine:
             self.offer_pending = False
             answer = v.is_yes(text) if len(w) <= 3 else None     # frase larga = pregunta nueva
             if answer is True:
+                self._why = "offer:accepted"
                 return self._start_flow("phone")
             if answer is False:
+                self._why = "offer:declined"
                 return [Say("Está bien. Si cambias de opinión, solo dímelo.")]
 
         if w and w[0] in STOP_WORDS and len(w) <= 3:
+            self._why = "fast:stop"
             return []                                        # silencio
 
         if any(t == b or t.startswith(b + " ") or t.endswith(" " + b) for b in BYE):
             self.session_until = 0.0
+            self._why = "fast:bye"
             return [Say("¡Hasta luego! Que tengas un excelente día.")]
 
         if any(p in t for p in ("modo feria", "activa modo feria")):
             self.mode = "feria"
+            self._why = "fast:mode"
             return [Say("Modo feria activado. Responderé más corto.")]
         if any(p in t for p in ("modo normal", "desactiva modo feria")):
             self.mode = "normal"
+            self._why = "fast:mode"
             return [Say("Modo normal activado.")]
         if t in ("repite", "repite eso", "repite tu respuesta", "otra vez", "como dijiste", "no te entendi") and self.last_said:
+            self._why = "fast:repeat"
             return [Say(self.last_said)]
+
+        # memoria de sesión: «me llamo X»
+        intro = re.match(r"(?:yo )?(?:me llamo|mi nombre es)\s+(.+)", t)
+        if intro and len(intro.group(1).split()) <= 4:
+            name = v.parse_name(intro.group(1))
+            if name:
+                self.memory["nombre"] = name
+                self._why = "memory:name"
+                return [Say(f"Mucho gusto, {name.split()[0]}. ¿En qué te puedo ayudar?")]
 
         # registro
         if any(p in t for p in PHONE_ONLY):
+            self._why = "flow:start_phone"
             return self._start_flow("phone", "Claro, con gusto.")
         if any(p in t for p in REGISTER) and not _asks_info(t):
+            self._why = "flow:start_full"
             return self._start_flow("full", "¡Qué bueno que te interese! Te ayudo con tu pre-registro.")
 
         # gestos (lista blanca; el LLM nunca decide)
         for name, phrases in GESTURES.items():
             if any(p in t for p in phrases):
+                self._why = f"gesture:{name}"
                 return [Gesture(name), Say(_gesture_line(name))]
 
         # respuestas instantáneas
         if len(w) <= 3 and w[0] in self.greetings and not _asks_info(t):
+            self._why = "fast:greeting"
             return [Say(f"¡Hola! Soy {self.robot_name}. ¿En qué te ayudo?")]
         if any(s in t for s in THANKS) and len(w) <= 5:
+            self._why = "fast:thanks"
             return [Say(random.choice(["¡Con gusto!", "¡De nada! Aquí estoy para ayudarte.", "Con mucho gusto."]))]
         if any(s in t for s in SMALL_TALK) and len(w) <= 12:
+            self._why = "fast:small_talk"
             if "quien eres" in t or "te llamas" in t or "tu nombre" in t:
                 return [Say(f"Soy {self.robot_name}, el asistente virtual de la UDI. Puedo contarte de los programas y ayudarte a inscribirte.")]
             return [Say("Muy bien, gracias. ¿Y tú? ¿En qué te puedo ayudar?")]
@@ -306,28 +367,35 @@ class DialogEngine:
         question = self.k.with_context(text, self)
         direct = self.k.answer(question, self._asked)
         if direct:
+            self._why = f"knowledge:{getattr(self.k, 'last_source', 'direct')}"
             return [Say(clean_for_voice(direct, self._max_chars()))]
 
         if self.k.is_udi_related(question):
             context = trim_context(self.k.context(question), question)
             if not context:
                 self.offer_pending = True
+                self._why = "knowledge:no_info"
                 return [Say(NO_INFO)]
             prompt = (
                 "Responde SOLO con el contexto. Si el contexto no contiene la respuesta exacta, di: "
                 "\"No tengo ese dato\". Máximo dos frases cortas. No inventes cifras ni nombres.\n"
                 f"Contexto:\n{context}\n\nPregunta: {question}"
             )
+            self._why = "llm:rag"
             return [AskLLM(prompt, question)]
 
         t = " ".join(tokens(text))
         if re.fullmatch(r"(y )?quien es (el|ella|esa persona)", t):
+            self._why = "fast:pronoun"
             return [Say("¿De quién me hablas? Dímelo con nombre y apellido.")]
         if t in ("quien soy yo", "sabes quien soy", "sabes quien soy yo"):
+            self._why = "fast:who_am_i"
             return [Say("Todavía no sé quién eres. ¿Cómo te llamas?")]
         if self.settings["dialog"]["factual_policy"] == "decline" and FACTUAL.search(t):
+            self._why = "declined:factual"
             return [Say("Sobre eso no tengo información confiable; me enfoco en la UDI. "
                         "Puedo contarte de sus programas, costos o ayudarte a inscribirte.")]
+        self._why = "llm:free"
         return [AskLLM(text, text)]      # conversación libre
 
 
@@ -375,24 +443,30 @@ class _Knowledge:
 
     def answer(self, question: str, asked: bool = False) -> str | None:
         self._load()
+        self.last_source = "direct"
         if self._sa.detect_program(question) is None:
             listing = self._programs_listing(question)
             if listing:
+                self.last_source = "listing"
                 return listing
             from core.knowledge.institution import institutional_answer
             fact = institutional_answer(question)
             if fact:
+                self.last_source = "institution"
                 return fact
             from core.knowledge.faq import faq_answer
             curated = faq_answer(question, self.robot_name, self.aliases)
             if curated:
+                self.last_source = "faq"
                 return curated
         direct = self._rr.answer_reasoning_question(question) or self._sa.answer_exact(question)
         if direct:
+            self.last_source = "program_db"
             return direct
         program = self._sa.detect_program(question)
         t = " ".join(tokens(question))
         if program is not None and not asked and not any(q in t.split() for q in INTERROGATIVES):
+            self.last_source = "program_summary"
             return self._sa.answer_exact(f"háblame de {self._sa.row_get(program, 'nombre')}")
         return None
 

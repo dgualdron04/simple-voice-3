@@ -59,12 +59,15 @@ class RegistrationFlow:
     lookup_program: ProgramLookup
     retries: int = 2
     kind: str = "full"           # full | phone
+    prefill: dict = field(default_factory=dict)   # datos recordados en la sesión (se confirman, no se asumen)
     state: str = "consent"
     data: dict = field(default_factory=dict)
     program: ProgramInfo | None = None
     consent_at: str | None = None
     failures: int = 0
     _phone_partial: str = ""
+    _prefill_field: str = ""
+    _prefill_value: str = ""
     _partial_turns: int = 0
     queue: list[str] = field(default_factory=list)   # campos por (re)preguntar antes de confirmar
 
@@ -102,6 +105,14 @@ class RegistrationFlow:
         prefix: list[str] = []
         while self.queue:
             fieldname = self.queue.pop(0)
+            if fieldname in self.prefill:
+                value = self.prefill.pop(fieldname)
+                self._prefill_field, self._prefill_value = fieldname, value
+                self.state = "prefill"
+                self.queue.insert(0, fieldname)
+                ask = (f"¿Tu nombre es {value}?" if fieldname == "nombre"
+                       else f"¿Te interesa {value}, del que hablamos?")
+                return FlowReply(prefix + [ask])
             if fieldname == "modalidad" and self.program:
                 options = self.program.modalidades
                 if len(options) <= 1:
@@ -145,6 +156,30 @@ class RegistrationFlow:
             return FlowReply(["Entendido, no guardaré ningún dato. Puedes acercarte a admisiones cuando quieras."], done=True)
         return self._fail("Necesito un sí o un no: ¿autorizas el tratamiento de tus datos personales?",
                           lambda: FlowReply(["No te escuché claro, así que no guardaré nada. Podemos intentarlo de nuevo cuando quieras."], done=True))
+
+    # ------------------------------------------------- datos recordados (sesión)
+    def _on_prefill(self, text: str) -> FlowReply:
+        answer = v.is_yes(text)
+        if answer is None:
+            return self._fail("¿Sí o no?", self._decline_prefill)
+        if answer is False:
+            return self._decline_prefill()
+        field_name, value = self._prefill_field, self._prefill_value
+        self.queue.pop(0)                       # ya no hay que preguntarlo
+        self.failures = 0
+        if field_name == "nombre":
+            self.data["nombre"] = value
+        else:
+            info = self.lookup_program(value)
+            if info is None:
+                return self._decline_prefill()
+            self.program, self.data["programa"] = info, info.nombre
+        return self._next_field()
+
+    def _decline_prefill(self) -> FlowReply:
+        self.failures = 0
+        self.state = self._prefill_field        # lo pregunta normalmente
+        return FlowReply([self._prompt(self._prefill_field)])
 
     # ------------------------------------------------------- datos personales
     def _on_nombre(self, text: str) -> FlowReply:

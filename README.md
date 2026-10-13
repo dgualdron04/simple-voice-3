@@ -124,6 +124,32 @@ Ollama `qwen2.5:3b-instruct-zuu`, voz Piper `voices/test_epoch10100/zuu_10100`, 
 openai-whisper); `faster-whisper-large-v3` (2,9 GB) y `-medium` (1,5 GB) en la caché HF si no los vas a usar;
 `voices/test_epoch10009/*.ckpt` (checkpoint de entrenamiento). **No se borró nada.**
 
+
+## Registro de uso y memoria
+
+**Registro (para revisar sin supervisión y mejorar):** `data/logs/uso_AAAA-MM-DD.jsonl` (una línea JSON por evento) y
+`data/logs/sistema_*.log` (avisos/errores técnicos). Cada frase queda con: lo que oyó, **la ruta que eligió el robot**
+(`knowledge:faq`, `llm:free`, `declined:factual`, `ignored:no_wake`, `flow:telefono`…), lo que respondió, confianza y
+tiempos del STT, tiempo al primer token del LLM, duración de lo que habló y las frases que **ignoró** (sin activación,
+ruido, eco, audio descartado). Para pasárselo a Claude:
+
+```powershell
+.venv\Scripts\python.exe scripts\log_report.py --days 3 --out informe.md   # resumen compacto; pega informe.md en el chat
+```
+
+* **Privacidad (Ley 1581):** no se guarda audio. Se redactan números, correos, «me llamo X», los nombres recordados en la
+  sesión y todo lo dicho mientras se piden nombre/teléfono/correo (queda `<dato:telefono>`); el resumen de confirmación
+  nunca se registra. Retención: `logging.retention_days` (14). `logging.log_text: false` guarda solo metadatos.
+  Aun redactado, trátalo como información interna y no lo subas a terceros sin revisarlo.
+* Desactivar: `logging.enabled: false` en el YAML del robot.
+
+**Memoria (solo de sesión, en RAM):** durante una conversación recuerda el nombre que la persona dijo («me llamo Ana»),
+la carrera de la que se habló y el contexto reciente (6 mensajes). Si luego se inscribe, **pregunta para confirmar**
+(«¿Tu nombre es Ana?», «¿Te interesa Derecho, del que hablamos?») en vez de asumir. Se borra cuando la sesión expira
+(`wake.session_secs`) o la persona se despide. **No hay memoria entre personas ni entre días**: recordar visitantes
+exigiría base legal, consentimiento y borrado propios (y el plan descarta reconocimiento facial); la única persistencia
+son los pre-registros cifrados, con consentimiento.
+
 ## Por verificar (no confirmable desde código/documentación disponible)
 
 * Memoria del Orin NX del G1 (8 o 16 GB) → decide `small` vs `base` y 4 B vs menor.

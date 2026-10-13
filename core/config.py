@@ -76,6 +76,12 @@ DEFAULTS: dict = {
         "idle_timeout_secs": 60,
         "retention_days": 30,
     },
+    "logging": {
+        "enabled": True,
+        "dir": "data/logs",
+        "retention_days": 14,
+        "log_text": True,       # False: solo metadatos (ruta, tiempos), sin lo que se dijo
+    },
     "persona": "Eres un asistente virtual amable y claro. Respondes siempre en español, en máximo dos frases cortas.",
 }
 

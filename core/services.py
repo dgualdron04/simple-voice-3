@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import time
 from collections.abc import AsyncGenerator
 
 import numpy as np
@@ -34,6 +35,8 @@ class SpanishWhisperSTT(WhisperSTTService):
     def __init__(self, *, beam_size: int = 1, **kwargs):
         super().__init__(**kwargs)
         self._beam_size = beam_size
+        self.last_meta: dict = {}
+        self.on_discard = None          # callable(dict) -> None, lo fija el pipeline
 
     async def run_stt(self, audio: bytes) -> AsyncGenerator[Frame, None]:
         if not self._model:
@@ -44,6 +47,8 @@ class SpanishWhisperSTT(WhisperSTTService):
         samples = np.frombuffer(audio, dtype=np.int16).astype(np.float32) / 32768.0
         language = self._settings.language
         threshold = self._settings.no_speech_prob
+
+        started = time.monotonic()
 
         def transcribe():
             segments, _ = self._model.transcribe(
@@ -56,11 +61,21 @@ class SpanishWhisperSTT(WhisperSTTService):
                 initial_prompt=self._settings.initial_prompt or None,
                 max_new_tokens=max(24, int(len(samples) / 16000 * 8)),     # corta bucles «la la la…»
             )
-            return [s for s in segments
+            segments = list(segments)
+            kept = [s for s in segments
                     if (threshold is None or s.no_speech_prob < threshold) and s.avg_logprob > -1.3]
+            return segments, kept
 
-        segments = await asyncio.to_thread(transcribe)
+        all_segments, segments = await asyncio.to_thread(transcribe)
         await self.stop_processing_metrics()
+        self.last_meta = {
+            "audio_s": round(len(samples) / 16000, 2),
+            "stt_ms": round((time.monotonic() - started) * 1000),
+            "avg_logprob": round(min((s.avg_logprob for s in segments), default=0.0), 2),
+            "no_speech_prob": round(max((s.no_speech_prob for s in segments), default=0.0), 2),
+        }
+        if all_segments and not segments and self.on_discard:
+            self.on_discard({**self.last_meta, "discarded_text": " ".join(s.text.strip() for s in all_segments)})
 
         text = " ".join(s.text.strip() for s in segments).strip()
         if text:
