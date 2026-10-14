@@ -225,14 +225,18 @@ class BotTextTap(FrameProcessor):
 
 
 def build_transport(audio: dict):
-    """local: PyAudio (micrófono/parlante del equipo). robot: micrófono y altavoz internos del Unitree."""
+    """local: PyAudio (micrófono/parlante del equipo). robot: micrófono y altavoz internos del Unitree.
+    unitree: lo mismo desde el PC2 del H2 (core/unitree_audio.py, robots/pc2.yaml)."""
     common = dict(audio_in_enabled=True, audio_out_enabled=True,
                   audio_in_sample_rate=audio["sample_rate_in"], audio_out_sample_rate=audio["sample_rate_out"])
     if audio["transport"] == "robot":
         from core.robot_audio import RobotAudioParams, RobotAudioTransport
         return RobotAudioTransport(RobotAudioParams(**common, **audio["robot"]))
+    if audio["transport"] == "unitree":
+        from core.unitree_audio import UnitreeAudioParams, UnitreeAudioTransport
+        return UnitreeAudioTransport(UnitreeAudioParams(**common, **audio["unitree"]))
     if audio["transport"] != "local":
-        raise ValueError(f"audio.transport desconocido: {audio['transport']!r} (usa local o robot)")
+        raise ValueError(f"audio.transport desconocido: {audio['transport']!r} (usa local, robot o unitree)")
     return LocalAudioTransport(LocalAudioTransportParams(
         **common,
         input_device_index=resolve_device(audio["input_device"], "input"),

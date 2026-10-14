@@ -9,6 +9,7 @@ entre robots vive en `robots/*.yaml`.
 | Unitree Go2 X | **Axl** | `robots/go2x.yaml` | módulo externo Orin Nano Super/NX + altavoz-micrófono USB con AEC |
 | Unitree H2 EDU | **Teamsu** | `robots/h2.yaml` | Jetson AGX Thor (el i5 de locomoción no se toca) |
 | Portátil (desarrollo) | Zuu | `robots/laptop.yaml` | micrófono y parlante locales |
+| PC2 del H2 (desarrollo) | Zuu | `robots/pc2.yaml` | perfil portátil en CPU, con micrófono y parlante **del robot** por la red interna (`audio.transport: unitree`) |
 
 ## Uso rápido (portátil)
 
@@ -24,6 +25,21 @@ entre robots vive en `robots/*.yaml`.
 Requiere Ollama corriendo con el modelo de `llm.model`. Al arrancar se precarga el LLM y se deja residente
 (`keep_alive=-1`), así la primera respuesta no tarda decenas de segundos.
 Todo corre en local: `HF_HUB_OFFLINE=1` se fija solo, nada intenta bajar modelos.
+
+## Uso en el PC2 del H2 (Linux)
+
+El PC2 no tiene audio propio: `robots/pc2.yaml` usa el micrófono (multicast `239.168.123.161:5555`) y el parlante
+(servicio DDS `voice`) del robot vía `core/unitree_audio.py`. El robot debe estar encendido (`ping 192.168.123.161`).
+
+```bash
+ollama pull qwen2.5:3b-instruct                                   # una vez
+.venv-pipecat/bin/python -m core.main --robot pc2                 # asistente
+.venv-pipecat/bin/python scripts/selftest_pipeline.py --robot pc2 # prueba sin hablar (suena el robot)
+```
+
+`.venv-pipecat` es Python 3.11 con `requirements.txt`, `cyclonedds==0.10.2` (compilado con
+`CYCLONEDDS_HOME=~/slam_config/cyclone_go2_B2_ws/install/cyclonedds`) y `~/dd/unitree_sdk2_python` (`--no-deps`).
+Whisper `small` se baja una vez a la caché HF (`Systran/faster-whisper-small`).
 
 ## Cómo funciona (y por qué responde rápido y no se “vuelve loco”)
 

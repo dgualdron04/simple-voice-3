@@ -302,3 +302,30 @@ def test_wake_prefix_variants(setup):
     engine, _, _ = setup
     assert "Zuu" in says(engine.handle("robots zuu"))
     assert "Zuu" in says(engine.handle("Hola, roga, zuu"))
+
+
+def test_wake_phrase_after_background_speech(setup):
+    engine, _, _ = setup
+    out = engine.handle("Pues sí, yo me sabía todo qué tal. Hola robot Zuu, ¿cuánto cuesta derecho?")
+    assert "4.508.200" in says(out)
+
+
+def test_wake_phrase_in_session_drops_what_came_before(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu")
+    assert "Zuu" in says(engine.handle("¿No sabe? Hola robot Zuu."))
+
+
+def test_greeting_name_wake_is_opt_in(tmp_path):
+    laptop = DialogEngine(load_robot("laptop"), store=RegistrationStore(tmp_path / "a.db", tmp_path / "a.key"))
+    assert laptop.handle("¡Hola, Zuu!") == []
+    pc2 = DialogEngine(load_robot("pc2"), store=RegistrationStore(tmp_path / "b.db", tmp_path / "b.key"))
+    assert pc2.handle("hola su mamá ya llegó") == []      # alias corto «su» no activa con saludo
+    assert "Zuu" in says(pc2.handle("¡Hola, Zuu!"))
+
+
+def test_room_noise_hallucinations_ignored(setup):
+    engine, _, _ = setup
+    engine.handle("robot zuu")
+    assert engine.handle("Gracias a todos.") == []
+    assert engine.handle("Presidente de la Universidad de Colombia con el asistente de la universidad UDI.") == []

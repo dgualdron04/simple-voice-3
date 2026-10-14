@@ -44,6 +44,8 @@ HALLUCINATIONS = (
     "gracias por ver", "suscribete", "subtitulos", "amara org", "la comunidad de amara",
     "gracias por su atencion", "hasta la proxima", "nos vemos en el proximo", "dale like",
     "musica", "aplausos", "sous titres",
+    "gracias a todos", "gracias por tu tiempo", "gracias por el tiempo", "gracias por tiempo",
+    "asistente de la universidad udi",     # Whisper repite su propio initial_prompt con ruido
 )
 SENSITIVE_STATES = {"nombre", "telefono", "correo", "prefill"}
 SINGLE_WORDS = {"hola", "gracias", "adios", "chao", "chau", "si", "no", "para", "stop", "silencio",
@@ -122,6 +124,9 @@ class DialogEngine:
         self.greetings = {v.norm(g) for g in settings["wake"]["greetings"]}
         self.wake_prefix = v.norm(settings["wake"]["prefix"])
         self._wake_targets = [self.wake_prefix + a for a in self.aliases if len(a) >= 2]
+        # «hola zuu» sin «robot» (opcional por robot); alias cortos como «su» activarían con cualquier frase.
+        self.greeting_wake = settings["wake"].get("greeting_name", False)
+        self._greeting_names = {a for a in self.aliases if len(a) >= 3}
         self.mode = settings["dialog"]["mode"]
         self.echo_similarity = settings["dialog"]["echo_similarity"]
         self.store = store
@@ -189,11 +194,14 @@ class DialogEngine:
         """
         original = text.split()
         normalized = [(v.words(raw) or [""])[0] for raw in original]
-        for i, word in enumerate(normalized[:4]):
-            if word != self.wake_prefix and word not in self.PREFIX_ONLY:
-                continue
+        # En toda la frase: con ruido, Whisper pega lo que se habló antes («… ¿no sabe? Hola robot Zuu»).
+        for i, word in enumerate(normalized):
             nxt = normalized[i + 1] if i + 1 < len(normalized) else ""
             nxt2 = normalized[i + 2] if i + 2 < len(normalized) else ""
+            if self.greeting_wake and word in self.greetings and nxt in self._greeting_names:
+                return True, " ".join(original[i + 2:]).strip(" ,.")
+            if word != self.wake_prefix and word not in self.PREFIX_ONLY:
+                continue
             if nxt in self.aliases:
                 return True, " ".join(original[i + 2:]).strip(" ,.")
             if nxt and nxt2 and (nxt + nxt2) in self.aliases:
@@ -273,12 +281,13 @@ class DialogEngine:
         self._asked = "?" in text               # Whisper puntúa; fix_stt_text la borra
         text = fix_stt_text(text) or text      # corrige nombres de carreras mal oídos
         woke = False
-        if self.wake_mode == "text" and now >= self.session_until:
+        if self.wake_mode == "text":
             woke, rest = self._wake(text)
-            if not woke:
+            if not woke and now >= self.session_until:
                 self._why = "ignored:no_wake"
                 return []
-            text = rest
+            if woke:
+                text = rest       # en sesión también: lo dicho antes de «robot zuu» suele ser ruido de fondo
             if not text:
                 self._touch()
                 self._why = "wake:greeting"

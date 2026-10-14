@@ -26,6 +26,14 @@ DEFAULTS: dict = {
         "export_dir": "data/export",
     },
     "audio": {
+        # unitree = perfil PC2 del H2 (core/unitree_audio.py): mismo micrófono/altavoz del robot,
+        # usado desde el PC2 (192.168.123.162). Ver robots/pc2.yaml.
+        "unitree": {
+            "network_interface": "eth0",
+            "mic_group": "239.168.123.161",
+            "mic_port": 5555,
+            "local_ip": "192.168.123.162",
+        },
         "input_device": None,       # índice o fragmento del nombre; None = default
         "output_device": None,
         "sample_rate_in": 16000,
@@ -52,6 +60,7 @@ DEFAULTS: dict = {
         "compute_type": "int8",
         "beam_size": 1,
         "no_speech_prob": 0.6,
+        "min_avg_logprob": -1.3,    # segmentos con menos confianza se descartan (ruido / alucinación)
         "min_chars": 3,
         "initial_prompt": "Conversación en español de Colombia con un asistente de la universidad UDI.",
     },
@@ -73,6 +82,7 @@ DEFAULTS: dict = {
         "mode": "text",             # text | none
         "prefix": "robot",          # se activa con «robot» + nombre del robot
         "session_secs": 45,
+        "greeting_name": False,     # True: «hola zuu» activa sin decir «robot»
         "greetings": ["hola", "buenas", "buenos dias", "buen dia", "buenas tardes", "buenas noches", "hey", "oye"],
     },
     "dialog": {
@@ -116,6 +126,8 @@ def _validate(settings: dict) -> None:
         raise ValueError("dialog.mode debe ser 'normal' o 'feria'")
     if not settings["robot"].get("name"):
         raise ValueError("robot.name es obligatorio")
+    if settings["audio"]["transport"] not in ("local", "robot", "unitree"):
+        raise ValueError("audio.transport debe ser 'local', 'robot' o 'unitree'")
     if settings["tts"]["engine"] not in ("piper", "kokoro"):
         raise ValueError("tts.engine debe ser 'piper' o 'kokoro'")
 

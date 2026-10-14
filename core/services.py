@@ -33,9 +33,10 @@ class SpanishWhisperSTT(WhisperSTTService):
     filtro interno de silencio de faster-whisper para evitar "Gracias por ver el video".
     """
 
-    def __init__(self, *, beam_size: int = 1, **kwargs):
+    def __init__(self, *, beam_size: int = 1, min_avg_logprob: float = -1.3, **kwargs):
         super().__init__(**kwargs)
         self._beam_size = beam_size
+        self._min_avg_logprob = min_avg_logprob
         self.last_meta: dict = {}
         self.on_discard = None          # callable(dict) -> None, lo fija el pipeline
         # callable() -> bool. False = transcribir sin el prompt de dominio (nombres, carreras):
@@ -70,7 +71,7 @@ class SpanishWhisperSTT(WhisperSTTService):
             )
             segments = list(segments)
             kept = [s for s in segments
-                    if (threshold is None or s.no_speech_prob < threshold) and s.avg_logprob > -1.3]
+                    if (threshold is None or s.no_speech_prob < threshold) and s.avg_logprob > self._min_avg_logprob]
             return segments, kept
 
         all_segments, segments = await asyncio.to_thread(transcribe, prompt)
@@ -105,9 +106,12 @@ class SpanishWhisperSTT(WhisperSTTService):
 class SpanishPiperTTS(PiperTTSService):
     """Piper con normalización de números/precios/teléfonos y pronunciación de nombres."""
 
-    def __init__(self, *, pronunciations: dict[str, str] | None = None, **kwargs):
+    def __init__(self, *, pronunciations: dict[str, str] | None = None, length_scale: float | None = None,
+                 **kwargs):
         super().__init__(**kwargs)
         self._pronunciations = pronunciations or {}
+        if length_scale:            # >1 habla más lento (1.15 = 15 % más lento que la voz por defecto)
+            self._voice.config.length_scale = length_scale
 
     async def run_tts(self, text: str, context_id: str) -> AsyncGenerator[Frame, None]:
         for written, spoken in self._pronunciations.items():
@@ -153,6 +157,7 @@ def build_stt(settings: dict) -> SpanishWhisperSTT:
     c = settings["stt"]
     return SpanishWhisperSTT(
         beam_size=c["beam_size"],
+        min_avg_logprob=c["min_avg_logprob"],
         device=c["device"],
         compute_type=c["compute_type"],
         settings=WhisperSTTService.Settings(
@@ -192,6 +197,7 @@ def build_tts(settings: dict) -> SpanishPiperTTS:
     voices_dir = resolve_path(c["voices_dir"])
     return SpanishPiperTTS(
         pronunciations=c.get("pronunciations"),
+        length_scale=c.get("length_scale"),
         download_dir=voices_dir,
         settings=PiperTTSService.Settings(voice=c["voice"]),
     )

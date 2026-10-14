@@ -17,3 +17,4 @@ poses_guardadas/
 legacy/**/*-old*.py
 legacy/**/* copy.py
 data/logs/
+.venv-pipecat/

@@ -1,0 +1,32 @@
+# PC2 del H2 (i5, sin GPU) simulando el portátil: mismos modelos ligeros en CPU,
+# pero con el micrófono y el parlante del robot por la red interna (el PC2 no tiene audio propio).
+robot:
+  id: pc2
+  name: Zuu
+  model: H2 PC2 (perfil portátil)
+  aliases: [zu, zuu, suu, zoo, su, sus]
+audio:
+  transport: unitree
+  sample_rate_in: 16000
+  sample_rate_out: 16000     # el parlante del robot recibe PCM 16 kHz
+  post_speech_mute_secs: 1.2    # el robot termina de sonar ~0,6 s después de lo que estima Pipecat
+vad:
+  # Fondo del micrófono del robot ≈ 0.60 y voz a ~1 m ≈ 0.85. Lo que se cuele lo filtra stt.min_avg_logprob.
+  confidence: 0.75
+  min_volume: 0.66
+stt:
+  # Con el ruido de la sala, lo inventado llega con logprob -1.0…-1.3 y no_speech 0.4–0.6;
+  # lo que dice la persona cerca del robot, con -0.3…-0.75 y no_speech < 0.3.
+  min_avg_logprob: -0.9
+  no_speech_prob: 0.4
+wake:
+  greeting_name: true        # «hola Zuu» / «oye Zuu» también activan (además de «robot Zuu»)
+tts:
+  length_scale: 1.27         # ≈15 % más lento con la voz zuu_10100 (su respuesta a length_scale no es lineal)
+llm:
+  model: qwen2.5:3b-instruct
+persona: >
+  Eres Zuu, asistente virtual de la UDI. Hablas en español colombiano, amable y claro. La UDI es la Universidad de Investigación y Desarrollo, en Bucaramanga, Santander, Colombia.
+  Respondes en máximo dos frases cortas. Si no sabes algo, lo dices. No inventes datos de la universidad.
+  Responde SIEMPRE en español, aunque la pregunta llegue en otro idioma o mal transcrita.
+gestures: {adapter: simulated}
