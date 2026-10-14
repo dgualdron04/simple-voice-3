@@ -11,6 +11,7 @@ import sounddevice as sd
 from src.config import get_settings, resolve_path
 from piper import PiperVoice
 from src.tts_text_normalizer import clean_tts_text as normalize_tts_text
+from src import robot_audio
 
 
 settings = get_settings()
@@ -274,6 +275,10 @@ def play_wav_with_system(path: str | Path):
 
 
 def play_wav(path: str | Path):
+    if robot_audio.USE_ROBOT_AUDIO:
+        robot_audio.play_wav(path)
+        return
+
     try:
         play_wav_with_sounddevice(path)
     except Exception:

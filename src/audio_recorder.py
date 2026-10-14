@@ -5,6 +5,8 @@ import wave
 import numpy as np
 import sounddevice as sd
 
+from src.robot_audio import USE_ROBOT_AUDIO, RobotMicStream
+
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
@@ -35,6 +37,18 @@ def audio_energy(block: np.ndarray) -> float:
 
     return float(np.sqrt(np.mean(block ** 2)))
 
+def open_input_stream(block_size: int):
+    if USE_ROBOT_AUDIO:
+        return RobotMicStream()
+
+    return sd.InputStream(
+        samplerate=SAMPLE_RATE,
+        channels=CHANNELS,
+        dtype=DTYPE,
+        blocksize=block_size
+    )
+
+
 def calibrate_noise(
     duration: float = 1.2,
     multiplier: float = 2.8,
@@ -53,12 +67,7 @@ def calibrate_noise(
 
     start_time = time.time()
 
-    with sd.InputStream(
-        samplerate=SAMPLE_RATE,
-        channels=CHANNELS,
-        dtype=DTYPE,
-        blocksize=block_size
-    ) as stream:
+    with open_input_stream(block_size) as stream:
         while time.time() - start_time < duration:
             block, _ = stream.read(block_size)
             block = block.reshape(-1)
@@ -102,12 +111,7 @@ def record_until_silence(
 
     print("Habla ahora...")
 
-    with sd.InputStream(
-        samplerate=SAMPLE_RATE,
-        channels=CHANNELS,
-        dtype=DTYPE,
-        blocksize=block_size
-    ) as stream:
+    with open_input_stream(block_size) as stream:
         while True:
             block, _ = stream.read(block_size)
             block = block.reshape(-1)

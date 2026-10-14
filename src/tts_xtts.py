@@ -6,6 +6,7 @@ import soundfile as sf
 
 from TTS.api import TTS
 
+from src import robot_audio
 from src.config import get_settings, resolve_path
 from src.tts_text_normalizer import clean_tts_text
 
@@ -92,6 +93,11 @@ def speak_to_file(text: str, output_path: str | Path = OUTPUT_WAV):
 
 
 def play_wav(path: str | Path):
+    if robot_audio.USE_ROBOT_AUDIO:
+        audio, sample_rate = sf.read(str(path), dtype="int16")
+        robot_audio.play_audio(audio, sample_rate)
+        return
+
     audio, sample_rate = sf.read(str(path))
     sd.play(audio, sample_rate)
     sd.wait()

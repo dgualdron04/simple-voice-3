@@ -4,13 +4,13 @@ import unicodedata
 import threading
 import contextlib
 import io
-import sounddevice as sd
 
 from src.audio_recorder import record_until_silence, calibrate_noise
 from src.stt_vosk import transcribe_audio, warm_up_vosk
 from src.stt_postprocess import fix_stt_text
 from src.assistant import answer_question, set_assistant_mode, get_assistant_mode
 from src.tts import warm_up_tts, speak
+from src.robot_audio import stop_playback
 from src.llm import generate_voice_answer
 
 WAKE_WORDS = [
@@ -99,7 +99,7 @@ def watch_interrupt_command(finish_event, interrupted_event):
             if is_stop_command(heard_text):
                 interrupted_event.set()
                 finish_event.set()
-                sd.stop()
+                stop_playback()
                 print("ZUU fue interrumpido. Esperando nueva instrucción.")
                 return
 

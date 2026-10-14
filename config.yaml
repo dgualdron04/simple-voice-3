@@ -3,6 +3,16 @@ app:
   institution: "Universidad de Investigación y Desarrollo UDI"
   language: "es"
 
+audio:
+  # "robot": micrófono y parlante del H2 (DDS). "local": los del PC.
+  device: "robot"
+  network_interface: "eth0"
+  mic_group: "239.168.123.161"
+  mic_port: 5555
+  local_ip: "192.168.123.162"
+  mic_timeout: 3.0
+  playback_tail_seconds: 0.4
+
 stt:
   provider: "vosk"
   vosk_model: "${VOSK_MODEL_PATH}"
