@@ -138,8 +138,20 @@ def test_correction_loop(store):
 def test_bad_phone_gives_up_without_saving(store):
     flow = make_flow(store, kind="phone", retries=2)
     flow.start()
-    reply = run(flow, "sí", "uno dos", "dos tres", "cuatro cinco")
+    # el teléfono tiene más intentos que el resto de campos (phone_retries=4): cancela al quinto
+    reply = run(flow, "sí", "uno dos", "dos tres", "cuatro cinco", "dos dos", "uno uno")
     assert reply.done and store.count() == 0
+
+
+def test_bad_phone_explains_and_keeps_trying(store):
+    flow = make_flow(store, kind="phone", retries=2)
+    flow.start()
+    reply = run(flow, "sí", "dos dos ocho", "uno dos tres", "dos dos")
+    assert not reply.done
+    assert "dígitos" in reply.say[0] and "empieza por tres" in reply.say[0]
+    assert "228" not in reply.say[0] and "dos dos" not in reply.say[0]     # no repite el dato
+    reply = run(flow, "3228265204")
+    assert flow.data["telefono"] == "3228265204"
 
 
 def test_phone_only_path(store):

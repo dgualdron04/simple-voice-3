@@ -1,4 +1,5 @@
 import re
+import unicodedata
 
 
 DIGITOS = {
@@ -160,11 +161,34 @@ def normalize_price_for_speech(match):
         return raw_number
 
     number = int(digits)
-    return f"{number_to_spanish(number)} pesos colombianos"
+    lead = " " if match.group(0)[:1].isspace() else ""     # el patrón consume el espacio previo («esdos millones»)
+    return f"{lead}{number_to_spanish(number)} pesos colombianos"
+
+
+
+def _speak_address(match) -> str:
+    """«www.udi.edu.co/admisiones» -> «udi punto edu punto co»; correos con «arroba»."""
+    addr = re.sub(r"^(?:https?://)?(?:www\.)?", "", match.group(0), flags=re.IGNORECASE)
+    addr = addr.split("/")[0].rstrip(".")
+    return addr.replace("@", " arroba ").replace(".", " punto ").replace("_", " guion bajo ")
+
+
+def strip_markup_for_speech(text: str) -> str:
+    """Quita lo que el LLM escribe para pantalla y no se debe leer: markdown, enlaces, emojis, viñetas."""
+    text = re.sub(r"\[([^\]]+)\]\((?:[^)]+)\)", r"\1", text)                 # [texto](url) -> texto
+    text = re.sub(r"(?:https?://|www\.)\S+|\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+\b|\b[\w-]+(?:\.[\w-]+)*\.(?:com|co|org|net|edu)(?:\.[a-z]{2})?\b(?:/\S*)?",
+                  _speak_address, text, flags=re.IGNORECASE)
+    text = "".join(ch for ch in text if unicodedata.category(ch) not in ("So", "Cs") and ch not in "\ufe0f\u200d")
+    text = re.sub(r"(?m)^\s*(?:[-•·]|\d+[.)])\s+", "", text)                  # viñetas y listas numeradas
+    text = re.sub(r"(?<=[^.,;:!?\s])\s*\n+\s*", ", ", text)                     # renglones -> pausas
+    text = re.sub(r"\s*\n+\s*", " ", text)
+    text = re.sub(r"`+", "", text)
+    return re.sub(r"[ \t]+", " ", text).strip()
 
 
 def clean_tts_text(text: str) -> str:
     text = fix_mojibake(text).strip()
+    text = strip_markup_for_speech(text)
 
     text = text.replace("ZUU", "Zú")
     text = text.replace("UDI", "U D I")

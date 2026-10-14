@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from difflib import SequenceMatcher
 import unicodedata
 
 UNITS = {
@@ -19,10 +20,11 @@ HUNDREDS = {"cien": 100, "ciento": 100, "doscientos": 200, "trescientos": 300,
             "setecientos": 700, "ochocientos": 800, "novecientos": 900}
 
 YES_WORDS = {"si", "sii", "claro", "correcto", "afirmativo", "exacto", "dale", "listo", "ok",
-             "okay", "vale", "perfecto", "efectivamente", "autorizo", "acepto", "adelante"}
+             "okay", "vale", "perfecto", "efectivamente", "autorizo", "acepto", "adelante",
+             "siga", "sigue", "sigamos", "continua", "continue"}     # «siga» = «adelante» en Colombia
 NO_WORDS = {"no", "nop", "negativo", "incorrecto", "nada"}
-SKIP_PHRASES = ("no tengo", "omitir", "omite", "saltar", "salta", "prefiero no", "sin correo",
-                "no quiero darlo", "no uso", "ninguno", "ninguna")
+SKIP_PHRASES = ("no tengo", "omitir", "omite", "omiti", "saltar", "salta", "prefiero no", "sin correo",
+                "no quiero darlo", "no uso", "ninguno", "ninguna", "paso", "siguiente")
 
 
 def norm(text: str) -> str:
@@ -35,23 +37,55 @@ def words(text: str) -> list[str]:
     return re.sub(r"[^a-z0-9ñ\s]", " ", norm(text)).split()
 
 
+# Muletillas que no deciden nada al inicio de una respuesta («pues sí», «bueno, claro», «eh… sí»).
+YES_NO_FILLERS = {"pues", "bueno", "eh", "em", "emm", "este", "mm", "mmm", "ah", "ay", "oye", "mira", "a", "ver",
+                  "senor", "senora", "robot", "hola", "y"}
+# Respuestas afirmativas de varias palabras (comparadas al inicio, sin tildes).
+YES_PHRASES = ("asi es", "de acuerdo", "esta bien", "por supuesto", "claro que si", "yo autorizo", "yo acepto",
+               "lo autorizo", "los autorizo", "si senor", "eso es", "como no", "de una", "va pues", "con gusto",
+               "hagale", "hagamosle", "obvio", "seguro que si")
+# Afirmativas de una palabra que solo cuentan si la respuesta es corta («eso», «así»: Whisper oye «sí» como «así»).
+SHORT_YES = {"eso", "asi", "aja", "sip", "sep", "obvio", "seguro", "hagale"}
+NO_PHRASES = ("mejor no", "todavia no", "aun no", "ahorita no", "ahora no", "ni loco", "de ninguna manera",
+              "no gracias", "jamas", "nunca", "nel")
+NEGATED = {"autorizo", "acepto", "quiero", "gracias", "estoy", "deseo", "interesa", "doy", "puedo"}
+
+
 def is_yes(text: str) -> bool | None:
-    """True/False si es claramente sí/no; None si es ambiguo."""
+    """True/False si es claramente sí/no; None si es ambiguo (se vuelve a preguntar).
+
+    Conservador a propósito: lo usa el consentimiento de datos (Ley 1581), así que ante la duda devuelve None.
+    """
     w = words(text)
+    while w and w[0] in YES_NO_FILLERS:
+        w = w[1:]
     if not w:
         return None
-    if w[0] in NO_WORDS or w[:2] in (["de", "ninguna"],):
+    head = " ".join(w[:5])
+    if w[0] in NO_WORDS or w[:2] in (["de", "ninguna"],) or any(head.startswith(p) for p in NO_PHRASES):
+        return False
+    if "no" in w[:3] and NEGATED & set(w[:5]):
         return False
     if w[0] in YES_WORDS or (w[0] == "por" and "supuesto" in w):
         return True
-    if "no" in w[:3] and "autorizo" in w:
-        return False
+    if any(head.startswith(p) for p in YES_PHRASES):
+        return True
+    if len(w) <= 2 and w[0] in SHORT_YES:
+        return True
+    # Un «sí» suelto de medio segundo a veces sale con una letra de más («Síl.», «SIV»).
+    # Solo si la respuesta es esa única palabra; «sin» es una palabra real y no cuenta.
+    if len(w) == 1 and re.fullmatch(r"si[a-z]", w[0]) and w[0] not in ("sin", "sir"):
+        return True
     return None
 
 
 def wants_skip(text: str) -> bool:
     t = " ".join(words(text))
-    return any(p in t for p in SKIP_PHRASES) or t in ("no", "nada")
+    if any(p in t for p in SKIP_PHRASES) or t in ("no", "nada"):
+        return True
+    # «Omitir» suelto se transcribe mal («Oni tira.», «O mitir»): parecido, en una respuesta corta.
+    compact = t.replace(" ", "")
+    return len(t.split()) <= 3 and 4 <= len(compact) <= 9 and SequenceMatcher(None, compact, "omitir").ratio() >= 0.7
 
 
 def spoken_to_digits(text: str) -> str:

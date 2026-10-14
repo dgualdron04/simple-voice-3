@@ -52,12 +52,25 @@ class FlowReply:
     gesture: str | None = None
 
 
+def phone_hint(digits: str) -> str:
+    """Qué decir cuando el teléfono no salió: cuántos dígitos se oyeron y cómo debe ser (sin repetirlos)."""
+    rule = "Un celular tiene diez dígitos y empieza por tres."
+    if not digits:
+        return "No alcancé a captar el teléfono. " + rule + " Dímelo despacio, dígito por dígito."
+    if len(digits) < 10:
+        return f"Solo alcancé a escuchar {len(digits)} dígitos. " + rule + " Dímelo completo otra vez."
+    if len(digits) > 10:
+        return f"Escuché {len(digits)} dígitos, más de los que tiene un celular. " + rule + " Dímelo otra vez."
+    return "Ese número no parece un celular colombiano. " + rule + " Dímelo otra vez."
+
+
 @dataclass
 class RegistrationFlow:
     store: RegistrationStore
     robot_id: str
     lookup_program: ProgramLookup
     retries: int = 2
+    phone_retries: int = 4       # el teléfono es el dato que más cuesta dictar
     kind: str = "full"           # full | phone
     prefill: dict = field(default_factory=dict)   # datos recordados en la sesión (se confirman, no se asumen)
     state: str = "consent"
@@ -136,7 +149,7 @@ class RegistrationFlow:
         if fieldname == "telefono":
             return "¿Cuál es tu número de teléfono o celular? Dímelo dígito por dígito."
         if fieldname == "correo":
-            return "¿Cuál es tu correo electrónico? Si prefieres no darlo, di omitir."
+            return "¿Cuál es tu correo electrónico? Si no quieres darlo, di: no tengo correo."
         if fieldname == "programa":
             return "¿Qué carrera te interesa?"
         if fieldname == "modalidad":
@@ -163,7 +176,7 @@ class RegistrationFlow:
         if answer is None:
             return self._fail("¿Sí o no?", self._decline_prefill)
         if answer is False:
-            return self._decline_prefill()
+            return self._decline_prefill(text)
         field_name, value = self._prefill_field, self._prefill_value
         self.queue.pop(0)                       # ya no hay que preguntarlo
         self.failures = 0
@@ -176,10 +189,19 @@ class RegistrationFlow:
             self.program, self.data["programa"] = info, info.nombre
         return self._next_field()
 
-    def _decline_prefill(self) -> FlowReply:
+    def _decline_prefill(self, text: str = "") -> FlowReply:
         self.failures = 0
-        self.state = self._prefill_field        # lo pregunta normalmente
-        return FlowReply([self._prompt(self._prefill_field)])
+        field_name = self._prefill_field
+        if self.queue and self.queue[0] == field_name:
+            self.queue.pop(0)                   # se pregunta ahora: que no se repita al terminar
+        if field_name == "programa" and text:
+            # «No, ingeniería electrónica»: la carrera nombrada en la misma respuesta vale.
+            info = self.lookup_program(text)
+            if info is not None and v.norm(info.nombre) != v.norm(self._prefill_value):
+                self.program, self.data["programa"] = info, info.nombre
+                return self._next_field()
+        self.state = field_name                 # lo pregunta normalmente
+        return FlowReply([self._prompt(field_name)])
 
     # ------------------------------------------------------- datos personales
     def _on_nombre(self, text: str) -> FlowReply:
@@ -212,7 +234,13 @@ class RegistrationFlow:
             self._partial_turns += 1
             return FlowReply(["Te escucho, continúa."])
         self._phone_partial, self._partial_turns = "", 0
-        return self._fail("No alcancé a captar el teléfono. Repítelo dígito por dígito, por favor.", self._give_up)
+        # Dictar un teléfono falla más que un sí/no: más intentos que el resto de campos y una
+        # pista concreta. No se repiten los dígitos en voz alta (dato personal).
+        self.failures += 1
+        if self.failures > self.phone_retries:
+            self.failures = 0
+            return self._give_up()
+        return FlowReply([phone_hint(digits)])
 
     def _on_correo(self, text: str) -> FlowReply:
         if v.wants_skip(text):
@@ -222,7 +250,7 @@ class RegistrationFlow:
         if email:
             self.data["correo"] = email
             return self._next_field()
-        return self._fail("No entendí el correo. Dilo así: nombre arroba gmail punto com. O di omitir.",
+        return self._fail("No entendí el correo. Dilo así: nombre arroba gmail punto com. O di: no tengo correo.",
                           lambda: (self.data.__setitem__("correo", None), self._next_field())[1])
 
     # ------------------------------------------------------ interés académico

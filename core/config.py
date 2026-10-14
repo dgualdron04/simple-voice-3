@@ -32,6 +32,18 @@ DEFAULTS: dict = {
         "sample_rate_out": 22050,
         "barge_in": False,          # False = half-duplex (sin AEC el robot no se oye a sí mismo)
         "post_speech_mute_secs": 0.7,
+        # local = micrófono/parlante del equipo (PyAudio); robot = micrófono (UDP multicast) y
+        # altavoz (DDS voice/PlayStream) internos del robot Unitree. Ver core/robot_audio.py.
+        "transport": "local",
+        "robot": {
+            "network_interface": "eth10",
+            "interface_ip": "192.168.123.163",
+            "mic_group": "239.168.123.161",
+            "mic_port": 5555,
+            "app_name": "asistente",
+            "chunk_secs": 0.4,
+            "lead_secs": 1.0,
+        },
     },
     "vad": {"confidence": 0.7, "start_secs": 0.25, "stop_secs": 0.6, "min_volume": 0.5},
     "stt": {
@@ -73,6 +85,7 @@ DEFAULTS: dict = {
     "gestures": {"adapter": "simulated", "enabled": True, "allowed": ["saludar", "dar_mano", "señalar"]},
     "registration": {
         "retries_per_field": 2,
+        "phone_retries": 4,          # el teléfono falla más al dictarlo: más intentos antes de cancelar
         "idle_timeout_secs": 60,
         "retention_days": 30,
     },

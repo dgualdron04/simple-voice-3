@@ -75,6 +75,27 @@ class DialogProcessor(FrameProcessor):
         self._stopped_at = 0.0
         self.pending_swap: tuple[str, str] | None = None   # (prompt aumentado, pregunta limpia)
 
+    async def _drop_stale_llm(self) -> None:
+        """Cancela la respuesta del LLM que aún se genera para la frase anterior.
+
+        Sin esto, si la persona dice otra cosa antes de que el LLM termine, sonaban las dos
+        respuestas seguidas (la vieja llegaba tarde). La interrupción también vacía el TTS y
+        el audio pendiente del altavoz.
+        """
+        logger.debug("[llm] respuesta pendiente descartada: llegó una frase nueva")
+        await self.broadcast_interruption()
+        if self.pending_swap:                   # el contexto RAG de esa pregunta no se queda en el historial
+            augmented, plain = self.pending_swap
+            for message in reversed(list(self.context.messages)):
+                if message.get("role") == "user" and message.get("content") == augmented:
+                    message["content"] = plain
+                    break
+            self.pending_swap = None
+        if self.usage:
+            self.usage.event("llm_cancelled", route=self.llm_route,
+                             waited_ms=round((time.monotonic() - self.llm_t0) * 1000))
+        self.llm_t0 = None
+
     def _bot_busy(self) -> bool:
         return self._bot_speaking or (time.monotonic() - self._stopped_at < self._tail)
 
@@ -120,6 +141,9 @@ class DialogProcessor(FrameProcessor):
             if self.engine.saved:
                 self.usage.event("registro", **self.engine.saved)     # sin datos personales
                 self.engine.saved = None
+
+        if actions and self.llm_t0 is not None:
+            await self._drop_stale_llm()        # una respuesta a la frase anterior no debe sonar después
 
         llm_action = next((a for a in actions if isinstance(a, AskLLM)), None)
         if llm_action is None and actions:
@@ -200,6 +224,22 @@ class BotTextTap(FrameProcessor):
             self.context.set_messages(messages[-self.max_messages:])
 
 
+def build_transport(audio: dict):
+    """local: PyAudio (micrófono/parlante del equipo). robot: micrófono y altavoz internos del Unitree."""
+    common = dict(audio_in_enabled=True, audio_out_enabled=True,
+                  audio_in_sample_rate=audio["sample_rate_in"], audio_out_sample_rate=audio["sample_rate_out"])
+    if audio["transport"] == "robot":
+        from core.robot_audio import RobotAudioParams, RobotAudioTransport
+        return RobotAudioTransport(RobotAudioParams(**common, **audio["robot"]))
+    if audio["transport"] != "local":
+        raise ValueError(f"audio.transport desconocido: {audio['transport']!r} (usa local o robot)")
+    return LocalAudioTransport(LocalAudioTransportParams(
+        **common,
+        input_device_index=resolve_device(audio["input_device"], "input"),
+        output_device_index=resolve_device(audio["output_device"], "output"),
+    ))
+
+
 def build_task(settings: dict | None = None, llm_ok: bool = True) -> tuple[PipelineTask, DialogEngine]:
     settings = settings or get_settings()
     audio = settings["audio"]
@@ -220,16 +260,12 @@ def build_task(settings: dict | None = None, llm_ok: bool = True) -> tuple[Pipel
     gestures = build_gesture_runner(settings)
     half_duplex = not audio["barge_in"]
 
-    transport = LocalAudioTransport(LocalAudioTransportParams(
-        audio_in_enabled=True,
-        audio_out_enabled=True,
-        audio_in_sample_rate=audio["sample_rate_in"],
-        audio_out_sample_rate=audio["sample_rate_out"],
-        input_device_index=resolve_device(audio["input_device"], "input"),
-        output_device_index=resolve_device(audio["output_device"], "output"),
-    ))
+    transport = build_transport(audio)
 
     stt, llm, tts = build_stt(settings), build_llm(settings), build_tts(settings)
+    # Durante el registro (sí/no, nombre, teléfono, correo) Whisper va sin el prompt de dominio:
+    # con respuestas cortas lo copiaba («Rector. Jairo Augusto Castro.» en lugar de «sí»).
+    stt.use_domain_prompt = lambda: engine.flow is None
 
     context = LLMContext()
     mute = [TailMuteStrategy(audio["post_speech_mute_secs"])] if half_duplex else []

@@ -22,6 +22,7 @@ from pipecat.transcriptions.language import Language  # noqa: E402
 from pipecat.utils.time import time_now_iso8601  # noqa: E402
 
 from core.config import resolve_path  # noqa: E402
+from core.stt_guard import is_degenerate, looks_like_prompt_echo  # noqa: E402
 from core.tts_text import clean_tts_text  # noqa: E402
 
 
@@ -37,6 +38,10 @@ class SpanishWhisperSTT(WhisperSTTService):
         self._beam_size = beam_size
         self.last_meta: dict = {}
         self.on_discard = None          # callable(dict) -> None, lo fija el pipeline
+        # callable() -> bool. False = transcribir sin el prompt de dominio (nombres, carreras):
+        # el diálogo lo apaga mientras espera un sí/no o datos personales, porque con audio corto
+        # Whisper "rellena" con el prompt («Rector. Jairo Augusto Castro.» en vez de «sí»).
+        self.use_domain_prompt = lambda: True
 
     async def run_stt(self, audio: bytes) -> AsyncGenerator[Frame, None]:
         if not self._model:
@@ -49,8 +54,10 @@ class SpanishWhisperSTT(WhisperSTTService):
         threshold = self._settings.no_speech_prob
 
         started = time.monotonic()
+        domain_prompt = self._settings.initial_prompt or None
+        prompt = domain_prompt if self.use_domain_prompt() else None
 
-        def transcribe():
+        def transcribe(prompt):
             segments, _ = self._model.transcribe(
                 samples,
                 language=language,
@@ -58,7 +65,7 @@ class SpanishWhisperSTT(WhisperSTTService):
                 temperature=0.0,
                 condition_on_previous_text=False,
                 vad_filter=True,
-                initial_prompt=self._settings.initial_prompt or None,
+                initial_prompt=prompt,
                 max_new_tokens=max(24, int(len(samples) / 16000 * 8)),     # corta bucles «la la la…»
             )
             segments = list(segments)
@@ -66,18 +73,31 @@ class SpanishWhisperSTT(WhisperSTTService):
                     if (threshold is None or s.no_speech_prob < threshold) and s.avg_logprob > -1.3]
             return segments, kept
 
-        all_segments, segments = await asyncio.to_thread(transcribe)
+        all_segments, segments = await asyncio.to_thread(transcribe, prompt)
+        first_text = " ".join(s.text.strip() for s in segments).strip()
+        retried = False
+        if prompt and first_text and (looks_like_prompt_echo(first_text, prompt) or is_degenerate(first_text)):
+            # Sospecha de eco del prompt o bucle: se re-transcribe sin prompt y manda ese resultado.
+            all_segments, segments = await asyncio.to_thread(transcribe, None)
+            retried = True
         await self.stop_processing_metrics()
         self.last_meta = {
             "audio_s": round(len(samples) / 16000, 2),
             "stt_ms": round((time.monotonic() - started) * 1000),
             "avg_logprob": round(min((s.avg_logprob for s in segments), default=0.0), 2),
             "no_speech_prob": round(max((s.no_speech_prob for s in segments), default=0.0), 2),
+            "prompt": "dominio" if prompt else "ninguno",
         }
+        if retried:
+            self.last_meta["retry_without_prompt"] = True      # sin el texto: no pasa por la redacción
         if all_segments and not segments and self.on_discard:
             self.on_discard({**self.last_meta, "discarded_text": " ".join(s.text.strip() for s in all_segments)})
 
         text = " ".join(s.text.strip() for s in segments).strip()
+        if text and is_degenerate(text):
+            if self.on_discard:
+                self.on_discard({**self.last_meta, "discarded_text": text, "reason": "bucle"})
+            text = ""
         if text:
             yield TranscriptionFrame(text, self._user_id, time_now_iso8601(), language)
 
@@ -142,13 +162,23 @@ def build_stt(settings: dict) -> SpanishWhisperSTT:
     )
 
 
+# Reglas fijas para cualquier robot: lo que dice el LLM se lee en voz alta y el robot solo conversa.
+VOICE_RULES = (
+    " Tu respuesta se lee en voz alta: texto plano, sin markdown, sin enlaces, sin emojis ni listas."
+    " Solo puedes conversar: no digas que puedes subir el volumen, enviar mensajes, chatear por escrito,"
+    " moverte ni hacer acciones por pedido. Si no sabes un dato de contacto o un canal, no lo inventes."
+    " Si lo que oíste no tiene sentido o parece una conversación entre otras personas, pide amablemente"
+    " que te repitan la pregunta."
+)
+
+
 def build_llm(settings: dict) -> OLLamaLLMService:
     c = settings["llm"]
     return OLLamaLLMService(
         base_url=c["base_url"],
         settings=OLLamaLLMService.Settings(
             model=c["model"], temperature=c["temperature"], max_tokens=c["max_tokens"],
-            system_instruction=settings["persona"],
+            system_instruction=settings["persona"].strip() + VOICE_RULES,
         ),
     )
 

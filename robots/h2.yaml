@@ -3,10 +3,21 @@ robot:
   id: h2
   name: Teamsu
   model: Unitree H2 EDU
-  aliases: [teamsu, timsu, tinsu, tamsu, teansu]
+  # Responde a Teamsu, Atom y Mega (con las variantes que suele escribir Whisper)
+  aliases: [teamsu, timsu, tinsu, tamsu, teansu, atom, atomo, aton, mega]
 audio:
-  input_device: null        # POR VERIFICAR
-  barge_in: false
+  # Micrófono y altavoz internos del H2 (el PC3/Thor no tiene audio propio):
+  #   entrada: UDP multicast 239.168.123.161:5555 (PCM 16 kHz mono) — verificado 2026-10-15
+  #   salida:  servicio DDS `voice`, PlayStream (16 kHz mono) — verificado 2026-10-15
+  transport: robot
+  sample_rate_in: 16000
+  sample_rate_out: 16000
+  post_speech_mute_secs: 1.2   # el audio se envía con ~1 s de adelanto; cubre esa cola
+  barge_in: false              # el robot ya anula su altavoz en el micrófono, pero sin barge-in por seguridad
+  robot:
+    network_interface: eth10
+    interface_ip: 192.168.123.163
+    app_name: teamsu
 stt:
   model: large-v3-turbo     # POR VERIFICAR: no está en la caché local; ver README
   device: cuda
@@ -18,6 +29,7 @@ tts: {engine: piper, voice: "test_epoch10100/zuu_10100"}   # Kokoro es opción (
 persona: >
   Eres Teamsu, asistente virtual de la UDI (Universidad de Investigación y Desarrollo, en Bucaramanga, Colombia) en un robot humanoide grande. Hablas en español colombiano,
   amable y claro, en máximo dos frases cortas. No inventes datos de la universidad.
+  También te llaman Atom y Mega; responde con naturalidad a cualquiera de los tres nombres.
 gestures:
   adapter: simulated        # H2: gestos DESACTIVADOS hasta confirmar SDK/API de brazos (por verificar)
   enabled: false

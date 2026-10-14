@@ -17,7 +17,7 @@ from difflib import SequenceMatcher
 from typing import Callable
 
 from core.registration import validators as v
-from core.stt_text import fix_stt_text
+from core.stt_text import DOMAIN_WORDS, fix_stt_text
 from core.registration.flow import ProgramInfo, RegistrationFlow
 from core.registration.store import RegistrationStore
 
@@ -175,7 +175,10 @@ class DialogEngine:
         if len(t) < 8:
             return False
         for said in self._recent_bot:
-            if t in said or SequenceMatcher(None, t, said).ratio() >= self.echo_similarity:
+            # Que esté contenido solo cuenta si es buena parte de la frase del robot: un eco real la repite
+            # casi entera; «no tengo correo» respondiendo a «…di: no tengo correo» es una respuesta, no un eco.
+            contained = t in said and (len(t) >= 0.5 * len(said) or len(t) >= 25)
+            if contained or SequenceMatcher(None, t, said).ratio() >= self.echo_similarity:
                 return True
         return False
 
@@ -196,15 +199,42 @@ class DialogEngine:
             if nxt and nxt2 and (nxt + nxt2) in self.aliases:
                 return True, " ".join(original[i + 3:]).strip(" ,.")
 
+        # El nombre solo, al inicio o tras un saludo: «Atom, ¿cuánto cuesta derecho?», «Hola Mega».
+        # A mitad de frase no cuenta, para que las conversaciones ajenas no despierten al robot.
+        for i, word in enumerate(normalized[:2]):
+            if len(word) >= 4 and word in self.aliases and (i == 0 or normalized[0] in self.greetings):
+                return True, " ".join(original[i + 1:]).strip(" ,.")
+
         # Whisper suele fundir o deformar «robot zuu» («rotsu», «rhozu», «robozu»): coincidencia difusa.
         for i, word in enumerate(normalized[:3]):
             for span in (1, 2):
                 candidate = "".join(normalized[i:i + span])
                 if len(candidate) < 4 or "robot" in candidate:
                     continue
+                words_ = normalized[i:i + span]
+                others = [w for w in words_ if w not in self.aliases]
+                if len(others) < len(words_) and not (
+                        others and all(SequenceMatcher(None, w, self.wake_prefix).ratio() >= 0.5 for w in others)):
+                    continue        # alias exacto: solo vale si va con algo parecido a «robot» («rho zuu» sí, «el átomo» no)
                 if max(SequenceMatcher(None, candidate, t).ratio() for t in self._wake_targets) >= 0.65:
                     return True, " ".join(original[i + span:]).strip(" ,.")
         return False, text
+
+    _VOCATIVE = re.compile(r"^\s*([^\W\d_]{2,12})\s*,\s*(.+)$", re.S)
+
+    def _strip_vocative(self, text: str) -> str:
+        """Quita un vocativo inicial sin sentido para el dominio: «Atom, ¿cómo se llama el rector?».
+
+        Whisper suele anteponer el nombre del robot mal oído; esa palabra extra hundía la coincidencia
+        del FAQ y la pregunta acababa en el LLM. No toca palabras con contenido («Derecho, ¿cuánto cuesta?»).
+        """
+        match = self._VOCATIVE.match(text)
+        if not match or len(tokens(match.group(2))) < 3:
+            return text
+        word = v.norm(match.group(1))
+        keep = ({v.norm(d) for d in DOMAIN_WORDS} | self.k._name_tokens() | v.YES_WORDS | v.NO_WORDS
+                | {"no", "si", "quien", "que", "cual", "cuanto", "cuando", "donde", "como"})
+        return text if word in keep else match.group(2)
 
     # --------------------------------------------------------------- manejo
     def handle(self, text: str) -> list[Action]:
@@ -254,6 +284,7 @@ class DialogEngine:
                 self._why = "wake:greeting"
                 return [Say(f"Hola, soy {self.robot_name}. ¿En qué te puedo ayudar?")]
 
+        text = self._strip_vocative(text)
         w = tokens(text)
         if len(w) == 1 and w[0] not in SINGLE_WORDS:
             self._why = "ignored:single_word"
@@ -284,7 +315,8 @@ class DialogEngine:
             if self.last_program:
                 prefill["programa"] = self.last_program
         self.flow = RegistrationFlow(self.store, self.settings["robot"]["id"], self.k.lookup_program,
-                                     retries=retries, kind=kind, prefill=prefill)
+                                     retries=retries, kind=kind, prefill=prefill,
+                                     phone_retries=self.settings["registration"]["phone_retries"])
         self.flow_last = self.clock()
         reply = self.flow.start()
         return ([Say(intro)] if intro else []) + [Say(s) for s in reply.say]
